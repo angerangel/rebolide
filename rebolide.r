@@ -1,13 +1,9 @@
 REBOL [	
-	TITLE: "Viva rebol!"
-	auteurs: "Shadwolf, Steeve"
-	start-date: 07/04/2009
-	release-date: 08/01/2011
+	TITLE: "Rebolide"
+	author: ["Shadwolf" "Steeve" "Massimiliano Vessi"]
+        date: 05/09/2012
 	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre}
-	purpose: { IDE for rebol in rebol }
-	Download: http://my-svn.assembla.com/svn/shadwolforge/
-	Docstrack: { docs, source diff and time tracs available on
-	http://my-trac.assembla.com/shadwolforge/
+	purpose: { Colored IDE for rebol in rebol }
 	}
 	version: 6.4.46
 ]
@@ -2227,9 +2223,4 @@ view/new/options IDE [resize]
 	
 	t/new-file
 	do-events
-
-
-
-
-
 
