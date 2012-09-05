@@ -4,7 +4,7 @@ REBOL [
         date: 05/09/2012
 	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre}
 	purpose: { Colored IDE for rebol in rebol }
-	}
+	
 	version: 6.4.46
 ]
 
