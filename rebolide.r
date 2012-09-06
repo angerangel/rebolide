@@ -1,38 +1,46 @@
 REBOL [	
 	TITLE: "Rebolide"
 	author: ["Shadwolf" "Steeve" "Massimiliano Vessi"]
-        date: 05/09/2012
+	date: 05/09/2012
 	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre}
 	purpose: { Colored IDE for rebol in rebol }
-	
-	version: 6.4.46
+	version: 6.4.47
 ]
 
-if not exists? %lucon.ttf [ request-download/to  http://www.maxvessi.net/rebsite/lucon.ttf  %lucon.ttf ]
+;this is useful if you are not on linux
 
-; utility functions
+if not exists? %lucon.ttf [ request-download/to  http://www.maxvessi.net/rebsite/lucon.ttf  %lucon.ttf  ]
 
-sav-pref: func [][
-	;consol_path: fi/text
+;***********************************************
+; utility functions to lad and save user preferences
+
+;saving preferences
+sav-pref: func [][	
 	pref/bg_color: b1/color
 	pref/txt_color: b2/color
 	save %pref.dat pref
-]
+	]
 
+;loading preferences
 load-pref: func [][
 	if exists? %pref.dat [pref: do load %pref.dat]
-]
+	]
 
+;see if there is a pref.dat file to use in order to load user preferences
 either  exists? %pref.dat [
 	load-pref
-][
-	pref: make object! [
-		;consol_path: copy system/options/boot
-		bg_color: 0.0.0 
-		txt_color: 255.255.255
-	]
-]
-
+	][
+		pref: make object! [		
+			bg_color: 0.0.0 
+			txt_color: 255.255.255
+			]
+		]
+;end of utility functions		
+;**************************************************		
+		
+;NOW SKIP TO THE CODE AT LINE 248. The folowings line are just compressed scripts for 
+;for tab panel and menu bar
+;***********************************
 ; LOAD TAB-panel widget Cyphre (TM)
 do load decompress #{
 789CBD586973E2B816FDCEAF50577FE86428C7989824506F2695349DADB37496
@@ -238,8 +246,12 @@ B30D5E5D6C99F9D04301C9244363202209FC77431B040804940CD96F930C307B
 78E79FFF0120649CE6573C0000
 }
 ; END of ctx-menu
+
+;area-tc is the main and most imortant face of all script
+
 area-tc: context [	;** global context
 
+; this set colors for every type 
 colors: [
 	char!		0.180.40
 	date!		0.120.150
@@ -265,6 +277,7 @@ colors: [
 	multi!		0.180.40
 	free-text!	0.0.200
 ]
+
 insert tail colors compose [ block! (pref/txt_color) default! (pref/txt_color) ]
 
 multi-chars: complement charset "^^}^/^-"	;** to detect end of rebol strings
@@ -290,19 +303,13 @@ gen-draw: [end: (
 				select colors 'default! 
 				0.0.0 ; this is the deafult color if the others are none
 				]
-			either save-color <> color [
-				
-				;out-style: insert insert insert insert insert out-style 
-				;	'pen color [text edit ] as-pair x * f/x + f/xy/x + f/origine-x 5 str
-				
+			either save-color <> color [				
 				insert out-style reduce [
 					'pen color 'text 'edit   (as-pair x * f/x + f/xy/x + f/origine-x 5 ) str 
 					]
-				loop 6  [out-style: next out-style]
-				
-				
-			][ 
-				insert tail pick out-style -1 str
+				loop 6  [out-style: next out-style] ;since we inserted 5 items, this weay we go toinsertion point
+				][ 
+				insert tail pick out-style -1 str 
 			]
 			if type = 'error! [
 				out-style: insert/only insert out-style 'expand 
