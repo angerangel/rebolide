@@ -4,7 +4,7 @@ REBOL [
 	date: 05/09/2012
 	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre}
 	purpose: { Colored IDE for rebol in rebol }
-	version: 6.4.47
+	version: 6.4.48
 ]
 
 ;this is useful if you are not on linux
@@ -38,8 +38,7 @@ either  exists? %pref.dat [
 ;end of utility functions		
 ;**************************************************		
 		
-;NOW SKIP TO THE CODE AT LINE 248. The folowings line are just compressed scripts for 
-;for tab panel and menu bar
+;NOW SKIP TO THE CODE AT LINE 248. The folowing lines are just compressed scripts for tab panel and menu bar
 ;***********************************
 ; LOAD TAB-panel widget Cyphre (TM)
 do load decompress #{
@@ -1132,7 +1131,8 @@ stylize/master [
 					if f/ask <> 'show [f/ask: 'info-cursor  f/delay: 3]
 					cursor/blink-color: red 
 					unless find [up down] key: e/key [save-x: 0]
-					if all [e/5 not select? any [word? key key < #" "]][
+					if all [e/5 not select? any [ word? key key < #" "  ] ; "]  <- This is for the my editor tha mess " char
+						][
 						select?: true
 						begin-selection cursor
 					]
@@ -1143,10 +1143,10 @@ stylize/master [
 							;probe key
 							;** e/6 = true for ctrl
 							switch/default key[
-								page-up [render-text f negate f/nb-lines]
-								page-down [render-text f f/nb-lines]
-								#"^P" [inc-font-size f 1]  ;** increase font size
-								#"^L" [inc-font-size f -1] ;** decrease font size
+								page-up [render-text f negate f/nb-lines ]
+								page-down [render-text f f/nb-lines ]
+								#"^P" [inc-font-size f 1 ]  ;** increase font size
+								#"^L" [inc-font-size f -1 ] ;** decrease font size
 								#"^B" [bold f]
 							][
 								locate-cursor cursor
@@ -1254,7 +1254,7 @@ stylize/master [
 									;** auto-scroll horizontaly
 									if f/x * 10 + cursor/xy/x > f/size/x [
 										scroll-x f f/x * 10
-									]
+										]
 									show f
 								]
 							]
@@ -1388,59 +1388,7 @@ stylize/master [
 					]
 					
 					
-; 					f/delete /clip 
-; 					/local cursor data idx old-idx start end str start-len end-len 
-; 				][
-; 					cursor: f/cursor
-; 					if clip [clip: make string! 256]
-; 					idx: cursor/global-idx
-; 					old-idx: cursor/old-idx
-; 					either old-idx <= idx [
-; 						set [start end] reduce [old-idx idx]
-; 						set [start-len end-len] reduce [cursor/old-pos-len  cursor/pos-len]
-; 					][
-; 						set [start end] reduce [idx old-idx]
-; 						set [start-len end-len] reduce [cursor/pos-len  cursor/old-pos-len]
-; 					]
-; 					data: at head f/data start
-; 					
-; 					;**print [start-len end-len]
-; 					
-; 					if start <> end [
-; 						str: data/1/2
-; 						case [
-; 							clip [append clip append copy/part skip str start-len any [find str newline tail str] newline]
-; 							delete [data/1/2: copy/part str start-len]
-; 						]
-; 						data: next data
-; 						start-len: 0 
-; 					]
-; 					loop end - start - 1 [
-; 						case [
-; 							clip [
-; 								append clip append
-; 									copy/part data/1/2 any [find data/1/2 newline tail data/1/2] 
-; 									newline 
-; 								data: next data
-; 							]
-; 							delete [remove data]
-; 						]
-; 					]
-; 					str: data/1/2
-; 					case [
-; 						clip [
-; 							append clip copy/part skip str start-len skip str end-len
-; 							probe clip
-; 							write clipboard:// clip
-; 							clip: none
-; 						]
-; 						delete [
-; 							data/1/2: str: copy/part str any [find str newline tail str]
-; 							remove/part skip str start-len skip str end-len
-; 							render-text/stay f 1
-; 						]
-; 					]
-; 				]   
+
 				
 				click: func [f offset][
 						;** We don't use the focus function to avoid this dummy system caret (whe have our own)
@@ -1763,23 +1711,7 @@ stylize/master [
 					if refresh? [
 						render-text/stay f 1
 						constraint f cursor/xy
-					]
-					
-; 					f: cursor/parent-face
-; 					text: cursor/sub-string
-; 					either string? text [
-; 						insert text char
-; 					][
-; 						insert insert 
-; 							either cursor/pos-len = 1 [cursor/pos-blk][next cursor/pos-blk]
-; 							'new  
-; 							char
-; 					]
-; 					collect cursor
-; 					cursor/xy/x: cursor/xy/x + either char = tab [4 * f/x][f/x] 
-; 					if f/x * 10 + cursor/xy/x > f/size/x [
-; 							scroll-x f f/x * 10 
-; 					]
+					]				
 				]
 
 				
@@ -2014,125 +1946,13 @@ about-win: layout [
 inni: func [testo2 /local tmp] [
 	tmp: testo2
 	write %temp.txt tmp
-	tmp: read/lines %temp.txt
+	tmp: read/lines %temp.txt	
 	foreach item tmp [
-		insert-char t/cursor item 
-		recolorize t/cursor
-		split-line t								
+		t/feel/insert-char t/cursor item 
+		t/feel/recolorize t/cursor		
 		]								
 		show t
 	]
-
-
-insert-char: func [cursor char /local f text refresh?][
-					f: cursor/parent-face
-					if cursor/selection? [
-						do-selection/delete f
-						locate-cursor cursor
-						refresh?: true
-					]
-					text: cursor/sub-string
-					either string? text [
-						insert text char
-					][
-						insert insert
-							either cursor/pos-len = 1 [cursor/pos-blk][next cursor/pos-blk]
-							'new
-							char
-					]
-					collect cursor
-					cursor/xy/x: cursor/xy/x + either char = tab [4 * f/x][f/x * length? form char]
-						
-					if refresh? [
-						render-text/stay f 1
-						constraint f cursor/xy
-					]
-					
-; 					f: cursor/parent-face
-; 					text: cursor/sub-string
-; 					either string? text [
-; 						insert text char
-; 					][
-; 						insert insert 
-; 							either cursor/pos-len = 1 [cursor/pos-blk][next cursor/pos-blk]
-; 							'new  
-; 							char
-; 					]
-; 					collect cursor
-; 					cursor/xy/x: cursor/xy/x + either char = tab [4 * f/x][f/x] 
-; 					if f/x * 10 + cursor/xy/x > f/size/x [
-; 							scroll-x f f/x * 10 
-; 					]
-				]
-
-				
-
-				do-selection: func [
-						f
-						/delete /clip
-						/local cursor data idx old-idx start end str start-col end-col scroll n y
-					][
-						cursor: f/cursor
-						if clip [clip: make string! 256]
-						idx: cursor/global-idx
-						old-idx: cursor/old-idx
-						get-col cursor
-						either old-idx < idx [
-							set [start end] reduce [old-idx idx]
-							set [start-col end-col] reduce [cursor/old-col  cursor/col]
-							either start < index? f/data [
-								scroll: start - index? f/data 
-								n: -1 + min start to-integer f/nb-lines / 2
-								scroll: scroll - n
-								y: n * f/y + 2
-							][
-								y: cursor/xy/y +(start - end * f/y)
-							]
-						][
-							set [start end] reduce [idx old-idx]
-							set [start-col end-col] reduce [cursor/col  cursor/old-col]
-						]
-						data: at head f/data start
-						if start = end [
-							set [start-col end-col] sort reduce [start-col end-col]
-						]
-						if delete [
-							locate-cursor cursor
-							delete: copy/part data/1/2 start-col - 1
-						]
-						loop end - start [
-							if clip [
-								append clip append copy/part at data/1/2 start-col 
-									any [find data/1/2 newline tail data/1/2]
-									newline
-		
-							]
-							either delete [remove data][data: next data]
-							start-col: 1
-						]
-		
-						str: data/1/2
-						case/all [
-							clip [
-								append clip copy/part at str start-col at str end-col
-								write clipboard:// clip
-								clip: none
-							]
-							delete [
-								data/1/2: delete
-								case [
-									scroll [render-text f scroll]
-									start <> end [render-text/stay f 1]
-									'else [recolorize cursor]
-								]
-								if y [cursor/xy/y: y]
-								constraint f cursor/xy 
-								append delete copy/part at str end-col any [find str newline tail str]
-								recolorize cursor
-							]
-						]
-					]
-
 
 
 
