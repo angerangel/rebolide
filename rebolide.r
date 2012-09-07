@@ -2,14 +2,21 @@ REBOL [
 	TITLE: "Rebolide"
 	author: ["Shadwolf" "Steeve" "Massimiliano Vessi"]
 	date: 05/09/2012
-	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre}
+	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre, Graham, Nick Antonaccio, Semseddin Moldibi, Zoltan Eros, R. v.d.Zee}
 	purpose: { Colored IDE for rebol in rebol }
 	version: 6.4.48
 ]
 
-;this is useful if you are not on linux
 
-if not exists? %lucon.ttf [ request-download/to  http://www.maxvessi.net/rebsite/lucon.ttf  %lucon.ttf  ]
+;this is useful if you are on linux
+
+make-dir  %local/  ;make-dir tests if exists a directory and  if not exists it creates it
+change-dir  %local
+req_files: [ %scroll-panel.r  %simple-tooltip-style.r %lucon.ttf ] ;requested files
+
+foreach item req_files [
+	if not exists? item [ request-download/to  to-url join http://www.maxvessi.net/rebsite/ item  item  ] 
+	]
 
 ;***********************************************
 ; utility functions to lad and save user preferences
@@ -1956,10 +1963,17 @@ inni: func [testo2 /local tmp] [
 
 
 
+allconversions:  [to-binary 
+    to-bitset to-block to-char to-closure to-datatype to-date to-decimal to-email to-error to-file to-function to-get-path to-get-word to-hash 
+    to-hex to-idate to-image to-integer to-issue to-itime to-library to-list to-lit-path to-lit-word to-local-file to-logic to-map 
+    to-money to-none to-pair to-paren to-path to-port to-rebol-file 
+    to-refinement to-relative-file to-set-path to-set-word to-string to-tag to-time to-tuple to-typeset to-url to-word
+]
 
 
+do %scroll-panel.r
 
-
+do %simple-tooltip-style.r
 
 ;***************
 ;Let's start
@@ -1968,7 +1982,7 @@ unview/all
 IDE:	layout  [
 		across space 0x0 origin 0x0
 		mn: menu with [ 
-			size: 720x20 data: compose/deep [
+			size: 910x20 data: compose/deep [
 				"File" [
 					"New"  # "Ctrl+N" [if request "Start a new file?" [t/new-file]]
 					"Open" # "Ctrl+O" [t/open-file none ]					
@@ -2010,37 +2024,232 @@ IDE:	layout  [
 			]
 		] return
 		;below across 
-		do [do %simple-tooltip-style.r ]	
+		do [  ]	
 		
 		tb: tab-panel data [
-			"Core"  [corebox: box 300x300 with [ pane: layout/offset [
-					origin 0x0
+			"Core"  [	scroll-panel 300x432 [	; origin 0x0
 					style button btn white
 					style group-box panel 255.255.255 frame black 2x2
 					
 					group-box   [
-					text "Comparison"
-					across
-				button -1 "<" [ inni "< " ] help  "Returns TRUE if the first value is less than the second value"
-				button -1 "<=" [ inni "<= " ] help  "Returns TRUE if the first value is less than or equal to the second value"
-				button -1 "<>" [ inni "<> " ] help  "Returns TRUE if the values are not equal"
-				button -1 "=" [ inni "= " ] help  "Returns TRUE if the values are equal"
-				button -1 "==" [ inni "== " ]  help  "Returns TRUE if the values are equal and of the same datatype"
+						text bold "Comparison" 
+						across
+						button   "<" [ inni "< " ] help  "Returns TRUE if the first value is less than the second value"
+						button  "<=" [ inni "<= " ] help  "Returns TRUE if the first value is less than or equal to the second value"
+						button  "<>" [ inni "<> " ] help  "Returns TRUE if the values are not equal"
+						button  "=" [ inni "= " ] help  "Returns TRUE if the values are equal"
+						button  "==" [ inni "== " ]  help  "Returns TRUE if the values are equal and of the same datatype"
+						return 
+						button  "=?" [ inni "=? " ]  help  "Returns TRUE if the values are identical.(same memory)"
+						button  ">" [ inni "> " ]  help  "Returns TRUE if the first value is greater than the second value"
+						button  ">=" [ inni ">= " ]  help  "Returns TRUE if the first value is greater than or equal to the second value"
+							button  "!=" [ inni "!= " ]  help  "Returns TRUE if the values are not equal"
+						button  "!==" [ inni "!== " ]  help  "Returns TRUE if the values are not equal and not of the same datatype"
+						return 
+						button  "=?" [ inni "?= " ]  help  "Returns TRUE if the values are identical"
+						]
+						
+					group-box  [
+						text bold "Context"
+						across 						
+						button  "alias" [ inni "alias " ]  help "Creates an alternate alias for a word"
+						button   "bind" [ inni "bind /copy " ]  help "Binds words to a specified context"
+						button   "bind?" [ inni "bind?  " ]  help "Returns the context in which a word is bound?"
+						button   "body-of" [ inni "body-of  " ]  help "Returns a copy of the body of a function or object"
+						return 
+						button   "bound?" [ inni "bound?  " ]  help "Returns the context in which a word is bound"						
+						button   "closure" [ inni "closure [] []  " ]  help "Defines a closure function"
+						button   "closure?" [ inni "closure? " ]  help "Returns TRUE if it is this type"
+						return 
+						button   "collect" [ inni "collect /into [] " ]  help "Evaluates a block, storing values via KEEP function, and returns block of collected values"
+						return 
+						button   "collect-words" [ inni "collect-words /deep /set /ignore [] " ]  help " Collect unique words used in a block (used for context construction)"
+						button   "construct" [ inni "construct /with " ]  help "Creates an object, but without evaluating its specification"
+						return 
+						button   "context" [ inni "context " ]  help "Defines a unique (underived) object"
+						button   "default" [ inni "default " ]  help "Set a word to a default value if it hasn't been set yet"
+						button   "free" [ inni "free " ]  help " Frees a REBOL resource. (Command version only)"
+						button   "get" [ inni "get /any " ]  help "Gets the value of a word"
+						return
+						button   "in" [ inni "in " ]  help "Returns the word in the object's context"
+						return 
+						button   "link-app?" [ inni "link-app? " ]  help " Tell whether a script is running under a Link application context"				
+						button   "protect" [ inni "protect " ]  help "Protect a word or block to prevent from being modified"
+						button   "protect-system" [ inni "protect-system " ]  help "Protects all system functions and the system object from redefinition"
+						return 
+						button   "reflect" [ inni "reflect" ]  help "Returns definition-related details about a value"				
+						button   "resolve" [ inni "resolve /only /all " ]  help "Copy context by setting values in the target from those in the source."     
+						button   "set" [ inni "set /any /pad " ]  help "Sets a word or block of words to specified value(s)"
+						button   "unbind" [ inni "unbind  /deep" ]  help "Unbinds words from context"
+						return 
+						button   "unset?" [ inni "unset?  " ]  help "Returns TRUE for unset values"
+						return 
+						button   "unprotect" [ inni "unprotect " ]  help "Unprotects a word or block of words"
+				 		button   "unset" [ inni "unset " ]  help "Unsets the value of a word"				
+						button   "use" [ inni "use " ]  help "Defines words local to a block"
+						button   "value?" [ inni "value? " ]  help "Returns TRUE if the word has been set"				
+						]	
+					
+				group-box   [
+				text bold "Control"
+				across
+				button   "also" [ inni "also [] []  " ]  help " Returns the first value, but also evaluates the second"
+				button   "break" [ inni "break /return " ]  help "Breaks out of a loop, while, until, repeat, foreach, etc"
+				button   "case" [ inni "case /all [] " ]  help " Evaluates each condition, and when true, evaluates what follows it."
+				button   "catch" [ inni "catch [ throw ] " ]  help "Catches a THROW from a block and returns its value"
+				return				
+				button   "disarm" [ inni "disarm " ]  help "Returns the error value as an object"
+				button   "do" [ inni "do /args /next [] " ]  help "Evaluates a block, file, URL, function, word, or any other value"
+				button   "do-boot" [ inni "do-boot " ]  help "Does a value only if it and its file (URL) and it's dependent exists"
+				return
+				button   "do-browser" [ inni "do-browser " ]  help "Evaluate browser script"
 				return 
-				button -1 "=?" [ inni "=? " ]  help  "Returns TRUE if the values are identical.(same memory)"
-				button -1 ">" [ inni "> " ]  help  "Returns TRUE if the first value is greater than the second value"
-				button -1 ">=" [ inni ">= " ]  help  "Returns TRUE if the first value is greater than or equal to the second value"
-				button -1 "!=" [ inni "!= " ]  help  "Returns TRUE if the values are not equal"
-				button -1 "!==" [ inni "!== " ]  help  "Returns TRUE if the values are not equal and not of the same datatype"
+				button   "do-events" [ inni "do-events " ]  help " Process all View events"
+				button   "do-face" [ inni "do-face " ]  help "(undocumented)"
+				button   "do-face-alt" [ inni "do-face-alt " ]  help "(undocumented)"
 				return 
-				button -1 "=?" [ inni "?= " ]  help  "Returns TRUE if the values are identical"
-				]
-					] 0x0
+				button   "do-thru" [ inni "do-thru /args /update /check /boot " ]  help "Do a net file from the disk cache"
+				button   "does" [ inni "does [] " ]  help "A shortcut to define a function that has no arguments or locals"
+				button   "either" [ inni "either [] []  " ]  help "If condition is TRUE, evaluates the first block, else evaluates the second"
+				button   "else" [ inni "else []  " ]  help "Else is obsolete; use either"
+				return 
+				button   "exists-thru?" [ inni "exists-thru? /check  " ]  help "Checks if a file is in the disk cache. Returns: none, false (out of date), or file"
+				 button   "exit" [ inni "exit " ]  help "Exits a function, returning no value"
+				button   "for" [ inni "for word start end bump [] " ]  help "Repeats a block over a range of values"
+				button   "forall" [inni "forall " ] help "Evaluates a block for every value in a series"
+				return 
+				button   "foreach" [inni "foreach word series [] " ] help "Evaluates a block for each value(s) in a series"
+				button   "forever" [ inni "forever [] " ]  help "Evaluates a block endlessly"
+				button   "forskip" [ inni "forskip word skip-num series [] " ]  help "Evaluates a block for periodic values in a series"
+				return
+				button   "func" [ inni {func [ /local "usage" /refinemet "refinemet usage"] []} ]  help "Creates a function"
+				button   "funct" [ inni {funct [spec body /with object]} ]  help "Defines a function with all set-words as locals"
+				button   "function" [ inni {function [spec var body]} ]  help "Defines a user function with local words"
+				button   "halt" [ inni "halt " ]  help "Stops evaluation and returns to the input prompt"
+				return
+				button   "has" [ inni "has " ]  help "A shortcut to define a function that has local variables but no arguments"				 
+				button   "if" [ inni "if  cond [] " ]  help "If condition is TRUE, evaluates the block"
+				return
+				button   "in-dir" [ inni "in-dir " ]  help "Evaluate a block while in a directory"
+				button   "launch" [ inni "launch " ]  help "Launches a new REBOL interpreter process"
+				button   "launch-thru" [ inni "launch-thru /update /check " ]  help " Launch a net file from the disk cache"
+				button   "loop" [ inni "loop n [] " ]  help "Evaluates a block a specified number of times"
+				return 			
+				button   "repeat" [ inni "repeat " ]  help "Evaluates a block a specified number of times"
+				button   "quit" [ inni "quit " ]  help "Stops evaluation and exits the interpreter"
+				button   "quote" [ inni "quote " ]  help "Returns the value passed to it without evaluation"
+				button   "reduce" [ inni "reduce " ]  help "Evaluates an expression or block expressions and returns the result"
+				return
+				button   "rejoin" [ inni "rejoin " ]  help "Reduces and joins a block of values"
+				button   "return" [ inni "return " ]  help "Returns a value from a function"
+				button   "secure" [ inni "secure []  " ]  help "Specifies security policies (access levels and directories)"
+				button   "switch" [ inni "switch /default [] " ]  help "Selects a choice and evaluates what follows it"
+				return				
+				button   "throw" [ inni "throw /name " ]  help "Throws control back to a previous catch"
+							
+				button   "until" [ inni "until []  " ]  help "Evaluates a block until its last command is TRUE"
+				button   "unless" [ inni "unless  " ]  help "Evaluates the block if condition is not TRUE"
+				return
+				button   "wait" [ inni "wait /all " ]  help "Waits for a duration, port, or both"				
+				button   "while" [ inni "while [] [] " ]  help "While the first block is TRUE, evaluates the second block"				
 				]
 				
-				] 
-			"File"   [button "Ciao" [save %tdata t/data]
-				button "Roma"
+				group-box   [
+					text bold "Datatype"
+					across
+					button   " datatypes" [ inni " datatypes  " ]  help "Variable that contains all datatypes"
+					return 
+				group-box [
+					text "Conversion"
+					across
+					button   "to" [ inni "to binary!/bitset!/block!/char!/date!/decimal!/email!/file!/get-word!/hash!/hex!/idate!/image!/integer!/issue!/list!/lit-path!/lit-word!/logic!/money!/pair!/paren!/path!/refinement!/set-path!/set-word!/string!/tag!/time!/tuple!/url!/word!" ]  help "Constructs and returns a new value after conversion"
+					text "or"
+					drop-down    data allconversions [ inni  face/text ]
+					return 
+					button   "as-pair" [ inni "as-pair  " ]  help "Combine X and Y values into a pair"
+					button   "as-binary" [ inni "as-binary  " ]  help "Coerces any type of string into a binary! datatype without copying it"
+					button   "as-string" [ inni "as-string  " ]  help "Coerces any type of string into a string! datatype without copying it"
+					return 
+					button   "cvs-date" [ inni "cvs-date  " ]  help "Converts CVS date"
+					button   "cvs-version" [ inni "cvs-version  " ]  help "Converts CVS version number"
+					]
+					return 
+
+				button   "action?" [ inni "action?  " ]  help "Returns TRUE for action values"
+				return 				
+				button   "ascii?" [ inni "ascii?  " ]  help " Returns TRUE if value or string is in ASCII character range (below 128)"
+				button   "binary?" [ inni "binary? " ]  help "Returns TRUE for binary values"
+				return
+				button   "bitset?" [ inni "bitset?  " ]  help "Returns TRUE for bitset values"
+				button   "block?" [ inni "block?  " ]  help " Returns TRUE for block values"
+				button   "char?" [ inni "char?  " ]  help " Returns TRUE for char values"				
+				button   "datatype?" [ inni "datatype?  " ]  help "Returns TRUE for datatype values"				
+				return
+				button   "date?" [ inni "date?  " ]  help "Returns TRUE for date values"
+				button   "decimal?" [ inni "decimal? " ]  help "Returns TRUE for decimal values"
+				button   "email?" [ inni "email?  " ]  help " Returns TRUE for email values"
+				return
+				button   "error?" [ inni "error?  " ]  help "Returns TRUE for error values"
+				button   "function?" [ inni "function?  " ]  help "Returns TRUE for function values"
+				button   "get-word?" [ inni "get-word?  " ]  help " Returns TRUE for get-word values"
+				return 
+				button   "get-path?" [ inni "get-path?  " ]  help " Returns TRUE for get-path values"
+				return
+				button   "hash?" [ inni "hash?  " ]  help "Returns TRUE for hash values"
+				button   "image?" [ inni "image?  " ]  help "Returns TRUE for image values"
+				button   "integer?" [ inni "integer?  " ]  help " Returns TRUE for integer values"
+				button   "issue?" [ inni "issue?  " ]  help "Returns TRUE for issue values"
+				return
+				button   "library?" [ inni "library?  " ]  help "Returns TRUE for library values"
+				button   "list?" [ inni "list?  " ]  help "Returns TRUE for list values"
+				button   "lit-path?" [ inni "lit-path?  " ]  help " Returns TRUE for lit-path values"
+				return
+				button   "lit-word?" [ inni "lit-word?  " ]  help " Returns TRUE for lit-word values"
+				button   "logic?" [ inni "logic?  " ]  help " Returns TRUE for logic values"
+				button   "make" [ inni "make  " ]  help " Constructs and returns a new value"
+				return
+				button   "map?" [ inni "map?  " ]  help "Returns TRUE for hash values"
+				button   "money?" [ inni "money?  " ]  help " Returns TRUE for money values"
+				button   "native?" [ inni "native?  " ]  help "Returns TRUE for native values"
+				return 
+				button   "native" [ inni "native  " ]  help "(undocumented)"
+				button   "none?" [ inni "none?  " ]   help "Returns TRUE for none values"
+				return
+				button   "number?" [ inni "number?  " ]  help "Returns TRUE for number values"
+				button   "object?" [ inni "object?  " ]  help "Returns TRUE for object values"
+				button   "op?" [ inni "op?  " ]  help " Returns TRUE for op values"
+				return
+				button   "pair?" [ inni "pair?  " ]  help " Returns TRUE for pair values"
+				button   "paren?" [ inni "paren?  " ]  help " Returns TRUE for paren values"
+				button   "path?" [ inni "path?  " ]  help "Returns TRUE for path values"
+				button   "port?" [ inni "port?  " ]  help " Returns TRUE for port values"
+				return
+				button   "refinement?" [ inni "refinement?  " ]  help "Returns TRUE for refinement values"
+				button   "routine?" [ inni "routine?  " ]   help "Returns TRUE for routine values"
+				return
+				button   "series?" [ inni "series?  " ]  help "Returns TRUE for series values"
+				button   "set-path?" [ inni "set-path?  " ]  help "Returns TRUE for set-path values"
+				button   "set-word?" [ inni "set-word?  " ]  help "Returns TRUE for set-word values"
+				return
+				button   "scalar?" [ inni "scalar?  " ]  help " Returns TRUE for scalar values"
+				button   "string?" [ inni "string?  " ]  help " Returns TRUE for string values"
+				button   "struct?" [ inni "struct? " ]  help "Returns TRUE for struct values"
+				button   "tag?" [ inni "tag?  " ] help "Returns TRUE for tag values"
+				return
+				button   "time?" [ inni "as-pair  " ] help "Returns TRUE for time values"
+				return 
+				button   "tuple?" [ inni "tuple?  " ]  help "Returns TRUE for tuple values"
+				button   "type?" [ inni "type?  " ]  help "Returns a value's datatype"
+				button   "typeset?" [ inni "typeset?  " ]  help "Returns TRUE if it is this type"
+				return
+				button   "unset?" [ inni "unset?  " ]  help "Returns TRUE for unset values"
+				button   "url?" [ inni "url?  " ]  help " Returns TRUE for url values"
+				button   "utf?" [ inni "utf?  " ]  help "Returns the UTF encoding from the BOM (byte order marker): + for BE; - for LE"
+				button   "word?" [ inni "word?  " ]  help " Returns TRUE for word values"
+				]
+				
+				] ]; end of core
+			"File"   [button   "Ciao" 
 					] 
 		]
 		t: area-tc 550x500
