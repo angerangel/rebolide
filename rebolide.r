@@ -682,8 +682,12 @@ context [
 			]
 			down [
 				face: map-inner event/face event/offset	
-				if in face 'var [ ;ATTENTION the following commands must be applied only to t (areta-tc) 
-				if  face/var = 't  [
+				? face
+				if in face 'var [ ;ATTENTION the following commands must be applied only to t (areta-tc) and his v and h scrollers
+				if  any [face/var = 't
+					face/var = 'v-scroller
+					face/var = 'h-scroller
+					][
 					if in face/feel 'drag [
 							;** the draging face which contains the pointer may be different from the draged (track) face
 							drag: face
@@ -956,6 +960,7 @@ stylize/master [
 			
 			v-scroller: make face [
 				offset: 0x0 size: 13x0 color: none edge: none
+				var: 'v-scroller
 				size-box: 0x0
 				para: none 
 				effect: [draw [pen sky line-width 2 fill-pen none box 0x0 size-box 2]]
@@ -985,6 +990,7 @@ stylize/master [
 			]
 			h-scroller: make face [
 				offset: 0x0 size: 0x13 color: none edge: none
+				var: 'h-scroller
 				size-box: 0x0
 				text: none
 				edge: none
