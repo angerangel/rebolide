@@ -21,7 +21,7 @@ stylize/master [
         sz?: func [f] [either f/edge [f/size - (2 * f/edge/size)] [f/size]]
 
         ; slider widths for both directions as a pair
-        sldw: 25x15
+        sldw: 15x15
 
         ; Manages the pane.
         layout-pane: function [/resize child-face] [sz dsz v v1 v2 lyo] [

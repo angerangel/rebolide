@@ -681,13 +681,17 @@ context [
 				]
 			]
 			down [
-				face: map-inner event/face event/offset
-				if in face/feel 'drag [
-					;** the draging face which contains the pointer may be different from the draged (track) face
-					drag: face
-					origin: event/offset
-					track: drag/feel/drag/track drag event/offset
-				]
+				face: map-inner event/face event/offset	
+				if in face 'var [ ;ATTENTION the following commands must be applied only to t (areta-tc) 
+				if  face/var = 't  [
+					if in face/feel 'drag [
+							;** the draging face which contains the pointer may be different from the draged (track) face
+							drag: face
+							origin: event/offset
+							track: drag/feel/drag/track drag event/offset
+							]
+						]]	
+					
 			]
 			up [drag: false]
 			scroll-line [
@@ -2247,6 +2251,191 @@ IDE:	layout  [
 				button   "utf?" [ inni "utf?  " ]  help "Returns the UTF encoding from the BOM (byte order marker): + for BE; - for LE"
 				button   "word?" [ inni "word?  " ]  help " Returns TRUE for word values"
 				]
+				
+			group-box  [
+				text bold "Debug" 
+				across
+				button   "asert" [ inni "assert [] " ]  help "Assert that condition is true, else throw an assertion error"
+				button   "attempt" [ inni "attempt [] " ]  help "Tries to evaluate and returns result or NONE on error"
+				button   "cause-error" [ inni "cause-error  err-type err-id args " ]  help "Causes an immediate error with the provided information"
+				return 
+				button   "comment" [ inni "comment []  " ]  help "Ignores the argument value and returns nothing"
+				button   "component?" [ inni "component?  " ]  help "Returns specific REBOL component info if enabled"
+				button   "dump-obj" [ inni "dump-obj /match " ]  help "Returns a block of information about an object"				
+				return 
+				button   "dbug" [ inni "dbug " ]  help "(Undocumented)"
+				button   "probe" [ inni "probe " ]  help "Prints a molded, unevaluated value and returns the same value"
+				return 
+				button   "source" [ inni "source " ]  help "Prints the source code for a word"
+				button   "stats" [ inni "stats /pools /types /series /frames /recycle /evals /clear " ]  help "System statistics.  Default is to return total memory used"
+				button   "trace" [ inni "trace /net /function " ]  help "Enables and disables evaluation tracing"
+				button   "throw-error" [ inni "throw-error " ]  help "Causes an immediate error throw with the provided information"
+				return 
+				button   "throw-on-error" [ inni "throw-on-error " ]  help "Evaluates a block, which if it results in an error, throws that error"
+				button   "title-of" [ inni "title-of " ]  help "Returns a copy of the title of a function"
+				button   "try" [ inni "try [] " ]  help "Tries to DO a block and returns its value or an error"
+				return 
+				button   "types-of" [ inni "types-of " ]  help "Returns a copy of the types of a function"
+				button   "values-of" [ inni "values-of " ]  help "Returns a copy of the values of an object"
+				button   "vbug" [ inni "vbug " ]  help "(undocumented)"
+				button   "?" [ inni "? " ]  help "Prints information about words and values"
+				return
+				button   "??" [ inni "?? " ]  help "Prints a variable name followed by its molded value"
+				return
+				button   "about" [ inni "about " ]  help "Information about REBOL"
+				button   "what" [ inni "what " ]  help "Prints a list of globally-defined functions"
+				button   "words-of" [ inni "words-of " ]  help "Returns a copy of the words of a function or object"
+				]
+			group-box   [
+				text bold "Email" 
+				across
+				button   "build-attach-body" [ inni "build-attach-body  BODY FILES BOUNDARY_STRING" ]  help "Return an email body with attached files"
+				button   "build-markup" [ inni "build-markup /quite" ]  help "Return markup text replacing <%tags%> with their evaluated results"
+				return 
+				button   "build-tag" [ inni "build-tag " ]  help "Generates a tag from a composed block"
+				button   "import-email" [ inni "import-email /multiple " ]  help "Constructs an email object from an email message"
+				return 
+				button   "parse-email-addrs" [ inni "parse-email-addrs " ]  help "Create a series from a string conaining multiple email adresses."
+				button   "send" [ inni "send /only /header /attach /subject /show address message " ]  help "Send a message to an address(es)"
+				button   "resend" [ inni "resend " ]  help "Relay a message"
+				]
+			group-box   [
+				text bold "Encryption & Compression"
+				across 
+				button   "compress" [ inni "compress  " ]  help "Compresses a string series and returns it"
+				button   "decompress" [ inni "decompress  " ]  help "Decompresses a binary series back to a string"
+				return
+				button   "shift" [ inni "shift /left /logical /part   " ]  help " Perform a bit shift operation. Right shift (decreasing) by default"
+				return 
+				button   "encloak" [ inni "encloak /with " ]  help "Scrambles a string or binary based on a key"
+				button   "decloak" [ inni "decloak /with  " ]  help " Descrambles the string scrambled by encloak"
+				return 
+				button   "dh-compute-key" [ inni "dh-compute-key  " ]  help "Computes the resulting, negotiated key from a private/public key pair and the peer's public key"
+				button   "dh-generate-key" [ inni "dh-generate-key  " ]  help "Generates a new DH private/public key pair"
+				return 
+				button   "dh-make-key" [ inni "dh-make-key  /generate " ]  help "Creates a key object for DH"
+				return 
+				button   "dsa-generate-key" [ inni "dsa-generate-key " ]  help "Generates a new private/public key pair"
+				button   "dsa-make-key" [ inni "dsa-make-key /generate" ]  help "Creates a key object for DSA"
+				return 
+				button   "dsa-make-signature" [ inni "dsa-make-signature /sign " ]  help "Creates a DSA signature"
+				return 
+				button   "dsa-verify-signature" [ inni "dsa-verify-signature  " ]  help "Verifies if the DSA signature of a binary is correct"
+				return 
+				button   "rsa-encrypt" [ inni "rsa-encrypt /decrypt /private /padding  " ]  help "Encrypts or decrypts some data"
+				button   "rsa-generate-key" [ inni "rsa-generate-key " ]  help "Creates a new private/public key pair"
+				return 
+				button   "rsa-make-key" [ inni "rsa-make-key " ]  help "Creates a key object for RSA"
+				]
+			group-box   [
+				text bold "File & Directory"
+				across
+				button   "to-local-file" [ inni "to-local-file  " ]  help "Converts a REBOL file path to the local system file path"
+				button   "to-rebol-file" [ inni "to-rebol-file  " ]  help "Converts a local system file path to a REBOL file path"
+				return 
+				button   "change-dir" [ inni "change-dir " ]  help "Changes the active directory path"				
+				button   "cd" [ inni "cd " ]  help "Change directory (shell shortcut function)"
+				button   "clean-path" [ inni "clean-path " ]  help "Cleans-up '.' and '..' in path; returns the cleaned path"
+				return 
+				button   "create-link" [ inni "create-link /start /note /args " ]  help "Creates file links"
+			
+				button   "delete" [ inni "delete " ]  help "Deletes the specified file(s) or empty directory(s)"
+				button   "delete-dir" [ inni "delete-dir " ]  help "Deletes a directory including all files and subdirectories"
+				return
+				button   "dir?" [ inni "dir? " ]  help "Returns TRUE if a file or URL is a directory"
+				button   "dirize" [ inni "dirize " ]  help "Returns a copy of the path turned into a directory"
+				button   "echo" [ inni "echo %file  ^/  echo none " ]  help "Copies console output to a file"
+				button   "exists?" [ inni "exists? " ]  help "Determines if a file or URL exists"
+				return
+				button   "file?" [ inni "file? " ]  help " Returns TRUE for file values"
+				button   "info?" [ inni "info? " ]  help "The information is returned within an object that has SIZE, DATE, and TYPE words"
+				button   "list-dir" [ inni "list-dir " ]  help "Prints a multi-column sorted listing of a directory"
+				return 
+				button   "link-relative-path" [ inni "link-relative-path " ]  help "Remove link-root from a file path"				
+				button   "more" [ inni "more " ]  help "Print file (shell shortcut function)"
+				button   "make-dir" [ inni "make-dir " ]  help "Creates the specified directory. No error if already exists"
+				return
+				button   "modified?" [ inni "modified? " ]  help "Returns the last modified date of a file or URL"
+				button   "path-thru" [ inni "path-thru " ]  help "Return a path relative to the disk cache"
+				button   "rm" [ inni "rm  /any " ]  help "Deletes the specified file(s)"
+				button   "rename" [ inni "rename " ]  help "Renames a file to a new name"
+				return 
+				button   "pwd" [ inni "pwd " ]  help " Prints the active directory path"
+				button   "save" [ inni "save /header /bmp /png /all " ]  help "Saves a value or a block to a file or url"
+				
+				button   "save-user" [ inni "save-user " ]  help " Save user.r, prompting for overwrite permission"
+				button   "size?" [ inni "size? " ]  help "Returns the size of a file or URL's contents"
+				return
+				button   "split-path" [ inni "split-path " ]  help "Returns a block containing path and target"
+				button   "suffix?" [ inni "suffix? " ]  help "Return the suffix (ext) of a filename or url, else NONE"
+				button   "undirize" [ inni "undirize" ]  help {Returns a copy of the path with any trailing "/" removed}
+				return 
+				button   "what-dir " [ inni "what-dir  " ]  help "Prints the active directory path"
+				return
+				button   "write" [ inni "write /binary /string /append /no-wait /lines /with /allow /mode /custom destination value  " ]  help "Writes to a file, url, or port-spec"
+				button   "write-io" [ inni "write-io  " ]  help "Low level write to a port"
+				]		
+			group-box   [
+				text bold "I/O"
+				across
+				button   "ask" [ inni "ask /hide " ]  help "Ask the user for input"
+				button   "browse" [ inni "browse /only " ]  help "Opens the default web browser"
+				button   "call" [ inni "call /input  /output  /error  /wait /console /shell /info /show " ]  help "Executes a shell command to run another process"
+				button   "checksum" [ inni "checksum /tcp /secure /hash /mehod /key  " ]  help "Returns a CRC or other type of checksum"
+				return 
+				button   "close" [ inni "close " ]  help "Closes an open port connection"
+				return 
+				button   "connected?" [ inni "connected?  " ]  help "Returns TRUE when connected to the Internet"
+				button   "crypt-strength?" [ inni "crypt-strength?  " ]  help "Returns 'full, 'export or none"
+				return
+				button   "debase" [ inni {debase  /base "" } ]  help "Converts a string from a different base representation to binary"
+				button   "decode-cgi" [ inni {decode-cgi } ]  help "Converts CGI argument string to a block of set-words and value strings"
+				button   "decode-url" [ inni {decode-url } ]  help " Decode a URL into an object"
+				
+				
+				return 
+				button   "dispatch" [ inni "dispatch [] " ]  help "Wait for a block of ports. As events happen, dispatch port handler blocks"
+				button   "enbase" [ inni "enbase  " ]  help "Converts a string to a different base representation"
+				
+				button   "get-env" [ inni "get-env " ]  help " Gets the value of an operating system environment variable"
+				return 
+				button   "get-modes" [ inni "get-modes " ]  help "Returns mode settings for a port"
+				button   "get-net-info" [ inni "get-net-info " ]  help "(undocumented)"
+				
+				return
+				button   "input" [ inni "input /hide " ]  help "Inputs a string from the console. New-line character is removed"
+				button   "input?" [ inni "input? " ]  help "Returns TRUE if input characters are available"
+				button   "import-email" [ inni "import-email /multiple " ]  help "Constructs an email object from an email message"
+				button   "load" [ inni "load /header /next /library /markup /all " ]  help "Loads a file, URL, or string. Binds words to global context"
+				return 
+				button   "load-image" [ inni "load  /update /clear " ]  help "Load an image through an in-memory image cache"
+				button   "load-stock" [ inni "load-stock  /block " ]  help "Load and return stock image"
+				return 
+				button   "load-stock-block" [ inni "load-stock-block   " ]  help "Load a block of stock image names. Return block of images"
+				button   "load-thru" [ inni "load-thru  /update /binary /to local-file /all /expand /check    " ]  help "Load a net file from the disk cache"
+				button   "open" [ inni "open /binary /string /direct /new /write /no-wait /lines /with /allow /mode / custom /skip " ]  help "Opens a new port connection"
+				return
+				button   "parse-xml" [ inni "parse-xml " ]  help "Parses XML code and returns a tree of blocks"
+				button   "prin" [ inni "prin " ]  help "Outputs a value with no line break"
+				button   "print" [ inni "print  " ]  help "Outputs a value followed by a line break"
+				button   "query" [ inni "query  " ]  help "Returns information about a file, port or URL"
+				return
+				button   "read" [ inni "read  /binary /string /direct /new /write /no-wait /lines /with /allow /mode / custom /skip " ]  help "Reads from a file, url, or port-spec"
+				button   "read-io" [ inni "read-io " ]  help "Low level read from a port"
+				button   "read-cgi" [ inni "read-cgi /limit " ]  help "Read CGI data from web server input stream. Return data as string"
+				button   "read-net" [ inni "read-net /progress " ]  help "Read a file from the net (web). Update progress bar. Allow abort"
+				return 
+				button   "read-thru" [ inni "read-thru /progress  /update /expand /check /to " ]  help "Read a net file from thru the disk cache. Returns binary, else none on error"
+				button   "script?" [ inni "script? " ]  help "Checks file, url, or string for a valid script header"
+				button   "set-modes" [ inni "set-modes " ]  help "Changes mode settings for a port"
+				return
+				button   "set-net" [ inni "set-net " ]  help "Network setup"
+				
+				button   "update" [ inni "update " ]  help "Updates the data related to a port"
+				
+				]	
+				
+			
 				
 				] ]; end of core
 			"File"   [button   "Ciao" 
