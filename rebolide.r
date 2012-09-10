@@ -4,7 +4,7 @@ REBOL [
 	date: 05/09/2012
 	credits: { Carl sassenrath, Steeve, Maxim, Coccinelle, Cyphre, Graham, Nick Antonaccio, Semseddin Moldibi, Zoltan Eros, R. v.d.Zee}
 	purpose: { Colored IDE for rebol in rebol }
-	version: 6.4.48
+	version: 6.4.49
 ]
 
 
@@ -675,14 +675,21 @@ context [
 				][off-mem: event/offset  ]				;** for mouse wheel motion
 			]
 			resize [
-				tmp: negate saved-size - saved-size: face/pane/1/size				
+				tmp: negate saved-size - saved-size: face/pane/1/size	
+				
+				;faces inside tab-panel must be resized before the tab-panel is resized and redrawn in the loop below --cyphre
+				panels: reduce [core_sp vid_sp]
+				foreach item panels [
+					item/resize/y  (item/size/y + tmp/y)
+					]
+
+
 				foreach fa face/pane/1/pane [
 					if in fa/feel 'resize [fa/feel/resize fa tmp]					
 				]
 			]
 			down [
-				face: map-inner event/face event/offset	
-				? face
+				face: map-inner event/face event/offset					
 				if in face 'var [ ;ATTENTION the following commands must be applied only to t (areta-tc) and his v and h scrollers
 				if  any [face/var = 't
 					face/var = 'v-scroller
@@ -1992,7 +1999,7 @@ unview/all
 IDE:	layout  [
 		across space 0x0 origin 0x0
 		mn: menu with [ 
-			size: 910x20 data: compose/deep [
+			size: 935x20 data: compose/deep [
 				"File" [
 					"New"  # "Ctrl+N" [if request "Start a new file?" [t/new-file]]
 					"Open" # "Ctrl+O" [t/open-file none ]					
@@ -2037,12 +2044,16 @@ IDE:	layout  [
 		do [  ]	
 		
 		tb: tab-panel data [
-			"Core"  [	scroll-panel 300x432 [	; origin 0x0
+			"Core"  [	core_sp: scroll-panel 325x432 [	;core_sp is a nice name for croll panale of core buttons
 					style button btn white
 					style group-box panel 255.255.255 frame black 2x2
+					; origin 0x0
+					button pink "Example" [ inni {Rebol [] 
+ print "Hello word!" 
+ wait 10 } ] help "Example"
 					
 					group-box   [
-						text bold "Comparison" 
+						h2 "Comparison" 
 						across
 						button   "<" [ inni "< " ] help  "Returns TRUE if the first value is less than the second value"
 						button  "<=" [ inni "<= " ] help  "Returns TRUE if the first value is less than or equal to the second value"
@@ -2060,7 +2071,7 @@ IDE:	layout  [
 						]
 						
 					group-box  [
-						text bold "Context"
+						h2 "Context"
 						across 						
 						button  "alias" [ inni "alias " ]  help "Creates an alternate alias for a word"
 						button   "bind" [ inni "bind /copy " ]  help "Binds words to a specified context"
@@ -2101,7 +2112,7 @@ IDE:	layout  [
 						]	
 					
 				group-box   [
-				text bold "Control"
+				h2 "Control"
 				across
 				button   "also" [ inni "also [] []  " ]  help " Returns the first value, but also evaluates the second"
 				button   "break" [ inni "break /return " ]  help "Breaks out of a loop, while, until, repeat, foreach, etc"
@@ -2165,12 +2176,12 @@ IDE:	layout  [
 				]
 				
 				group-box   [
-					text bold "Datatype"
+					h2 "Datatype"
 					across
 					button   " datatypes" [ inni " datatypes  " ]  help "Variable that contains all datatypes"
 					return 
 				group-box [
-					text "Conversion"
+					h3 "Conversion"
 					across
 					button   "to" [ inni "to binary!/bitset!/block!/char!/date!/decimal!/email!/file!/get-word!/hash!/hex!/idate!/image!/integer!/issue!/list!/lit-path!/lit-word!/logic!/money!/pair!/paren!/path!/refinement!/set-path!/set-word!/string!/tag!/time!/tuple!/url!/word!" ]  help "Constructs and returns a new value after conversion"
 					text "or"
@@ -2259,7 +2270,7 @@ IDE:	layout  [
 				]
 				
 			group-box  [
-				text bold "Debug" 
+				h2 "Debug" 
 				across
 				button   "asert" [ inni "assert [] " ]  help "Assert that condition is true, else throw an assertion error"
 				button   "attempt" [ inni "attempt [] " ]  help "Tries to evaluate and returns result or NONE on error"
@@ -2293,7 +2304,7 @@ IDE:	layout  [
 				button   "words-of" [ inni "words-of " ]  help "Returns a copy of the words of a function or object"
 				]
 			group-box   [
-				text bold "Email" 
+				h2 "Email" 
 				across
 				button   "build-attach-body" [ inni "build-attach-body  BODY FILES BOUNDARY_STRING" ]  help "Return an email body with attached files"
 				button   "build-markup" [ inni "build-markup /quite" ]  help "Return markup text replacing <%tags%> with their evaluated results"
@@ -2306,7 +2317,7 @@ IDE:	layout  [
 				button   "resend" [ inni "resend " ]  help "Relay a message"
 				]
 			group-box   [
-				text bold "Encryption & Compression"
+				h2 "Encryption & Compression"
 				across 
 				button   "compress" [ inni "compress  " ]  help "Compresses a string series and returns it"
 				button   "decompress" [ inni "decompress  " ]  help "Decompresses a binary series back to a string"
@@ -2334,7 +2345,7 @@ IDE:	layout  [
 				button   "rsa-make-key" [ inni "rsa-make-key " ]  help "Creates a key object for RSA"
 				]
 			group-box   [
-				text bold "File & Directory"
+				h2 "File & Directory"
 				across
 				button   "to-local-file" [ inni "to-local-file  " ]  help "Converts a REBOL file path to the local system file path"
 				button   "to-rebol-file" [ inni "to-rebol-file  " ]  help "Converts a local system file path to a REBOL file path"
@@ -2382,7 +2393,7 @@ IDE:	layout  [
 				button   "write-io" [ inni "write-io  " ]  help "Low level write to a port"
 				]		
 			group-box   [
-				text bold "I/O"
+				h2 "I/O"
 				across
 				button   "ask" [ inni "ask /hide " ]  help "Ask the user for input"
 				button   "browse" [ inni "browse /only " ]  help "Opens the default web browser"
@@ -2440,12 +2451,617 @@ IDE:	layout  [
 				button   "update" [ inni "update " ]  help "Updates the data related to a port"
 				
 				]	
+			group-box  [
+				h2 "logic"
+				across
+				button   "all" [ inni "all [] " ]  help  "Shortcut for AND. Evaluates and returns at the first FALSE or NONE"
+				button   "and" [ inni "and " ]  help  "Returns the first value ANDed with the second"
+				button   "assert" [ inni "assert " ]  help  "Assert that condition is true, else throw an assertion error"
+				return 
+				button   "any" [ inni "any [] " ]  help  "Shortcut OR. Evaluates and returns the first value that is not FALSE or NONE"
+				button   "any-block?" [ inni "any-block? [] " ]  help  " Returns TRUE for any block values"
+				return 
+				button   "any-function?" [ inni "any-function? [] " ]  help  " Returns TRUE for any function values"
+				button   "any-object?" [ inni "any-object? [] " ]  help  " Returns TRUE for any object values"
+				return 
+				button   "any-path?" [ inni "any-path? [] " ]  help  " Returns TRUE for any path values"
+				button   "any-string?" [ inni "any-string? [] " ]  help  " Returns TRUE for any string values"
+				button   "any-type?" [ inni "any-type? [] " ]  help  " Returns TRUE for any type values"
+				return 
+				button   "any-word?" [ inni "any-word? [] " ]  help  " Returns TRUE for any word values"
+				return
+				button   "complement" [ inni "complement " ]  help  "Returns the one's complement value"
+				return				
+				button   "not" [ inni "not " ]  help  "Returns the logic complement"
+				button   "true?" [ inni "true? " ]  help  "Returns true if an expression can be used as true"
+				button   "!" [ inni "! " ]  help  "Returns the logic complement"
+				button   "or" [ inni "or " ]  help  "Returns the first value ORed with the second"
+				button   "xor" [ inni "xor " ]  help  "Returns the first value exclusive ORed with the second"				
+				]	
+			group-box  [
+				h2 "Math"
+				across
+				button   "*" [ inni "*  " ]  help  "Returns the first value multiplied by the second"
+				button   "**" [ inni "**  " ]  help  "Returns the first number raised to the second number"
+				button   "+" [ inni " +  " ]  help  "Returns the result of adding two values"
+				button   "-" [ inni " -  " ]  help  "Returns the second value subtracted from the first"
+				button   "/" [ inni " /  " ]  help  "Returns the first value divided by the second"
+				button   "//" [ inni "//  " ]  help  "Returns the remainder of first value divided by second"
+				button   "abs" [ inni "abs " ]  help  "Returns the absolute value"
+				return
+				button   ">=" [ inni ">= " ]  help  " Returns TRUE if the first value is greater than or equal to the second value"
+				button   ">" [ inni ">= " ]  help  " Returns TRUE if the first value is greater than the second value"
+				button   "=" [ inni "= " ]  help  " Returns TRUE if the first value is equal to the second value"
+				button   "<" [ inni "< " ]  help  " Returns TRUE if the first value is less than the second value"
+				button   "<=" [ inni "<= " ]  help  " Returns TRUE if the first value is less than or equal to the second value"
+				return 
+				button   "arccosine" [ inni "arccosine " ]  help  "Returns the trigonometric arccosine in degrees"
+				button   "arcsine" [ inni "arcsine " ]  help  "Returns the trigonometric arcsine in degrees"
+				button   "arctangent" [ inni "arctangent " ]  help  "Returns the trigonometric arctangent in degrees"
+				return
+				button   "cosine" [ inni "cosine " ]  help  "Returns the trigonometric cosine in degrees"
+				button   "even?" [ inni "even? " ]  help  "Returns TRUE if the number is even"
+				button   "exp" [ inni "exp " ]  help  "Raises E (natural number) to the power specified"
+				button   "log 0" [ inni "log 0 " ]  help  "Returns the base 0 logarithm"
+				return
+				button   "log-2" [ inni "log-2 " ]  help  "Return the base-2 logarithm"
+				button   "log-e" [ inni "log-e " ]  help  "Returns the base-E (natural number) logarithm"
+				button   "maximum-of" [ inni "maximum-of [] " ]  help  "Finds the largest value in a series"
+				return
+				button   "minimum-of" [ inni "minimum-of [] " ]  help  "Finds the smallest value in a series"
+				button   "mod" [ inni "mod  " ]  help  "Compute a nonnegative remainder of A divided by B"
+				button   "modulo" [ inni "modulo  " ]  help  "Wrapper for MOD that handles errors like REMAINDER. Negligiblevalues (compared to A and B) are rounded to zero"
+				return 
+				button   "negate" [ inni "negate " ]  help  "Changes the sign of a number"
+				button   "negative?" [ inni "negative? " ]  help  "Returns TRUE if the number is negative"
+				return
+				button   "odd?" [ inni "odd? " ]  help  "Returns TRUE if the number is odd"
+				button   "pi" [ inni "pi " ]  help  "3.14159265358979"
+				button   "positive?" [ inni "positive? " ]  help  "Returns TRUE if the value is positive"
+				button   "random" [ inni "random /seed /secure /only " ]  help  "Returns a random value of the same datatype"				
+				return 
+				button   "round" [ inni "round /even /down /half-down /floor /ceiling /half-ceiling /to scale"] help  "Returns the nearest integer. Halves round up (away from zero) by default."
+				return
+				button   "sign?" [ inni "sign? " ]  help  "Returns sign of number as 1, 0, or  "				
+				button   "sine" [ inni "sine " ]  help  "Returns the trigonometric sine in degrees"
+				button   "square-root" [ inni "square-root " ]  help  "Returns the square root of a number"
+				return 
+				button   "tangent" [ inni "tangent /radians " ]  help  "Returns the trigonometric tangent in degrees"
 				
-			
+				button   "zero?" [ inni "zero? " ]  help  "Returns TRUE if the number is zero"
+				]
+			group-box   [
+				h2 "Series"
+				across
+				button   "ajoin" [ inni "ajoin []" ]  help " Reduces and joins a block of values into a new string"
+				button   "alter" [ inni "alter series value " ]  help "If a value is not found in a series, append it; otherwise, remove it"
+				button   "append" [ inni "append /only series value " ]  help "Appends a value to the tail of a series and returns the series head"
+				button   "apply" [ inni "append /only func [] " ]  help "Apply a function to a reduced block of arguments"
+				button   "array" [ inni "array /initial size " ]  help "Makes and initializes a series of a given size"
+				return 
+				button   "at" [ inni "at series index " ]  help "Returns the series at the specified index"
+				button   "back" [ inni "back " ]  help "Returns the series at its previous position"
+				
+				button   "change" [ inni "change /part /only /dup series value " ]  help "Changes a value in a series and returns the series after the change"
+				button   "clear" [ inni "clear " ]  help "Removes all values from the current index series to the tail. Returns at tail"
+				button   "compose" [ inni "compose /deep /only [ ( ) ] " ]  help "Evaluates a block of expressions, only evaluating parens, and returns a block"
+				return 
+				button   "copy" [ inni "copy /part /deep " ]  help "Returns a series copy"				
+				button   "cp" [ inni "cp /part /deep " ]  help "Returns a series copy"
+				button   "difference" [ inni "difference /case /skip " ]  help "Return the difference of two series"
+				button   "exclude" [ inni "exclude " ]  help "Return the first series less the second"
+				return 
+				button   "extract" [ inni "extract series width " ]  help "Extracts a value from a series at regular intervals"
+				button   "empty?" [ inni "empty? " ]  help "Returns TRUE if a series is at its tail"
+				
+				button   "find" [ inni "find /part /only /case /any /with /skip /match /tail /last /reverse series values " ]  help "nds a value in a series and returns the series at the start of it"
+				button   "found?" [ inni "found? " ]  help "Returns TRUE if value is not NONE"
+				return
+				button   "head" [ inni "head " ]  help "Returns the series at its head"
+				button   "head?" [ inni "head? " ]  help "Returns TRUE if a series is at its head"
+				button   "index?" [ inni "index? " ]  help "Returns the index number of the current position in the series"
+				button   "insert" [ inni "insert /part /only /dup series value " ]  help "Inserts a value into a series and returns the series after the insert"
+				return
+				button   "intersect" [ inni "intersect /case /skip " ]  help "Create a new value that is the intersection of the two series"
+				button   "join" [ inni "join " ]  help "Concatenates values"
+				button   "last" [ inni "last " ]  help "Returns the last value of a series"
+				button   "last?" [ inni "last? " ]  help " Returns TRUE if the series length is 1"
+				return
+				button   "length?" [ inni "length? " ]  help "Returns the length of the series from the current position"
+				button   "map-each" [ inni "map-each /into " ]  help " Evaluates a block for each value(s) in a series and returns them as a block"
+				button   "move" [ inni "move /part /skip /to " ]  help "Move a value or span of values in a series"
+				button   "next" [ inni "next " ]  help "Returns the series at its next position"
+				return 
+				button   "new-line" [ inni "new-line /all /skip  " ]  help "Sets or clears the new-line marker within a block"
+				button   "new-line?" [ inni "new-line?  " ]  help "Returns the state of the new-line marker within a block"
+				button   "offset?" [ inni "offset? " ]  help "Returns the offset between two series positions"
+				button   "pick" [ inni "pick series index " ]  help "Returns the value at the specified position in a series"
+				return 
+				button   "poke" [ inni "poke series index newdata " ]  help "Returns value after changing its data at the given index"
+
+				button   "remove" [ inni "remove /part " ]  help "Removes value(s) from a series and returns after the remove"
+				button   "remove-each" [ inni "remove-each word series body " ]  help "Removes a value from a series for each block that returns TRUE"
+				return
+				button   "replace" [ inni "replace series search replace " ]  help "Replaces the search value with the replace value within the target series"
+				
+				button   "repend" [ inni "repend /only series value " ]  help "Appends a reduced value to a series and returns the series head"
+				button   "reverse" [ inni "reverse /part " ]  help "Reverses a series"
+				button   "reduce" [ inni "reduce  /only " ]  help "Evaluates an expression or block expressions and returns the result"
+				return 				
+				button   "select" [ inni "select /part /only /case /any /with /skip series value " ]  help "Finds a value in the series and returns the value or series after it"
+							
+				button   "skip" [ inni "skip series offset " ]  help "Returns the series forward or backward from the current position"
+				button   "sort" [ inni "sort /case /skip /compare /part /all /reverse " ]  help "Sorts a series"
+				button   "swap" [ inni "swap " ]  help "Swaps elements of a series. (Modifies)"
+				button   "tail" [ inni "tail " ]  help "Returns the series at the position after the last value"
+				return
+				button   "tail?" [ inni "tail? " ]  help "Returns TRUE if a series is at its tail"
+				button   "take" [ inni "take /last /part " ]  help "Copies and removes from series. (Modifies)"
+				button   "union" [ inni "union /case /skip " ]  help "Returns all elements present within two blocks or strings ignoring the duplicates"
+				button   "unique" [ inni "unique /case /skip " ]  help "Returns a set with duplicate values removed"
+				return
+				button   "++" [ inni "++ " ]  help "Increment an integer or series index. Return its prior value"
+				button   "--" [ inni "-- " ]  help "Decrement an integer or series index. Return its prior value"
+				return
+				group-box  [
+					h3 "Data extraction" 
+					across
+					button   "first" [ inni "first  " ]  help " Returns the first  value of a series"				
+					button   "first+" [ inni "first+  " ]  help "Return FIRST of series, and increment the series index"
+					button   "second" [ inni "second  " ]  help " Returns the second value of a series"
+					button   "third" [ inni "third  " ]  help " Returns the third value of a series"
+					return 
+					button   "fourth" [ inni "fourth  " ]  help " Returns the fourth value of a series"
+					
+					button   "fifth" [ inni "fifth  " ]  help " Returns the fifth  value of a series"
+					button   "sixth" [ inni "sixth  " ]  help " Returns the sixth  value of a series"
+					button   "seventh" [ inni "seventh  " ]  help " Returns the seventh  value of a series"
+					return 
+					button   "eighth" [ inni "eighth " ]  help " Returns the eighth value of a series"
+					button   "ninth" [ inni "ninth  " ]  help " Returns the ninth  value of a series"
+					button   "tenth" [ inni "tenth  " ]  help " Returns the tenth value of a series"
+					]
+				]
+			group-box  [
+				h2 "String" 
+				across
+				button   "build-tag" [ inni "build-tag []  " ]  help "Generates a tag from a composed block"
+				button   "charset" [ inni {charset ""} ]  help "Makes a bitset of chars"
+				button   "detab" [ inni "detab /size " ]  help "Converts tabs in a string to spaces,standard tab size is 4"
+				button   "dehex" [ inni "dehex  " ]  help "Converts URL-style hex encoded (%xx) strings"
+				return 
+				button   "deline" [ inni "deline  " ]  help "Converts string terminators to standard format, e.g. CRLF to LF. (Modifies)"				
+				button   "entab" [ inni "entab /size " ]  help "Converts spaces in a string to tabs,standard tab size is 4"
+				button   "enline" [ inni "enline /with " ]  help " Converts standard string terminators to current OS format, e.g. LF to CRLF. (Modifies)"
+				button   "form" [ inni "form  " ]  help "Converts a value to a string"
+				return 
+				button   "latin1?" [ inni "latin1?  " ]  help "Returns TRUE if value or string is in Latin  character range (below 256)"
+				 
+				button   "lowercase" [ inni "lowercase " ]  help "Converts string of characters to lowercase"		
+				button   "cr" [ inni "cr " ]  help "char CR"				
+				button   "lf" [ inni "lf " ]  help "char LF"
+				button   "crlf" [ inni "crlf " ]  help "char CRLF"
+				return 
+				button   "bs" [ inni "bs " ]  help "char BACKSPACE"
+				
+				button   "mold" [ inni "mold /only /all /flat " ]  help "Converts a value to a REBOL-readable string"
+				
+				button   "newline" [ inni "newline " ]  help "New line char"
+				button   "newpage" [ inni "newpage " ]  help "New page char"
+				button   "tab" [ inni "tab " ]  help "TAB char"
+				return 
+				button   "escape" [ inni "escape " ]  help "Escape char"
+				return
+				button   "parse" [ inni "parse /all /case " ]  help "Parses a series according to rules"
+				button   "reform" [ inni "reform " ]  help "Forms a reduced block and returns a string with spaces"
+				button   "rejoin" [ inni "rejoin " ]  help "Reduces and returns a string without spaces"
+				button   "remold" [ inni "remold " ]  help "Forms a reduced block and returns a string with spaces and sqare-bracket"
+				return
+				button   "trim" [ inni "trim /head /tail /auto /lines /all /with  " ]  help "Removes whitespace from a string. Default removes from head and tail"
+				button   "uppercase" [ inni "uppercase /part " ]  help "Converts string of characters to uppercase"
+				button   "utf?" [ inni "utf? /utf " ]  help "Returns the UTF encoding from the BOM (byte order marker): + for BE; - for LE"
+				button   "invalid-utf?" [ inni "invalid-utf?  " ]  help " Checks for proper UTF encoding and returns NONE if correct or position where the error occurred."
+				]	
+				
+			group-box  [	
+				h2 "Time" 
+				across
+				button  "now" [ inni "now /year /month /day /time /zone /date /weekday /precise " ]  help  "Returns the current local date and time"
+				button  "dt" [ inni "dt " ]  help " Delta-time - returns the time it takes to evaluate the block"
+				]	
+			group-box  [
+				h2 "Special" 
+				across
+				button   "access-os" [ inni "access-os /set" ]  help "Access to various operating system functions (getuid, setuid, getpid, kill, etc.)"
+				button   "desktop" [ inni "desktop " ]  help "Display the REBOL viewtop"
+				button   "editor" [ inni "editor /app " ]  help "Lauch internal editor"
+				button   "help" [ inni "help " ]  help " Prints information about words and values"
+				return 
+				button   "install" [ inni "install " ]  help "Install Rebol on windows"
+				return 
+				button   "license" [ inni "license " ]  help "Prints the REBOL license"
+				button   "link?" [ inni "link? " ]  help "Returns true if REBOL/Link capability is enabled"
+				button   "net-error" [ inni "net-error " ]  help "(undocumented)"
+				return 
+				button   "open-events" [ inni "open-events " ]  help "(undocumented)"
+				button   "parse-header" [ inni "parse-header /multiple" ]  help " Returns a header object with header fields and their values"
+				return 
+				button   "parse-header-date" [ inni "parse-header-date  " ]  help "(undocumented)"
+				button   "path" [ inni "path  " ]  help "Path selection"
+				button   "recycle" [ inni "recycle  /off /on /torture " ]  help " Recycles unused memory"
+				return 
+				button   "run" [ inni "run /as " ]  help "  Runs the system application associated with a file"
+				button   "script" [ inni "script " ]  help "Checks file, url, or string for a valid script header"
+				button   "secure" [ inni "secure " ]  help " Specifies security policies (access levels and directories). Returns prior settings"
+				button   "set-user" [ inni "set-user" ]  help "(undocumented)"
+				return 
+				button   "set-user-name" [ inni "set-user-name" ]  help "(undocumented)"
+				button   "spec-of" [ inni "spec-of " ]  help "Returns a copy of the spec of a function"
+				return 
+				button   "user-prefs" [ inni "user-prefs " ]  help "Variable that contains user data"
+				button   "sound" [ inni "sound " ]  help "Variable that contains suond settings"
+				button   "list-env" [ inni "list-env " ]  help "Returns a block of OS environment variables (for current process)"
+				return 
+				button   "suffix-map" [ inni "suffix-map " ]  help "Variable that contains suffix identifications (pdf, doc...)"
+				button   "speed?" [ inni "speed? /no-io /times " ]  help " Returns approximate speed benchmarks [eval cpu memory file-io]"
+				button   "uninstall" [ inni "uninstall " ]  help "Uninstall Rebol under windows"
+				return 
+				button   "upgrade" [ inni "upgrade " ]  help "Download a new version of REBOL if available"
+				button   "viewtop" [ inni "viewtop /only " ]  help "Display the REBOL viewtop"
+				button   "view-root" [ inni "view-root " ]  help "Variables that contains Rebol user directory"
+				return 
+				button   "write-user" [ inni "write-user " ]  help "Write network config to user.r file"
+				]
+
 				
 				] ]; end of core
-			"File"   [button   "Ciao" 
-					] 
+			"VID"   [ vid_sp: scroll-panel 325x432 [
+					style button btn white
+					style group-box panel 255.255.255 frame black 2x2
+					button  pink + 0.0.25 "VID Example" [ inni {Rebol [] view layout [button "Hello World!!!" [alert "Hello word!!!"]]} ]  help "Typical usage of VID"
+					group-box  [
+						h2 "Inform" 
+						across
+						button   "alert" [ inni "alert " ]  help " Flashes an alert message to the user. Waits for a user response"
+						button   "flash" [ inni "flash " ]  help  "Flashes a message to the user and continues"
+						button   "inform" [ inni "inform /offset /title /timeout " ]  help "Display an exclusive focus panel for alerts, dialogs, and requestors"
+						button   "notify" [ inni "notify " ]  help "lashes an informational message to the user. Waits for a user response"
+						]
+					group-box  [
+						h2 "Request" 
+						across 
+				button   "choose" [ inni "choose /style /window /offset /across " ]  help "Generates a choice selector menu, vertical or horizontal"
+				button   "confirm" [ inni "confirm /with " ]  help "Confirms a user choice"
+				button   "emailer" [ inni "emailer /to /subject " ]  help "Pops up a quick email sender"
+				button   "request" [ inni "request /offset /ok /only /confirm /type /timeout " ]  help "Requests an answer to a simple question"
+				return
+				button   "request-color" [ inni "request-color /color /offset  " ]  help " Requests a color value"
+				button   "request-date" [ inni "request-date /offset " ]  help "Requests a date"
+				return 
+				button   "request-dir" [ inni "request-dir /title /dir  /keep /offset " ]  help "Requests a directory"
+				return
+				button   "request-download" [ inni "request-download /to " ]  help "Request a file download from the net. Show progress. Return none on error"
+				button   "request-file" [ inni "request-file /title /file /filter /keep /omly /path /save " ]  help "Requests a file using a popup list of files and directories"
+				return
+				button   "request-list" [ inni "request-list title [] " ]  help "Requests a selection from a list"
+				button   "request-pass" [ inni "request-pass  /offset /user /only /title  " ]  help "Requests a username and password"
+				return
+				button   "request-text" [ inni "request-text /offset /default  " ]   help "Requests a text string be entered"
+				
+				]	
+				group-box  [
+				h2 "Colors" 
+				across 
+				button   "aqua" aqua [ inni "aqua  " ]   
+				button   "base-effect" effect  base-effect  [ inni "effect base-effect " ]   				
+				button   "black" black font [color: white ][ inni "black  " ]   				
+				button   "blue" blue [ inni "blue  " ]   
+				return 
+				button   "brown" coal [ inni "brown  " ]   
+				button   "brick " brick  [ inni "brick   " ] 
+				button   "beige" beige [ inni "beige  " ] 
+				button   "base-color" base-color [ inni " base-color  " ]   
+				 return 
+				button   "button-color" 44.80.132 [ inni "button-color  " ]   
+				button   "bar-color"  bar-color  [ inni "bar-color   " ]   
+				button   "bar-effect"  effect bar-effect [ inni "effect bar-effect " ]   
+				
+				return 
+				button   "coal" coal [ inni "coal  " ]   
+				button   "cyan" cyan [ inni "cyan  " ]   
+				button   "coffee" coffee [ inni "coffee  " ]   
+				button   "crimson" crimson [ inni "crimson  " ]
+				return 
+				button   "forest" forest [ inni "forest  " ]   
+				return 
+				button   "gray" gray [ inni "gray  " ]   
+				button   "green" green [ inni "green  " ]   
+				button   "gold" gold [ inni "gold  " ]   
+				
+				button   "ivory" ivory [ inni "ivory  " ]   
+				button   "khaki" khaki [ inni "khaki  " ]   
+				return 
+				button   "leaf" leaf [ inni "leaf  " ]   
+				button   "linen" linen [ inni "linen  " ]   
+				
+				button   "maroon " maroon  [ inni "maroon   " ]   
+				  
+				button   "magenta" magenta [ inni "magenta  " ]   
+				return 
+				button   "mint" mint [ inni "mint  " ]
+				return 				
+				button   "main-color" main-color [ inni "main-color  " ]   
+				button   "navy" navy [ inni "navy  " ]   
+				button   "olive" olive [ inni "olive  " ]   
+				button   "orange" orange [ inni "orange  " ] 
+				return 
+				button   "oldrab" oldrab [ inni "oldrab  " ]   
+				button   "over-color" over-color [ inni "over-color  " ]   
+				button   "pewter" pewter [ inni "pewter  " ]   
+				button   "purple"  purple [ inni " purple  " ]   
+				return 
+				button   "pink"  pink [ inni "pink  " ]   
+				button   "papaya"  papaya [ inni "papaya  " ]   
+				  
+				button   "red" red [ inni "red  " ]   
+				button   "rebolor" rebolor [ inni "rebolor  " ]   
+				return 
+				button   "reblue" reblue [ inni "reblue  " ]
+				return 
+				button   "silver" silver [ inni "silver  " ] 
+				button   "snow" snow [ inni "snow  " ] 
+				button   "sienna" sienna [ inni "sienna  " ] 
+				button   "sky" sky [ inni "sky  " ] 
+				button   "teal" teal [ inni "teal  " ] 	
+				return 
+				button   "tan" tan [ inni "tan  " ] 
+				return 
+				button   "violet" violet [ inni "violet  " ] 	
+				button   "white" white [ inni "white  " ]   
+				button   "water" water [ inni "water  " ]   
+				button   "wheat" white [ inni "wheat " ]   
+				return 
+				button   "yello" yello [ inni "yello " ]   
+				
+				button   "yellow" yellow [ inni "yellow " ]   
+				]
+				group-box   [
+				h2 "Rebol images"
+				across
+				image exclamation.gif [inni "exclamation.gif" ] 
+				image info.gif [inni "info.gif" ] 
+				image logo.gif [inni "logo.gif" ] 
+				return 
+				image stop.gif [inni "stop.gif" ] 
+				image help.gif [inni "help.gif" ] 
+				 
+				image btn-up.png [inni "btn-up.png" ] 
+				image btn-dn.png [inni "btn-dn.png" ] 
+				]	
+				
+				group-box  [
+				h2 "Position" 
+				across
+				button   "across" [ inni "across  " ]   help  "Put items horizontally"
+				button   "at" [ inni "at  " ]   help  "Put items at the specified position (pair!)"
+				button   "below" [ inni "below  " ]   help  "Put items vertically (standard)"
+				button   "guide" [ inni "guide  " ]   help  "Set a guide line"
+				button   "indent" [ inni "indent  " ]   help  "Indent horizontally"
+				return 
+				button   "offset" [ inni "offset  " ]   help  "Set the output face position"
+				button   "origin" [ inni "origin  " ]   help  "Specify the layout starting position"
+				button   "pad" [ inni "pad  " ]   help  "Insert extra spacing"
+				button   "return" [ inni "return " ]   help  "Return to the current guide position"
+				button   "space" [ inni "space " ]   help  "Set the auto-spacing used between faces"
+				return 
+				button   "size" [ inni "size " ]   help  "Set the output face size"
+				button   "tabs" [ inni "tabs  " ]   help  "Secify tab space, even a series fo different spaces. Also pairs!"
+				button   "tab" [ inni "tab  " ]   help  "Put tab spaces between items"
+				]	
+				group-box  [
+				h2 "Text" 
+				across
+				button   "title" [ inni "title  " ]   help  "Big title"
+				button   "text" [ inni "text  " ]   help  "Normal text"
+				button   "head 1" [ inni "h1  " ]   help  "Heding 1"
+				button   "head 2" [ inni "h2  " ]   help  "Heading 2"
+				return 
+				button   "head 3" [ inni "h3  " ]   help  "Heading 3"
+				 
+				button   "head 4" [ inni "h4  " ]   help  "Heading 4"
+				button   "head 5" [ inni "h5  " ]   help  "Heading 5"
+				return 
+				button   "code" [ inni "code  " ]   help  "Bold code style text"
+				button   "tt" [ inni "tt  " ]   help  "Code style text"
+				button   "banner" [ inni "banner  " ]   help  "Big coloured title"
+				return 
+				button   "video text" [ inni "vtext  " ]   help  "text with shadow"
+				button   "Video h1" [ inni "vh1  " ]   help  "Heading 1 with shadow"
+				button   "Video h2" [ inni "vh2  " ]   help  "Heding 2 with shadow"
+				return 
+				button   "Video h3" [ inni "vh3  " ]   help  "Heding 3 with shadow"
+				button   "Video h4" [ inni "vh4  " ]   help  "Heding 4 with shadow"
+				button   "Label" [ inni "label  " ]   help  "bold contrasted text"	
+				return 
+				button   "base-text" [ inni "base-text  " ]   help  "text"	
+				button   "lab" [ inni "lab  " ]   help  "label"	
+				button   "lbl" [ inni "lbl  " ]   help  "label"	
+				button   "vlab" [ inni "vlab  " ]   help  "video label"	
+				button   "txt" [ inni "txt  " ]   help  "text"	
+				]
+				group-box  [
+				h2 "Fields" 
+				across
+				button  "field" [ inni "field  " ]   help  "Text entry field"
+				button  "info" [ inni "info  " ]   help  "Same as FIELD style, but read-only"
+				button  "area" [ inni "area  " ]   help  "Text editing area for paragraph entry"
+				]
+				group-box   [
+				h2 "Backgrounds"
+				across
+				button  "backdrop" [ inni "backdrop  " ]   help "Use an image or effect to fill the background"
+				button  "backtile" [ inni "info  " ]   help "Repeat an image to fill the background"
+				]
+				group-box  [
+				h2 "Items" 
+				across
+				button   "image" [ inni "image  " ]   help  "Display a JPEG, BMP, PNG, or GIF image"
+				button   "logo-bar" [ inni "logo-bar  " ]   help  "A vertical Rebol ogo bar"
+				button   "box" [ inni "box  " ]   help  "A shortcut for drawing a rectangular box"
+				button   "bar" [ inni "bar  " ]   help  "An horzontal bar (change size for vertical)"
+				button   "btn" [ inni "btn  " ]   help  "Auto resize button"
+				return 
+				button   "btn-cancel" [ inni "btn-cancel  " ]   help  "Auto resize button"
+				button   "btn-enter" [ inni "btn-enter  " ]   help  "Auto resize button"
+				button   "btn-help" [ inni "btn-help  " ]   help  "Auto resize button"
+				return 
+				button   "icon" [ inni "icon  " ]   help  "Display a thumbnail sized image with text caption"
+				button   "led" [ inni "led  " ]   help  "An indicator light"
+				button   "anim" [ inni "anim  " ]   help  "Display an animated image"
+				button   "button" [ inni "button  " ]   help  "Button"
+				return 
+				button   "drop-down" [ inni "drop-down  " ]   help  "Drop down list"
+				return 
+				button   "scroller" [ inni "scroller  " ]   help  "A panel scroller, sizes give the direction"
+				 
+				button   "toggle" [ inni "toggle  " ]   help  "Similar to BUTTON but has a dual state"
+				button   "tog" [ inni "tog  " ]   help  "Similar to BUTTON but has a dual state"
+				button   "rotary" [ inni "rotary  " ]   help  "Similar to BUTTON but allows multiple states"
+				return 
+				button   "choice" [ inni "choice  " ]   help  "A pop-up button that displays multiple choices"
+				return 
+				button   "check" [ inni "check  " ]   help  "A check box"
+				button   "check-line" [ inni "check-line  " ]   help  "A check box"
+				button   "check-mark" [ inni "check-mark  " ]   help  "A check box"
+				return
+				button   "radio" [ inni "radio " ]   help  "A rounded radio button"
+				button   "radio-line" [ inni "radio-line " ]   help  "A rounded radio button"
+				return 
+				button   "arrow" [ inni "arrow  " ]   help  "An arrow button with a beveled edge"
+				button   "progress" [ inni "progress  " ]   help  "A sliding progress bar"
+				button   "slider" [ inni "slider  " ]   help  "A slider bar"
+				button   "panel" [ inni "panel  " ]   help  "A sub-layout"
+				return 
+				button   "list" [ inni "list  " ]   help  "An iterated sub-layout"				
+				button   "text-list" [ inni "text-list  " ]   help  "A simple form of the LIST style"
+				]	
+				group-box  [	
+				h2 "Style" 
+				across
+				button   "style" [ inni "style  " ]   help "Define a custom style"
+				button   "styles" [ inni "styles  " ]   help "Use styles from a stylesheet"
+				button   "backcolor" [ inni "backcolor  " ]   help "Set the color of the background"
+				button   "backdrop" [ inni "backdrop  " ]   help "Scale an image over the entire layout window"
+				return 
+				button   "backtile" [ inni "backtile  " ]   help "Tile an image over the entire layout window"				
+				]
+				group-box  [	
+				h2 "Events" 
+				across
+				button  "sensor" [ inni "sensor  " ]   help "An invisible face that senses mouse events"
+				button  "key" [ inni "key  " ]   help "A keyboard shortcut"
+				]
+				group-box  [
+				h2 "Special  functions" 
+				across
+				button   "brightness?" [ inni "brightness? " ]  help "Returns the monochrome brightness (0.0 to 1.0) for a color value"
+				button   "caret-to-offset" [ inni "caret-to-offset  " ]  help " Returns the offset position relative to the face of the character position"
+				return 
+				button   "center-face" [ inni "center-face  " ] help "Center a face on screen or relative to another face"
+				button   "clear-fields" [ inni "clear-fields  " ] help "Clear all text fields faces of a layout"
+				button   "confine" [ inni "confine  " ] help "Return the correct offset to keep rectangular area in-bounds"
+				return 
+				button   "deflag-face" [ inni "deflag-face  " ] help "Clears a flag in a VID face"
+				button   "do" [ inni "do []  " ] help "	Evaluate a block"
+				button   "do-events" [ inni "do-events " ]  help "When this function is called the program becomes event driven"
+				return 
+				button   "dump-face" [ inni "dump-face " ]  help "Print face info for entire pane"
+				button   "dump-pane" [ inni "dump-pane " ]  help "Print face info for entire pane"
+				button   "event?" [ inni "event? " ]  help "Returns TRUE for event values"
+				return 
+				button   "edge-size?" [ inni "edge-size? " ]  help "Return total size of face edge (both sides), even if missing edge"
+				button   "flag-face" [ inni "flag-face " ]  help "Sets a flag in a VID face"
+				button   "flag-face?" [ inni "flag-face? " ]  help "Checks a flag in a VID face"
+				return 
+				button   "find-window" [ inni "find-window " ]  help "Find a face's window face"
+				button   "find-key-face" [ inni "find-key-face /check " ]  help "Search faces to determine if keycode applies"
+				button   "focus" [ inni "focus " ]  help "Focuses key events on a specific face"
+				return 
+				button   "get-face" [ inni "get-face " ]  help "Returns the primary value of a face"
+				button   "get-style" [ inni "get-style " ]  help " Get the style by its name"
+				button   "hide" [ inni "hide " ]  help " Hides a face or block of faces"
+				return 
+				button   "hide-popup" [ inni "hide-popup /timeout" ]  help "(undocumented)"
+				button   "hilight-all" [ inni "hilight-all " ]  help "(undocumented)"
+				button   "hilight-text" [ inni "hilight-text " ]  help "(undocumented)"
+				return 
+				button   "hsv-to-rgb" [ inni "hsv-to-rgb " ]  help "Converts HSV (hue, saturation, value) to RGB"
+				return
+				button   "in-window?" [ inni "in-window? " ]  help " Return true if a window contains a given face"
+				button   "inside?" [ inni "inside? " ]  help "TRUE if both X and Y of the second pair are less than the first"
+				return 
+				button   "insert-event-func" [ inni "insert-event-func " ]  help "Add a function to monitor global events. Return the func"
+				return 
+				button   "remove-event-func" [ inni "remove-event-func " ]  help "Remove an event function previously added"
+				button   "layout" [ inni "layout /size /pffset /parent /origin /styles /keep /tight " ]   help "Return a face with a pane built from style description dialect"
+				return 
+				button   "make-face" [ inni "make-face /styles /clones /spec /offset /keep " ]  help "Make a face from a given style name or example face"
+				return
+				button   "offset-to-caret" [ inni "offset-to-caret face offset" ]  help " Returns the offset in the face's text corresponding to the offset pair"
+				button   "outside?" [ inni "outside?" ]  help "TRUE if either X and Y of the second pair are greater than the first"
+				button   "overlap?" [ inni "overlap?" ]  help "Returns TRUE if faces overlap each other"
+				return 
+				button   "rgb-to-hsv" [ inni "rgb-to-hsv " ] help " Converts RGB value to HSV (hue, saturation, value)" 
+				button   "reset-face" [ inni "reset-face /no-show " ] help "Resets the primary value of a face"
+				button   "resize-face" [ inni "resize-face  /x /y /no-show" ] help "Resize a face"
+				return 
+				button   "screen-offset?" [ inni "screen-offset? " ] help "Returns the absolute screen offset for any face"
+				button   "show" [ inni "show " ] help "Display a face or block of faces"
+				button   "show-popup" [ inni "show-popup  /window  /away " ] help "(undocumented)"
+				return 
+				button   "size-text" [ inni "size-text " ]  help " Returns the size of the text in a face"
+				return
+				button   "span?" [ inni "span? " ]  help "Returns a block of [min max] bounds for all faces"
+				button   "scroll-drag" [ inni "scroll-drag /back /page " ]  help "Move the scroller drag bar"
+				button   "scroll-face" [ inni "scroll-face /x /y /no-show " ]  help "Scroll a face. Default is vertical"
+				return 
+				button   "scroll-para" [ inni "scroll-para  " ]  help "Scroll a text face, given a scroller/slider face"
+				button   "set-face" [ inni "set-face /no-show " ]  help "Sets the primary value of a face. Returns face object (for show)"
+				button   "set-font" [ inni "set-font  " ]  help "(undocumented)"
+				return 
+				button   "set-para" [ inni "set-para  " ]  help "(undocumented)"
+				button   "set-style" [ inni "set-style /style " ]  help "Set a style by its name"
+				button   "size-text" [ inni "size-text" ]  help "Returns the size of the text in a face"
+				return 
+				button   "stylize" [ inni "stylize /master /styles " ]  help " Return a style sheet block"
+				button   "textinfo" [ inni "textinfo " ]  help "Sets the line text information in an object for a face"
+				button   "unfocus" [ inni "unfocus  " ]  help " Removes the current key event focus"
+				button   "unview" [ inni "unview /all /only" ]  help " Closes window(s)"
+				return 
+				button   "unlight-text" [ inni "unlight-text" ]  help "(undocumented)"
+				return
+				button   "view" [ inni "view /new /offset /options /title " ]  help "Displays a window face"
+				button   "viewed?" [ inni "viewed? " ]  help "Returns TRUE if face is displayed"
+				button   "within?" [ inni "within? point offset size " ]  help " Return TRUE if the point is within the rectangle bounds"
+				return 
+				button   "win-offset?" [ inni "win-offset? " ]  help "Returns the offset of a face within its window"
+				]			
+					]] ;end fo VID
+			"DRAW" [ button ]		
+					
+		] with [ ;this give the resize window to the tab panel
+			;patched the "original" resize feel --cyphre
+			;note: the layout pane in tab-area subface must be resized as well in this usage case --cyphre
+			feel: make feel [
+				resize: func [f size+][
+					either pair? size+ [
+						f/tab-area/pane/size/y: f/size/y: f/size/y + size+/y
+					] [
+						f/tab-area/pane/size: f/size: size+
+					]
+					show f
+				]
+			]
 		]
 		t: area-tc 550x500
 	]
