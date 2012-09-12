@@ -2141,7 +2141,7 @@ IDE:	 layout  [
 		
 		tb: tab-panel  data [
 			"Core"  [	
-				button "test" [request-file/file clean-path  %. ]
+				
 				core_sp: scroll-panel 325x432 [	;core_sp is a nice name for croll panale of core buttons
 					style button btn white
 					style group-box panel 255.255.255 frame black 2x2
