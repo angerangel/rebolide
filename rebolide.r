@@ -4,7 +4,7 @@ REBOL [
 	credits: { Carl sassenrath, "Shadwolf", Steeve, Maxim, Coccinelle, Cyphre, Graham, Nick Antonaccio, Semseddin Moldibi, Zoltan Eros, R. v.d.Zee}
 	purpose: { Colored IDE for rebol in rebol, for beginners that helps learning Rebol. 
 	I suggest you to put this script in a separete folder.}  
-	version: 6.4.49	
+	version: 6.4.50	
 	File: %rebolide.r 
 	Author: "Massimiliano Vessi" 
 	email: maxint@tiscali.it	
@@ -34,9 +34,12 @@ foreach item req_files [
 	if not exists? item [ request-download/to  to-url join http://www.maxvessi.net/rebsite/ item  item  ]	
 	]
 	
+
+
+
 do %scroll-panel.r
 
-do %simple-tooltip-style.r
+ do %simple-tooltip-style.r
 
 do %resize-vid.r	
 ;this is useful if you are on linux
@@ -55,7 +58,7 @@ sav-pref: func [][
 
 ;loading preferences
 load-pref: func [][
-	if exists? %pref.dat [pref: do load %pref.dat]
+	if exists? %pref.dat [pref: do load %pref.dat ]
 	]
 
 ;see if there is a pref.dat file to use in order to load user preferences
@@ -362,7 +365,7 @@ gen-draw: [end: (
 			save-color: none
 	)]
 	
-	spaces: exclude charset [#"^(1)" - #" "] charset "^/^-" ;** treat like space
+	spaces: exclude charset [#"^(1)" - #" "] charset "^/^-" ;** treat like space "] <- for my broken editor, that mess "
 	braquets: charset "[]()"
 
 	;** rule to detect rebol values (uses load/next)
@@ -907,7 +910,8 @@ stylize/master [
 		run_scr: func [] [
 			save-file
 			;call/console rejoin [ pref/consol_path file-name ]
-			launch file-name
+			
+			launch clean-path file-name ;clean-path is requested by Linux
 		]
 		search: func [ f-what [string!] /local dt n nline line str-tmp  move-to current-line ][
 			current-line: index? data
@@ -1603,7 +1607,7 @@ stylize/master [
 						str: any [find str stuff str]
 						x: x + index? str
 					]
-					if str/1 = #" " [x: x + length? str]
+					if str/1 = #" " [x: x + length? str] ; "] <- this is for my editor, that messwith ".
 					if x = 0 [x: length? str] 
 					constraint f cursor/xy + as-pair x * f/x 0
 				]				
@@ -2137,7 +2141,7 @@ IDE:	 layout  [
 		
 		tb: tab-panel  data [
 			"Core"  [	
-				
+				button "test" [request-file/file clean-path  %. ]
 				core_sp: scroll-panel 325x432 [	;core_sp is a nice name for croll panale of core buttons
 					style button btn white
 					style group-box panel 255.255.255 frame black 2x2
