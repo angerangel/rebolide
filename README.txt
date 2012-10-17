@@ -11,9 +11,9 @@ it's easy, it's cross-platform, it has graphics, it has all
 and it's just 1.5MB!!!
 Go to www.rebol.com and download it
 
--How does rebolide work?
+-How does RebolIDE work?
 
-Launch rebolide.r script by rebol
+Just download and launch rebolide.r 
 
 Contact:
 maxint@tiscali.it
