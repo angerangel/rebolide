@@ -1,0 +1,896 @@
+
+backdrop linen 
+style p-area area linen middle font-size 14 wrap with [edge/size: 0x0 para/origin: 5x3] 
+style pre-area area silver font-size 14 wrap middle with [para/origin: 40x-20] 
+style heading h2 490x23 navy 
+style sub-heading h3 490x23 water 
+origin 0x0 
+across 
+space 0 
+image logo.gif 
+document-header: box 450x24 coal green "Documentation" 
+origin 40x40 
+below 
+space 0 heading "1. Overview" p-area 490x112 {The foremost goal of REBOL is to establish a standard method of
+communication that spans all computer systems. REBOL provides a
+simple, direct means of expressing any kind of information with
+optimal flexibility and minimal syntax. For example, examine the
+following line:} pre-area 440x36 {
+Sell 100 shares of "Acme" at $47.97 per share} p-area 490x138 {The line looks a lot like English making it easy to compose if
+you are sending it and easy to understand if you are receiving
+it. However, this line is actually a valid expression in REBOL,
+so your computer could also understand and act on it. (Note that
+the line is a "dialect" of REBOL. It can be in-directly evaluated.
+More on this concept below.)} p-area 490x155 {REBOL provides a common language between you and your computer. In
+addition, if your computer sends this expression to your stock
+broker's computer, which is also running REBOL, your stock
+broker's computer can understand the expression and act on it.
+So, REBOL provides a common language between computers. And, the line
+could be sent to millions of other computer systems that could
+also act on it.} p-area 490x42 {The following line is another example of a REBOL expression:} pre-area 440x36 "^/Reschedule exam for 2-January-1999 at 10:30" p-area 490x143 {The expression shown in the above example (written in another dialect) may have come from
+your doctor typing it, or perhaps it originated from an
+application that was run by your doctor. It does not matter.
+What is important is that the expression can be acted upon
+regardless of the type of computer, hand-held device, kiosk, or
+television console you are using.} p-area 490x157 {The data values (numbers, strings, prices, dates, and times) in
+all of the expressions shown in the previous examples are
+standardized valid REBOL formats. The words, however, depend on
+a specific context of interpretation to convey their meaning.
+Words such as "sell", "at", and "read" have different
+meanings in different contexts. The words are relative
+expressions -- their meaning is context dependent.} p-area 490x137 {Expressions can be processed in one of two ways: ""directly"" by
+the REBOL interpreter, or ""indirectly"" by a REBOL script. An
+expression processed indirectly is called a ""dialect"". The
+previous examples are dialects, so they are processed by
+a script. The following example is not a dialect and is
+processed directly by the REBOL interpreter:} pre-area 440x36 "^/send master@r-ebol.com read http://www.r-ebol.com" p-area 490x56 {In this example the words "send" and "read" are functions
+that are processed by the REBOL interpreter.} p-area 490x150 {The distinction REBOL makes is that "information is either
+directly or indirectly interpreted". The distinction is not
+whether information is code or data, but how it is processed. In
+REBOL code is often handled as data and data is frequently
+processed as code, so the traditional division between code and
+data blurs. How information is processed determines whether it
+is code or data.} heading "2. Blocks" p-area 490x54 {REBOL Expressions are based on this concept: you combine
+""values"" and ""words"" into ""blocks"".} p-area 490x116 {In scripts, a block is normally enclosed with square brackets [ ]. Everything
+within the square brackets is part of the block. The block contents can span any
+number of lines, and its format is completely freeform. The following examples
+show various ways of formatting block content:} pre-area 440x288 {
+[white red green blue yellow orange black]
+
+["Spielberg" "Back to the Future" 1:56:20 MCA]
+
+[
+    "Bill"  billg@ms.dom  #315-555-1234
+    "Steve" jobs@apl.dom  #408-555-4321
+    "Ted"   ted@gw2.dom   #213-555-1010
+]
+
+sites: [
+    http://www.r-ebol.com [save %reb.html data]
+    http://www.cnn.com   [print data]
+    ftp://www.amiga.com  [send cs@org.foo data]
+]} p-area 490x152 {Some blocks do not require square brackets, because they are implied. For
+example, in a REBOL script, there are no brackets around the entire script,
+however, the script content is a block. The square brackets of an
+""outer-block"" of the script are implied. The same is true for
+expressions typed at the command prompt or for REBOL messages sent between
+computers--each is an implied block.} p-area 490x125 {Another important aspect of blocks is that they imply additional information.
+Blocks ""group"" a set of values in a particular
+""order"". That is, a block can be used as a data set as well as a
+sequence. This will be described in more detail in the <A
+href="rebolcore-6.html#_Toc487519750">Series Chapter</A>.} heading "3. Values" p-area 490x78 {REBOL provides a built-in set of ""values"" that can be expressed
+and exchanged between all systems. Values are the primary elements for composing
+all REBOL expressions.} sub-heading "3.1 Direct and Indirect Values" p-area 490x40 {Values can be ""directly"" or ""indirectly"" expressed.} p-area 490x75 {A directly expressed value is ""known"" as it is lexically, or
+literally, written. For instance, the number 10 or the time
+10:30 are directly expressed values.} p-area 490x128 {An indirectly expressed value is ""unknown"" until it is
+evaluated. The values "none", "true", and "false" all require
+words to represent them. These values are indirectly expressed
+because they must be evaluated for their values to be known.
+This is also true of other values, such as lists, hashes,
+functions, objects.} sub-heading "3.2 Datatypes of Values" p-area 490x49 {Every REBOL value is of a particular ""datatype"". The datatype
+of a value defines:} p-area 490x61 {By convention, REBOL datatype words are followed by an exclamation point
+(!) to help make them stand out.  For example:} pre-area 440x90 {
+integer!
+char!
+word!
+string!} p-area 490x32 {"Datatype Words are Just Words"} p-area 490x64 {The words used for datatypes are just like any other words in REBOL.
+There is nothing magic about the ! used to represent them.} p-area 490x60 {See the <A href="rebolcore-16.html#_Toc487519750">Values
+Appendix</A> for a description of all the REBOL datatypes.} heading "4. Evaluating Expressions" p-area 490x99 {To ""evaluate"" an expression is to compute its value. REBOL
+operates by evaluating the series of expressions constituting a
+script and then returning the result. Evaluating is also called
+running, processing, or executing a script.} p-area 490x72 {Evaluation is performed on blocks. Blocks can be typed at the
+console or loaded from a script file. Either way, the process of
+evaluation is the same.} sub-heading "4.1 Evaluating Console Input" p-area 490x77 {Any expression that can be evaluated in a script, can also be
+evaluated from the REBOL prompt, providing a simple means of
+testing individual expressions in a script.} p-area 490x46 {For example, if you type the following expression at the console
+prompt:} pre-area 440x36 "^/> >  1 + 2" p-area 490x43 {the expression is evaluated and the following result is returned:} pre-area 440x36 "^/ == 3" p-area 490x31 {"About The Code Examples..."} p-area 490x125 {In the example above, the console prompt (>>) and result
+indicator (==) are shown to give you an idea of how they appear
+in the console. For the examples that follow, the prompt and
+result strings are not shown. However, you can assume that these
+examples can be typed into the console to verify their results.} sub-heading "4.2 Evaluating Simple Values" p-area 490x66 {Since the value of directly expressed values is known, they
+simply return their values. For example, if you type the
+following line:} pre-area 440x36 "^/10:30" p-area 490x54 {the value 10:30 is returned. This is the behavior of all directly expressed
+values. It includes:} pre-area 440x306 {
+integer    1234
+decimal    12.34
+string     "r-ebol world!"
+time       13:47:02
+date       30-June-1957
+tuple      199.4.80.1
+money      $12.49
+pair       100x200
+char       #"A"
+binary     #{ab82408b}
+email      info@r-ebol.com
+issue      #707-467-8000
+tag        <IMG SRC="xray.jpg"> 
+file       %xray.jpg
+url        http://www.r-ebol.com/
+block      [milk bread butter]} sub-heading "4.3 Evaluating Blocks" p-area 490x48 {Normally, blocks are ""not"" evaluated. For example, typing the
+following block:} pre-area 440x36 "^/[1 + 2]" p-area 490x29 "returns the same block:" pre-area 440x36 "^/ [1 + 2]" p-area 490x41 {The block is not evaluated; it is simply treated as data.} p-area 490x48 {To evaluate a block, use the "do" function, as shown in the
+following example:} pre-area 440x54 "^/do [1 + 2]^/ 3" p-area 490x57 {The "do" function returns the result of the evaluation. In the
+previous example, the number 3 is returned.} p-area 490x53 {If a block contains multiple expressions, only the result of the last
+expression is returned:} pre-area 440x108 {
+do [
+    1 + 2
+    3 + 4
+]
+ 7} p-area 490x57 {In this example, both expressions are evaluated, but only the result of the
+3 + 4 expression is returned.} p-area 490x94 {There are a number of functions such as "if", "loop",
+"while", and "foreach" that evaluate a block as part of their
+function. These functions are discussed in detail later in this
+chapter, but here are a few examples:} pre-area 440x144 {
+if time >  12:30 [print "past noon"]
+ past noon 
+loop 4 [print "looping"]
+ looping
+looping
+looping
+looping} p-area 490x74 {This is important to remember: blocks are treated as data until they are
+explicitly evaluated by a function. Only a function can cause them to be
+evaluated.} sub-heading "4.4 Reducing Blocks" p-area 490x150 {When you evaluate a block with "do", only the value of its last
+expression is returned as a result. However, there are times
+when you want the values of all the expressions in a block to be
+returned. To return the results of all of the expressions in a
+block, use the "reduce" function. In the following example,
+"reduce" is used to return the results of both expressions in
+the block:} pre-area 440x108 {
+reduce [
+    1 + 2
+    3 + 4
+]
+ [3 7]} p-area 490x63 {In the above example, the block was ""reduced"" to its evaluation
+results. The "reduce" function returns results in a block.} p-area 490x120 {The "reduce" function is important because it enables you to
+create blocks of expressions that are evaluated and passed to other functions.
+"Reduce" evaluates each expression in a block and puts the result
+of that expression into a new block. That new block is returned as the result of
+"reduce".} p-area 490x57 {Some functions, like "print", use "reduce" as
+part of their operation, as shown in the following example:} pre-area 440x54 "^/print [1 + 2  3 + 4]^/ 3 7" p-area 490x64 {The "rejoin", "reform", and
+"remold" functions also use "reduce" as part of
+their operation, as shown in the following examples:} pre-area 440x126 {
+print rejoin [1 + 2  3 + 4]
+ 37 
+print reform [1 + 2  3 + 4]
+ 3 7 
+print remold [1 + 2  3 + 4]
+ [3 7]} p-area 490x66 {The "rejoin", "reform", and
+"remold" functions are based on the "join",
+"form", and "mold" functions, but reduce their
+blocks first.} sub-heading "4.5 Evaluating Scripts" p-area 490x64 {The "do" function can be used to evaluate entire scripts.
+Normally, "do" evaluates a block, as shown in the following
+example:} pre-area 440x54 {
+do [print "Hello!"]
+ Hello!} p-area 490x76 {But, when "do" evaluates a file name instead of a block, the
+file will be loaded into the interpreter as a block, then evaluated as shown in
+the following example:} pre-area 440x36 "^/do %script.r" p-area 490x31 {"A REBOL Header is Required"} p-area 490x102 {For a script file to be evaluated, it must include a valid REBOL
+header, which is described in the <A
+href="rebolcore-5.html#_Toc487519750">Scripts Chapter</A>. The
+header identifies that the file contains a script and not just
+random text.} sub-heading "4.6 Evaluating Strings" p-area 490x64 {The "do" function can be used to evaluate expressions that are
+found within text strings. For example, the following expression:} pre-area 440x54 {
+do "1 + 2"
+ 3} p-area 490x53 {returns the result "3". First the string is converted to a block,
+then the block is evaluated.} p-area 490x78 {Evaluating strings can be handy at times, but it should be done only when
+necessary. For example, to create a REBOL console line processor, type the
+following expression:} pre-area 440x36 {
+forever [probe do ask "=>  "]} p-area 490x106 {The above expression would prompt you with "=>" and wait for you to
+type a line of text. The text would then be evaluated, and its result would be
+printed. (Of course, it's not really quite this simple, because the script could
+have produced an error.)} p-area 490x97 {Unless it is necessary, evaluating strings is not generally a good practice.
+Evaluating strings is less efficient than evaluating blocks, and the context of
+words in a string is not known. For example, the following expression:} pre-area 440x36 {
+do form ["1" "+" "2"]} p-area 490x33 "is much less efficient than typing:" pre-area 440x36 "^/do [1 + 2]" p-area 490x63 {REBOL blocks can be constructed just as easily as strings, and blocks are
+better for expressions that need to be evaluated.} sub-heading "4.7 Evaluation Errors" p-area 490x73 {Errors may occur for many different reasons during evaluation. For example,
+if you divide a number by zero, evaluation is stopped and an error is
+displayed} pre-area 440x72 {
+100 / 0
+ ** Math Error: Attempt to divide by zero.
+** Where: 100 / 0} p-area 490x41 {A common error is using a word before it has been defined:} pre-area 440x72 {
+size + 10
+ ** Script Error: size has no value.
+** Where: size + 10} p-area 490x51 {Another common error is not providing the proper values to a function in an
+expression:} pre-area 440x72 {
+10 + [size]
+ ** Script Error: Cannot use add on block! value.
+** Where: 10 + [size]} p-area 490x58 {Sometimes errors are not so obvious, and you will need to experiment to
+determine what is causing the error.} heading "5. Words" p-area 490x71 {Expressions are built from values and words. Words are used to represent
+meaning. A word can represent an idea or it can represent a specific value.} p-area 490x84 {In the previous examples in this chapter, a number of words were used within
+expressions without explanation. For instance, the "do",
+"reduce", and "try" words are used, but not
+explained.} p-area 490x90 {Words are evaluated somewhat differently than directly expressed values. When
+a word is evaluated, its value is looked up, evaluated, and returned as a
+result. For example, if you type the following word:} pre-area 440x54 "^/zero^/ 0" p-area 490x68 {the value "0" is returned. The word "zero" is predefined to be
+the number zero. When the word is looked up, a zero is found and
+is returned.} p-area 490x88 {When words like "do" and "print" are looked up, their values
+are found to be functions, rather than simple values. In such
+cases, the function is evaluated, and the result of the function
+is returned.} sub-heading "5.1 Word Names" p-area 490x52 {Words are composed of alphabetic characters, numbers, and any of the
+following characters:} pre-area 440x36 "^/? ! . ' + - * &amp; | = _ ~" p-area 490x77 {A word cannot begin with a number, and there are also some restrictions on
+words that could be interpreted as numbers. For example, -1 and +1 are numbers,
+not words.} p-area 490x51 {The end of a word is marked by a space, a new line, or one of the following
+characters:} pre-area 440x36 {
+[ ] ( ) { } " : ; /} p-area 490x59 {Thus, the brackets of a block are not part of a word. For example, the
+following block contains the word "test" :} pre-area 440x36 "^/[test]" p-area 490x60 {The following characters are not allowed in words as they cause words to be
+misinterpreted or to generate an error:} pre-area 440x36 "^/@ # $ % ^^ ," p-area 490x47 {Words can be of any length, but words cannot extend past the end
+of a line:} pre-area 440x36 "^/this-is-a-very-long-word-used-as-an-example" p-area 490x39 {The following lines provide examples of valid words:} pre-area 440x126 {
+Copy print test
+number?  time?  date!
+image-files  l'image
+++ -- == +-
+***** *new-line*
+left&amp;right left|right} p-area 490x47 {REBOL is not case sensitive. The following words all refer to the same
+word:} pre-area 440x72 {
+blue
+Blue
+BLUE} p-area 490x39 {The case of a word is preserved when it is printed.} p-area 490x129 {Words can be reused. The meaning of a word is dependent on its context, so
+words can be reused in different contexts. There are no keywords in REBOL. You
+can reuse any word, even those that are predefined in REBOL. For instance, you
+can use the word "if" in your code differently than the REBOL
+interpreter uses this word.} p-area 490x27 {"Pick Good Words"} p-area 490x76 {Pick the words you use carefully. Words are used to associate
+meaning. If you pick your words well, it will be easier for you
+and others to understand your scripts.} sub-heading "5.2 Word Usage" p-area 490x63 {Words are used in two ways: as ""symbols"" or as
+""variables"". In the following block, words are used as symbols
+for colors.} pre-area 440x36 "^/[red green blue]" p-area 490x29 "In the following line:" pre-area 440x54 "^/print second [red green blue]^/ green" p-area 490x68 {the words have no meaning other than their use as names for colors. All words
+used within blocks serve as symbols until they are evaluated.} p-area 490x84 {When a word is evaluated, it is used as a variable. In the previous example,
+the words "print" and "second" are variables that
+hold native functions which perform the required processing.} p-area 490x66 {A word can be written in four ways to indicate how it is to be
+treated, as shown in <A href="rebolcore-4.html#22570">Word
+Formats</A>.} p-area 490x24 "Format" p-area 490x26 "What It Does" p-area 490x24 {"word"} p-area 490x81 {Evaluates the word. This is the most natural and common way to
+write words. If the word holds a function, it will be evaluated.
+Otherwise, the value of the word will be returned.} p-area 490x24 {"word:"} p-area 490x82 {Defines or sets the value of a word. It is given a new value.
+The value can be anything, including a function. See <A
+href="rebolcore-4.html#_Toc487519727">Setting Words</A> below.} p-area 490x24 {":word"} p-area 490x88 {Gets the word's value, but doesn't evaluate it. This is useful
+for referring to functions and other data without evaluating
+them. See <A href="rebolcore-4.html#_Toc487519728">Getting
+Words</A> below.} p-area 490x24 {"'word"} p-area 490x50 {Treats the word as a symbol, but does not evaluate it. The word
+itself is the value.} sub-heading "5.3 Setting Words" p-area 490x44 {A word followed by a colon (:) is used to define or set its value:} pre-area 440x108 {
+age: 42
+lunch-time: 12:32
+birthday: 20-March-1990
+town: "Dodge City"
+test: %stuff.r} p-area 490x111 {You can set a word to be any type of value. In the previous examples, words
+are defined to be integer, time, date, string, and file values. You can also set
+words to be more complex types of values. For example, the following words are
+set to block and function values:} pre-area 440x72 {
+towns: ["Ukiah" "Willits" "Mendocino"]
+code: [if age >  32 [print town]]
+say: func [item] [print item]} p-area 490x31 {"Why Words Are Set This Way"} p-area 490x41 {In many langages words are set with an equal sign, such as:} pre-area 440x36 "^/age = 42" p-area 490x86 {In REBOL words are set with a colon.  The reason for this is
+important.  It makes the set operation on words into a single
+lexical value. The representation for the set operation is
+""atomic"".} p-area 490x45 {The difference between the two approaches can be seen in this
+example.} pre-area 440x90 {
+print length? [age: 42]
+ 2 
+print length? [age = 42]
+ 3} p-area 490x86 {REBOL is a ""reflective"" language, it is able to manipulate its
+own code.  This method of setting values allows you to write
+code that easily manipulates "set-word" operations as a single
+unit.} p-area 490x51 {Of couse, the other reason is that the equal sign (=) is
+used as a comparision operator.} p-area 490x65 {Multiple words can be set at one time by cascading the word definitions. For
+example, each of the following words are set to "42:"} pre-area 440x36 "^/age: number: size: 42" p-area 490x37 {Words can also be set with the "set" function:} pre-area 440x36 "^/set 'time 10:30" p-area 490x73 {In this example, the line sets the word "time" to 10:30. The word
+"time" is written as a literal (using a single quote) so that it will not
+be evaluated.} p-area 490x37 {The "set" function can also set multiple words:} pre-area 440x90 {
+set [number num ten] 10
+
+print [number num ten]
+ 10 10 10} p-area 490x87 {In the above example, notice that the words do not need to be quoted because
+they are within a block, which is not evaluated. The "print"
+function shows that each word is set to the integer "10".} p-area 490x72 {If "set" is provided a block of values, each of the individual
+values are set to the words. In this example, one, two, and three are set to 1,
+2, and 3:} pre-area 440x126 {
+set [one two three] [1 2 3]
+
+print three
+ 3 
+print [one two three]
+ 1 2 3} p-area 490x77 {See the <A href="rebolcore-16.html#_Toc487520074">Words
+Section</A> in the <A href="rebolcore-16.html#_Toc487519750">
+Values Appendix</A> for more about setting words.} sub-heading "5.4 Getting Words" p-area 490x104 {To get the value of a word that was previously defined, place a colon (:) at
+the front of the word. A word prefixed with a colon obtains the value of the
+word, but does not evaluate it further if it is a function. For example, the
+following line:} pre-area 440x36 "^/drucken: :print" p-area 490x87 {defines a new word, "drucken" (which is German for print), to refer to
+the same function "print" does. This is possible because
+":print" returns the function for "print", but
+does not evaluate it.} p-area 490x40 {Now, "drucken" performs the same function as "print" :} pre-area 440x54 {
+drucken "test"
+ test} p-area 490x53 {Both "print" and "drucken" are set to the same value,
+which is the function that does printing.} p-area 490x66 {This can also be accomplished with the "get" function. When
+given a literal word, "get" returns its value, but does not
+evaluate it:} pre-area 440x90 {
+stampa: get 'print
+
+stampa "test"
+ test} p-area 490x92 {The ability to get the value of a word is also important if you want to
+determine what the value is without evaluating it. For example, you can
+determine if a word is a native function using the following line:} pre-area 440x54 "^/print native? :if^/ true" p-area 490x116 {Here the get returns the function for "if". The
+"if" function is not evaluated, but rather it is passed to the
+"native?" function which checks if it is a native datatype.
+Without the colon, the "if" function would be evaluated, and,
+because it has no arguments, an error would occur.} sub-heading "5.5 Literal Words" p-area 490x82 {The ability to deal with a word as a literal is useful. Both
+"set" and "get", as well as other functions like
+"value?", "unset", "protect",
+and "unprotect", expect a literal value.} p-area 490x75 {Literal words can be written in one of two ways: by prefixing the word with a
+single quotation mark, also known as a tick, (`) or by placing the word in a
+block.} p-area 490x40 {You can use a tick in front of a word that is evaluated:} pre-area 440x36 "^/word: 'this" p-area 490x105 {In the above example, the "word" variable is set to the literal word
+"this", not to the value of "this". The "word" variable
+just uses the name symbolically. The example below shows that if you print the
+value of the word, you will see the this word:} pre-area 440x54 "^/print word^/ this" p-area 490x85 {You can also obtain literal words from an unevaluated block. In the following
+example, the "first" function fetches the first word from the
+block. This word is then set to the word variable.} pre-area 440x36 "^/word: first [this and that]" p-area 490x105 {Any word can be used as a literal. It may or may not refer to a value. For
+example, in the example below the word "here" has no value. The word
+"print" does have a value, but it can still be used as a literal
+because literal words are not evaluated.} pre-area 440x126 {
+word: 'here
+print word
+ here 
+word: 'print
+print word
+ print} p-area 490x42 {The next example illustrates the importance of literal values:} pre-area 440x144 {
+video: [
+    title "Independence Day"
+    length 2:25:24
+    date   4/july/1996
+]
+print select video 'title
+ Independence Day} p-area 490x86 {In this example, the word "title" is searched for in a block. If the
+tick was missing from "title", then its natural value would be used. If
+"title" has no natural value, an error is displayed.} p-area 490x81 {See the <A href="rebolcore-16.html#_Toc487520074">Words Section</A>
+in the <A href="rebolcore-16.html#_Toc487519750">Values Appendix</A>
+for more information about word literals.} sub-heading "5.6 Unset Words" p-area 490x51 {A word that has no value is "unset". If an unset word is
+evaluated, an error will occur:} pre-area 440x72 {
+> >  outlook
+ ** Script Error: outlook has no value.
+** Where: outlook} p-area 490x88 {The error message in the previous example indicates that the word has not
+been set to a value. The word is unset. Do not confuse this with a word that has
+been set to "none", which is a valid value.} p-area 490x44 {A previously defined word can be unset at any time using
+"unset" :} pre-area 440x36 "^/unset 'word" p-area 490x35 "When a word is unset, its value is lost." p-area 490x57 {To determine if a word has been set, use the "value?"
+function, which takes a literal word as its argument:} pre-area 440x54 {
+if not value? 'word [print "word is not set"]
+ word is not set} p-area 490x76 {Determining whether a word is set can be useful in scripts that call other
+scripts. For instance, a script may set a default parameter that was not
+previously set:} pre-area 440x36 "^/if not value? 'test-mode [test-mode: on]" sub-heading "5.7 Protecting Words" p-area 490x44 {You can prevent a word from being set with the "protect"
+function:} pre-area 440x36 "^/protect 'word" p-area 490x40 {An attempt to redefine a protected word causes an error:} pre-area 440x72 {
+word: "here"
+ ** Script Error: Word word is protected, cannot modify.
+** Where: word: "here"} p-area 490x39 {A word can be unprotected as well using "unprotect" :} pre-area 440x54 {
+unprotect 'word
+word: "here"} p-area 490x45 {The "protect" and "unprotect" functions also
+accept a block of words:} pre-area 440x36 "^/protect [this that other]" p-area 490x121 {Important function and system words can be protected using the
+"protect-system" function. Protecting function and system words
+is especially useful for beginners who might accidentally set important words.
+If "protect-system" is placed in your "user".r file, then
+all predefined words are protected.} heading "6. Conditional Evaluation" p-area 490x104 {As previously mentioned, blocks are not normally evaluated. A
+"do" function is required to force a block to be evaluated. There
+are times when you may need to conditionally evaluate a block. The following
+section describes several ways to do this.} sub-heading "6.1 Conditional Blocks" p-area 490x86 {The "if" function takes two arguments. The first argument is a
+condition and the second argument is a block. If the condition is "true"
+, the block is evaluated, otherwise it is not evaluated.} pre-area 440x54 {
+if now/time >  12:00 [print "past noon"]
+ past noon} p-area 490x156 {The condition is normally an expression that evaluates to "true" or
+"false" ; however, other values can also be supplied. Only a
+"false" or a "none" value prevents the block from being evaluated.
+All other values (including zero) are treated as "true", and cause the
+block to be evaluated. This can be useful for checking the results of
+"find", "select", "next", and
+other functions that return "none" :} pre-area 440x72 {
+string: "let's talk about r-ebol"
+if find string "talk" [print "found"]
+ found} p-area 490x62 {The "either" function extends "if" to include a
+third argument, which is the block to evaluate if the condition is false:} pre-area 440x126 {
+either now/time >  12:00 [
+    print "after lunch"
+][
+    print "before lunch"
+]
+ after lunch} p-area 490x43 {The "either" function also interprets a "none" value as
+"false".} p-area 490x112 {Both the "if" and "either" functions return the
+result of evaluating their blocks. In the case of an "if", the
+block value is only returned if the block is evaluated; otherwise, a
+"none" is returned. The "if" function is useful for
+conditional initialization of variables:} pre-area 440x90 {
+flag: if time >  13:00 ["lunch eaten"]
+
+print flag
+ lunch eaten} p-area 490x56 {Making use of the result of the "either" function, the
+previous example could be rewritten as follows:} pre-area 440x126 {
+print either now/time >  12:00 [
+    "after lunch"
+][
+    "before lunch"
+]
+ after lunch} p-area 490x96 {Since both "if" and "either" are functions,
+their block arguments can be any expression that results in a block when
+evaluated. In the following examples, words are used to represent the block
+argument for "if" and "either".} pre-area 440x252 {
+notice: [print "Wake up!"]
+if now/time >  7:00 notice
+ Wake up! 
+notices: [
+    [print "It's past sunrise!"]
+    [print "It's past noon!"]
+    [print "It's past sunset!"]
+]
+if now/time >  12:00 second notices
+ It's past noon! 
+sleep: [print "Keep sleeping"]
+either now/time >  7:00 notice sleep
+ Wake up!} p-area 490x104 {The conditional expressions used for the first argument of both
+"if" and "either" can be composed from a wide
+variety of comparison and logic functions. Refer to the <A
+href="rebolcore-11.html#_Toc487519750">Math
+Chapter</A> for more information.} p-area 490x31 {"Avoid This Common Mistake"} p-area 490x76 {The most commonly made mistake in REBOL is to forget the second
+block on "either" or add a second block to "if".  These examples
+both creator hard-to-find errors:} pre-area 440x72 {
+either age >  10 [print "Older"]
+
+if age >  10 [print "Older"] [print "Younger"]} p-area 490x65 {These types of errors may be difficult to detect, so keep this
+in mind if these functions do not seem to be doing what you
+expect.} sub-heading "6.2 Any and All" p-area 490x101 {The "any" and "all" functions offer a shortcut
+to evaluating some types of conditional expressions. These functions can be used
+in a number of ways:either in conjunction with "if",
+"either", and other conditional functions, or separately.} p-area 490x136 {Both "any" and "all" accept a block of
+expressions, which is evaluated one expression at a time. The
+"any" function returns on the first true expression, and the
+"all" function returns on the first false expression. Keep in
+mind that a false expression can also be "none", and that a true
+expression is any value other than "false" "or"
+"none".} p-area 490x90 {The "any" function returns the first value that is not
+"false", otherwise it returns "none". The "all"
+function returns the last value if all the expressions are not "false",
+otherwise it returns"" "none".} p-area 490x91 {Both the "any" and "all" functions only
+evaluate as much as they need. For example, once "any" has found
+a true expression, none of the remaining expressions are evaluated. Here is an
+example of using "any" :} pre-area 440x90 {
+size: 50
+if any [size < 10 size >  90] [
+    print "Size is out of range."
+]} p-area 490x74 {The behavior of "any" is also useful for setting default
+values. For example, the following lines set a number to "100", but only
+when its value is "none" :} pre-area 440x72 {
+number: none
+print number: any [number 100]
+ 100} p-area 490x61 {Similarly, if you have various potential values, you can use the first one
+that actually has a value (is not "none" ):} pre-area 440x90 {
+num1: num2: none
+num3: 80
+print number: any [num1 num2 num3]
+ 80} p-area 490x47 {You can use "any" with functions like "find" to
+always return a valid result:} pre-area 440x72 {
+data: [123 456 789]
+print any [find data 432 999]
+ 999} p-area 490x51 {Similarly, "all" can be used for conditions that require all
+expressions to be "true" :} pre-area 440x54 {
+if all [size >  10 size < 90] [print "Size is in range"]
+ Size is in range} p-area 490x46 {You can verify that values have been set up before evaluating a function:} pre-area 440x144 {
+a: "r-ebol/"
+b: none
+probe all [string? a string? b append a b]
+ none 
+b: "Core"
+probe all [string? a string? b append a b]
+ r-ebol/Core} sub-heading "6.3 Conditional Loops" p-area 490x52 {The "until" and "while" functions repeat the
+evaluation of a block until a condition is met.} p-area 490x98 {The "until" function repeats a block until the evaluation of
+the block returns "true" (that is, not "false" or "none" ).
+The evaluation block is always evaluated at least once. The
+"until" function returns the value of its block.} p-area 490x122 {The example below will print each word in the color block. The block begins
+by printing the first word of the block. It then moves to the next color for
+each color in the block. The "tail?" function checks for the end
+of the block, and will return "true", which will cause the
+"until" function to exit.} pre-area 440x162 {
+color: [red green blue]
+until [
+    print first color
+    tail? color: next color
+]
+ red
+green
+blue} p-area 490x47 {The "break" function can be used to escape from the "until"
+loop at any time.} p-area 490x127 {The "while" function repeats the evaluation of its two block
+arguments while the first block returns "true". The first block is the
+condition block, the second block is the evaluation block. When the condition
+block returns "false" or "none", the expression block will no
+longer be evaluated and the loop terminates.} p-area 490x66 {Here is a similar example to that show above. The "while" loop
+will continue to print a color while there are still colors to print.} pre-area 440x162 {
+color: [red green blue]
+while [not tail? color] [
+    print first color
+    color: next color
+]
+ red
+green
+blue} p-area 490x130 {The condition block can contain any number of expressions, so long as the
+last expression returns the condition. To illustrate this, the next example adds
+a print to the condition block. This will print the index value of the color. It
+will then check for the tail of the color block, which is the condition used for
+the loop.} pre-area 440x288 {
+color: [red green blue]
+while [
+    print index? color
+    not tail? color
+][
+    print first color
+    color: next color
+]
+ 1
+red
+2
+green
+3
+blue
+4} p-area 490x44 {The last value of the block is returned from the "while"
+function.} p-area 490x41 {A "break" can be used to escape from the loop at any time.} sub-heading "6.4 Common Mistakes" p-area 490x102 {Conditional expressions are only false when they return "false" or
+"none", and they are "true" when they return any
+other value. All of the conditional expressions in the following examples return
+"true", even the zero and empty block values:} pre-area 440x162 {
+if true [print "yep"]
+ yep 
+if 1 [print "yep"]
+ yep 
+if 0 [print "yep"]
+ yep 
+if [] [print "yep"]
+ yep} p-area 490x40 {The following conditional expressions return "false" :} pre-area 440x72 {
+if false [print "yep"]
+
+if none [print "yep"]} p-area 490x63 {Do not enclose conditional expressions in a block. Conditional expressions
+enclosed in blocks, always return a "true" result:} pre-area 440x54 {
+if [false] [print "yep"]
+ yep} p-area 490x45 {Do not confuse "either" with "if". For example, if you
+intend to write:} pre-area 440x36 "^/either some-condition [a: 1] [b: 2]" p-area 490x29 "but write this instead:" pre-area 440x36 "^/if some-condition [a: 1] [b: 2]" p-area 490x64 {the "if" function would ignore the second block. This would
+not cause an error, but the second block would never get evaluated.} p-area 490x50 {The opposite is also true. If you write the following line,
+omitting a second block:} pre-area 440x36 "^/either some-condition [a: 1]" p-area 490x53 {the "either" function will not evaluate the correct code and
+may produce an erroneous result.} heading "7. Repeated Evaluation" p-area 490x79 {The "while" and "until" functions above where used to loop
+until a condition was met. There are also several functions that
+let you loop for a specified a number of times.} sub-heading "7.1 Loop" p-area 490x60 {The "loop" function evaluates a block a specified number of
+times. The following example prints a line of 40 dashes:} pre-area 440x54 {
+loop 40 [prin "-"]
+ ----------------------------------------} p-area 490x61 {Note that the "prin" function is similar to the
+"print" function, but prints its argument without a line
+termination.} p-area 490x47 {The "loop" function returns the value of the final evaluation
+of the block:} pre-area 440x72 {
+i: 0
+print loop 40 [i: i + 10]
+ 400} sub-heading "7.2 Repeat" p-area 490x79 {The "repeat" function extends "loop" by
+allowing you to monitor the loop counter. The "repeat" function's
+first argument is a word that will be used to hold the count value:} pre-area 440x90 {
+repeat count 3 [print ["count:" count]]
+ count: 1
+count: 2
+count: 3} p-area 490x35 "The final block value is also returned:" pre-area 440x72 {
+i: 0
+print repeat count 10 [i: i + count]
+ 55} p-area 490x94 {In the previous examples, the "count" word only has its value within
+the "repeat" block. In other words, the value of "count"
+is local to the block. After "repeat" finishes, "count"
+returns to any previous set value.} sub-heading "7.3 For" p-area 490x82 {The "for" function extends "repeat" by allowing
+the starting value, the ending value, and the increment to the value to be
+specified. Any of the values can be positive or negative.} p-area 490x54 {The example below begins at zero and counts to 50 by incrementing 10 each
+time through the loop.} pre-area 440x144 {
+for count 0 50 10 [print count]
+ 0
+10
+20
+30
+40
+50} p-area 490x123 {The "for" function cycles through the loop up to and including
+the ending value. However, if the count exceeds the ending value, the loop is
+still terminated. The example below specifies an ending value of 55. That value
+will never be hit because the loop increments by 10 each time. The loop stops at
+50.} pre-area 440x54 {
+for count 0 55 10 [prin [count " "]]
+ 0 10 20 30 40 50} p-area 490x54 {The next example shows how to count down. It begins at four and counts down
+to zero one at a time.} pre-area 440x126 {
+for count 4 0 -1 [print count]
+ 4
+3
+2
+1
+0} p-area 490x102 {The "for" function also works for decimal numbers, money,
+times, dates, series, and characters. Be sure that both the starting and ending
+values are of the same datatype. Here are several examples of using the
+"for" loop with other datatypes.} pre-area 440x198 {
+for count 10.5 0.0 -1 [prin [count " "]]
+ 10.5 9.5 8.5 7.5 6.5 5.5 4.5 3.5 2.5 1.5 0.5 
+for money $0.00 $1.00 $0.25 [prin [money " "]]
+ $0.00 $0.25 $0.50 $0.75 $1.00 
+for time 10:00 12:00 0:20 [prin [time " "]]
+ 10:00 10:20 10:40 11:00 11:20 11:40 12:00 
+for date 1-jan-2000 4-jan-2000 1 [prin [date " "]]
+ 1-Jan-2000 2-Jan-2000 3-Jan-2000 4-Jan-2000 
+for char #"a" #"z" 1 [prin char]
+ abcdefghijklmnopqrstuvwxyz} p-area 490x128 {The "for" function also works on series. The following example
+uses "for" on a string value. The word "end" is defined as
+the string with its current index at the "d" character. The
+"for" function moves through the string series one character at a
+time and stops when it reaches the character position defined to "end:"} pre-area 440x144 {
+str: "abcdef"
+end: find str "d"
+for s str end 1 [print s]
+ abcdef
+bcdef
+cdef
+def} sub-heading "7.4 Foreach" p-area 490x77 {The "foreach" function provides a convenient way to repeat the
+evaluation of a block for each element of a series. It works for all types of
+block and string series.} p-area 490x42 {In the example below, each word in the block will be printed:} pre-area 440x108 {
+colors: [red green blue]
+foreach color colors [print color]
+ red
+green
+blue} p-area 490x43 {In the next example, each character in a string will be printed:} pre-area 440x144 {
+string: "r-ebol"
+foreach char string [print char]
+ R
+E
+B
+O
+L} p-area 490x46 {In the example below, each filename in a directory block will be printed:} pre-area 440x162 {
+files: read %.
+foreach file files [
+    if find file ".t" [print file]
+]
+ file.txt
+file2.txt
+newfile.txt
+output.txt} p-area 490x131 {When a block contains groups of values that are related, the
+"foreach" function can fetch all the values of the group at the
+same time. For example, here is a block that contains a time, string, and price.
+By providing the "foreach" function with a block of words for the
+group, each of their values can be fetched and printed.} pre-area 440x234 {
+movies: [
+     8:30 "Contact"      $4.95
+    10:15 "Ghostbusters" $3.25
+    12:45 "Matrix"       $4.25
+]
+
+foreach [time title price] movies [
+    print ["watch" title "at" time "for" price]
+]
+ watch Contact at 8:30 for $4.95
+watch Ghostbusters at 10:15 for $3.25
+watch Matrix at 12:45 for $4.25} p-area 490x78 {In the above example, the "foreach" value block,
+["time" "title" "price"], specifies that three values are
+to be fetched from "movies" for each evaluation of the block.} p-area 490x94 {The variables used to hold the "foreach" values are local to
+the block. Their value are only set within the block that is being repeated.
+Once the loop has exited, the variables return to their previously set
+values.} sub-heading "7.5 Forall and Forskip" p-area 490x123 {Similar to "foreach", the "forall" function
+evaluates a block for every value in a series. However, there are some important
+differences. The "forall" function is handed the series that is
+set to the beginning of the loop. As it proceeds through the loop,
+"forall" modifies the position within the series.} pre-area 440x108 {
+colors: [red green blue]
+forall colors [print first colors]
+ red
+green
+blue} p-area 490x79 {In the above example, after each evaluation of the block, the series is
+advanced to its next position. When "forall" returns, the
+"color" index is at the tail of the series.} p-area 490x56 {To continue to use the series you will need to return it to its head position
+with the following line:} pre-area 440x36 "^/colors: head colors" p-area 490x84 {The "forskip" function evaluates a block for groups of values
+in a series. The second argument to "forskip" is the count of how
+many elements to move forward after each cycle of the loop.} p-area 490x132 {Like "forall", "forskip" is handed the series
+with the series index set to where it is to begin. Then,
+"forskip" modifies the index position as it continues the loop.
+After each evaluation of the body block, the series index is advanced by the
+skip amount to its next index position. The following example demonstrates
+"forskip" :} pre-area 440x198 {
+movies: [
+     8:30 "Contact"      $4.95
+    10:15 "Ghostbusters" $3.25
+    12:45 "Matrix"       $4.25
+]
+
+forskip movies 3 [print second movies]
+ Contact
+Ghostbusters
+Matrix} p-area 490x80 {In the above example, "forskip" returns with the
+"movies" series at its tail position. You will need to use the
+"head" function to return the series back to its head
+position.} sub-heading "7.6 Forever" p-area 490x54 {The "forever" function evaluates a block endlessly or until a
+it encounters the "break" function.} p-area 490x52 {The following example uses "forever" to check for the
+existence of a file every ten minutes:} pre-area 440x90 {
+forever [
+    if exists? %datafile [break]
+    wait 0:10
+]} sub-heading "7.7 Break" p-area 490x97 {You can stop the repeated evaluation of a block with the
+"break" function. The "break" function is useful when a
+special condition is encountered and the loop must be stopped.
+The "break" function works with all types of loops.} p-area 490x48 {In the following example, the loop will "break" if a number is
+greater than 5.} pre-area 440x144 {
+repeat count 10 [
+    if (random count) >  5 [break]
+    print "testing"
+]
+ testing
+testing
+testing} p-area 490x54 {The "break" function does not return a value from the loop
+unless a "/return" refinement is used:} pre-area 440x180 {
+print repeat count 10 [
+    if (random count) >  5 [break/return "stop here"]
+    print "testing"
+    "normal exit"
+]
+ testing
+testing
+testing
+stop here} p-area 490x83 {In the above example, if the repeat terminates without the condition
+occurring, the block returns the string "normal" exit. Otherwise,
+"break/return" will return the string "stop" here.} heading "8. Selective Evaluation" p-area 490x77 {There are several methods to selectively evaluate expressions in REBOL. These
+methods provide a way for evaluation to branch many different ways, based on a
+key value.} sub-heading "8.1 Select" p-area 490x94 {The "select" function is often used to obtain a particular
+value or block, given a target value. If you define a block of values and
+actions, you can use "select" to search for the action that
+corresponds to a value.} pre-area 440x162 {
+cases: [
+    center [print "center"]
+    right  [print "right"]
+    left   [print "left"]
+]
+action: select cases 'right
+if action [do action]
+ right} p-area 490x121 {In the previous example, the "select" function finds the word
+"right" and returns the block that follows it. (If for some reason the
+block was not found, then "none" would have been returned.) The block is
+then evaluated. The values used in the example are words, but they can be any
+kind of value:} pre-area 440x162 {
+cases: [
+     5:00 [print "everywhere"]
+    10:30 [print "here"]
+    18:45 [print "there"]
+]
+action: select cases 10:30
+if action [do action]
+ here} sub-heading "8.2 Switch" p-area 490x113 {The "select" function is used so often that there is a special
+version of it called "switch", which includes the evaluation of
+the resulting block. The "switch" function makes it easier to
+perform inline selective evaluation. For instance, to switch on a simple numeric
+case:} pre-area 440x108 {
+switch 22 [
+    11 [print "here"]
+    22 [print "there"]
+]
+ there} p-area 490x61 {The "switch" function also returns the value of the block it
+evaluates, so the previous example can also be written as:} pre-area 440x144 {
+str: copy "right "
+
+print switch 22 [
+    11 [join str "here"]
+    22 [join str "there"]
+]
+ right there} p-area 490x23 "and:" pre-area 440x144 {
+car: pick [Ford Chevy Dodge] random 3
+print switch car [
+    Ford  [351 * 1.4]
+    Chevy [454 * 5.3]
+    Dodge [154 * 3.5]
+]
+ 2406.2} p-area 490x64 {The cases can be any valid datatype, including numbers, strings, words,
+dates, times, urls, and files. Here are some examples:} p-area 490x24 "Strings:" pre-area 440x144 {
+person: "kid"
+switch person [
+    "dad" [print "here"]
+    "mom" [print "there"]
+    "kid" [print "everywhere"]
+]
+ everywhere} p-area 490x24 "Words:" pre-area 440x144 {
+person: 'kid
+switch person [
+    dad [print "here"]
+    mom [print "there"]
+    kid [print "everywhere"]
+]
+ everywhere} p-area 490x25 "Datatypes:" pre-area 440x162 {
+person: 123
+switch type?/word [
+    string! [print "a string"]
+    binary! [print "a binary"]
+    integer! [print "an integer number"]
+    decimal! [print "a decimal number"]
+]
+ an integer number} p-area 490x24 "Files:" pre-area 440x144 {
+file: %r-ebol.r
+switch file [
+    %user.r [print "here"]
+    %r-ebol.r [print "everywhere"]
+    %file.r [print "there"]
+]
+ everywhere} p-area 490x23 "URLs:" pre-area 440x144 {
+url: ftp://ftp.r-ebol.org
+switch url [
+    http://www.r-ebol.com [print "here"]
+    http://www.cnet.com [print "there"]
+    ftp://ftp.r-ebol.org [print "everywhere"]
+]
+ everywhere} p-area 490x23 "Tags:" pre-area 440x144 {
+tag:  
+print switch tag [
+    <PRE>    ["Preformatted text"]
+    <TITLE>  ["Page title"]
+         ["Bulleted list item"]
+]
+ Bulleted list item} p-area 490x24 "Times:" pre-area 440x126 {
+time: 12:30
+switch time [
+     8:00 [send wendy@domain.dom "Hey, get up"]
+    12:30 [send cindy@r-ebol.dom "Join me for lunch."]
+    16:00 [send group@every.dom "Dinner anyone?"]
+]} p-area 490x61 {A default case can be specified when none of the other cases
+match. Use the "default" refinement to specify a default:.} pre-area 440x144 {
+time: 7:00
+switch/default time [
+     5:00 [print "everywhere"]
+    10:30 [print "here"]
+    18:45 [print "there"]
+] [print "nowhere"]
+ nowhere} p-area 490x66 {If you have common cases, where the result would be the same for several
+values, you can define a word to hold a common block of code:} pre-area 440x180 {
+case1: [print length? url]   ; the common block
+
+url: http://www.r-ebol.com
+switch url [
+    http://www.r-ebol.com case1
+    http://www.cnet.com [print "there"]
+    ftp://ftp.r-ebol.org case1
+]
+ 20} p-area 490x62 {More than just blocks can be evaluated for cases. This example evaluates the
+file that corresponds to a day of the week:} pre-area 440x108 {
+switch now/weekday [
+    1 %monday.r
+    5 %friday.r
+    6 %saturday.r
+]} p-area 490x69 {So, if it's Friday, the "friday".r file is evaluated and its result is
+returned from the switch. This type of evaluation also works for URLs:} pre-area 440x108 {
+switch time [
+     8:30 ftp://ftp.r-ebol.org/wakeup.r
+    10:30 http://www.r-ebol.com/break.r
+    18:45 ftp://ftp.r-ebol.org/sleep.r
+]} p-area 490x58 {The cases for "switch" are enclosed in a block, and therefore
+can be defined apart from the switch statement:} pre-area 440x144 {
+schedule: [
+     8:00 [send wendy@domain.dom "Hey, get up"]
+    12:30 [send cindy@dom.dom "Join me for lunch."]
+    16:00 [send group@every.dom "Dinner anyone?"]
+]
+
+switch 8:00 schedule} heading "9. Stopping Evaluation" p-area 490x69 {Evaluation of a script can be stopped at any time by pressing
+the escape key (ESC) on the keyboard or by using the "halt" and
+"quit" functions.} p-area 490x49 {The "halt" function stops evaluation and returns you to the
+REBOL console prompt:} pre-area 440x36 "^/if time >  12:00 [halt]" p-area 490x45 {The "quit" function stops evaluation and exits the REBOL
+interpreter:} pre-area 440x36 "^/if error? try [print test] [quit]" heading "10. Trying Blocks" p-area 490x70 {There are times when you want to evaluate a block, but should an
+error occur, you do not want to stop the evaluation of the rest
+of your script.} p-area 490x61 {For example, you might be performing a number division, but do
+not want your script to stop if a divide-by-zero occurs.} p-area 490x103 {The "try" function allows you to catch errors during the
+evaluation of a block. It is almost identical to "do". The
+"try" function will normally return the result of the block;
+however, if an error occurs, it will return an error value
+instead.} p-area 490x75 {In the following example, when the divide by zero occurs, the
+script will pass an error back to the try function, and
+evaluation will continue from that point.} pre-area 440x180 {
+for num 5 0 -1 [
+    if error? try [print 10 / num] [print "error"]
+]
+ 2
+2.5
+3.33333333333333
+5
+10
+error} p-area 490x58 {More about error handling can be found in the <A
+href="rebolcore-17.html#_Toc487519750">Errors Appendix</A>.}

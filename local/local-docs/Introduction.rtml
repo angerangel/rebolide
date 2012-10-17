@@ -1,0 +1,68 @@
+
+backdrop linen 
+style p-area area linen middle font-size 14 wrap with [edge/size: 0x0 para/origin: 5x3] 
+style pre-area area silver font-size 14 wrap middle with [para/origin: 40x-20] 
+style heading h2 490x23 navy 
+style sub-heading h3 490x23 water 
+origin 0x0 
+across 
+space 0 
+image logo.gif 
+document-header: box 450x24 coal green "Documentation" 
+origin 40x40 
+below 
+space 0 heading "1. About REBOL" p-area 490x35 "Here are a few quick facts about REBOL:" p-area 490x61 {The graphical version of REBOL, called REBOL/View, builds on top of
+REBOL/Core. It can be found on the REBOL website.} heading "2. About this Guide" p-area 490x86 {This guide provides the basic information necessary for using
+REBOL/Core. It assumes that the reader is already familiar with
+general programming and operating system terminology and
+concepts.} sub-heading "2.1 Suggestion for New Programmers" p-area 490x48 {If you are new to programming, REBOL provides an excellent way to get
+started.} p-area 490x153 {There are a few general concepts that REBOL uses everywhere. For
+example, REBOL's concept of a "series" is used in everything from
+data structures to code blocks. Once you learn the concepts and methods
+of series, they can be applied throughout your programs. You should
+learn these concepts well. It will pay off later. The chapters in this
+users guide are ordered to best help you get started.} p-area 490x112 {If you experience trouble using REBOL, do not get frustrated. There
+are many people who can help you. The REBOL Mail List (see support
+section below) is monitored by hundreds of people who enjoy helping
+beginners get started. Feel free to visit that forum for any reason.} sub-heading "2.2 Suggestion for Experienced Programmers" p-area 490x75 {If you are already familiar with other programming languages like C,
+C++, Java, Pascal, Python, PERL, BASIC, etc. we should warn you: "REBOL
+is quite different".} p-area 490x170 {You should know that REBOL was not designed just to be different, but
+rather to give programmers more expressive power. Programmers who have
+mastered REBOL suggest that the best approach is to forget what you
+already know about other languages. That's because you don't create
+REBOL programs in the same way. Sure, you can create REBOL programs that
+look similar to C, but if you do that, you will lose a lot of the
+advantages that REBOL offers.} p-area 490x112 {In technical terms, REBOL is a highly reflective, functional, symbolic
+language with definitional scoping rules. If you don't know what this
+means, don't worry. REBOL takes advantage of advances in computer
+science, but you don't need to be a computer scientist to use it.} p-area 490x128 {As an experienced programmer, you may be tempted to skip most of the
+chapters of this guide. For the most part, that is fine. However,
+concepts like "series" are critical to understanding REBOL.
+If you don't take the time to master such concepts, you will find
+it difficult to become truly fluent in the REBOL language.} heading "3. Document Conventions" p-area 490x48 {The following table describes the typographical conventions used
+in this guide.} p-area 490x23 "Item" p-area 490x25 "Convention" p-area 490x24 "Example" p-area 490x54 {Words that are part of the REBOL language (as function names,
+special variables, system objects).} p-area 490x29 "Bold, green, monospace" p-area 490x29 {"Append" "at" "change"} p-area 490x54 {Non-REBOL words and values such as file names, directory
+names, program names, and variable names.} p-area 490x27 "Green, monospace" p-area 490x29 {"myfile" "window-color"} p-area 490x26 "Code examples." p-area 490x28 "Boxed bold monospace" pre-area 440x36 "^/do %feedback.r" p-area 490x34 "Results printed at the REBOL console." p-area 490x28 "Boxed blue monospace" pre-area 440x36 "^/ true" heading "4. Technical Support" p-area 490x109 {For general questions or feedback regarding REBOL products
+or our website please visit our
+<A HREF="http://www.rebol.com/feedback.html">feedback page</A>.
+We usually answer messages within 24 to 48 hours.
+Be sure to include your email address if you want a reply.} sub-heading "4.1 Developer News and Information" p-area 490x81 {The <a href="http://www.rebol.net">"REBOL Developer Network (www.REBOL.net)"</a>
+provides the latest technical news, information, documentation,
+discussions, releases, and more.} p-area 490x87 {This site is also home to
+<a href=http://www.rebol.net/cgi-bin/blog.r>Carl's REBOL Blog</a>,
+an informative archive of insights, ideas, and queries by REBOL's
+inventor and founder, Carl Sassenrath.} sub-heading "4.2 Discussions and Forums" sub-heading "4.3 Bug Reports and Enhancement Requests" p-area 490x98 {REBOL customers, developers, and user can now directly search for
+information related to known problems, report new problems, or request
+enhancements using our "<a
+href="http://www.rebol.net/cgi-bin/rambo.r">RAMBO</a>" database.} sub-heading "4.4 REBOL.org Script Library" p-area 490x101 {The site "<a href="http://www.rebol.org">www.REBOL.org</a>" is a
+community-operated website that provides an extensive library of REBOL
+examples. It also includes a variety of tutorials as well as an archive
+of REBOL Mailing List messages.} sub-heading "4.5 New Alpha and Beta Releases" p-area 490x99 {We <a href="http://www.rebol.net/builds/">publish interim builds</a> for
+our products on a regular basis. This service is intended for customers
+and experienced developers only. These pages hold raw builds not
+distribution packages.} heading "5. Comments are Welcome" p-area 490x118 {To help us with future releases of this documentation we would
+like to know what corrections or clarifications you would find
+useful. Send them to the <A
+HREF="http://www.rebol.com/feedback.html">Feedback</A> page on
+our website. Please include the title, version, and chapter of
+the guide.}

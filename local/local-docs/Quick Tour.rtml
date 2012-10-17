@@ -1,0 +1,393 @@
+
+backdrop linen 
+style p-area area linen middle font-size 14 wrap with [edge/size: 0x0 para/origin: 5x3] 
+style pre-area area silver font-size 14 wrap middle with [para/origin: 40x-20] 
+style heading h2 490x23 navy 
+style sub-heading h3 490x23 water 
+origin 0x0 
+across 
+space 0 
+image logo.gif 
+document-header: box 450x24 coal green "Documentation" 
+origin 40x40 
+below 
+space 0 heading "1. Overview" p-area 490x103 {This chapter provides a quick way to familiarize yourself with
+the REBOL language. Using examples, this chapter presents the
+basic concepts and structure of the language, illustrating
+everything from data values to performing network operations.} heading "2. Values" p-area 490x69 {A script is written with a sequence of ""values"". A wide variety
+of values exist and you are familiar with many of them from
+daily experience.} p-area 490x63 {When possible, REBOL also allows the use of international
+formats for values such as decimal numbers, money, time, and
+date.} sub-heading "2.1 Numbers" p-area 490x48 {Numbers are written as integers, decimals, or scientific
+notation. For example:} pre-area 440x36 "^/1234 -432 3.1415 1.23E12" p-area 490x36 "And can also be written in European format:" pre-area 440x36 "^/123,4 0,01 1,2E12" sub-heading "2.2 Times" p-area 490x54 {Time is written in hours and minutes with optional seconds, each
+separated by colons. For example:} pre-area 440x36 "^/12:34 20:05:32 0:25.345 0:25,345" p-area 490x59 {Seconds can include a decimal sub-second.  Times can also include
+AM and PM appended without intervening spaces:} pre-area 440x36 "^/12:35PM 9:15AM" sub-heading "2.3 Dates" p-area 490x105 {Dates are written in either international format: day-month-year
+or year-month-day. A date can also include a time and a time
+zone. The name or abbreviation of a month can be used to make
+its format more identifiable in the United States. For example:} pre-area 440x144 {
+20-Apr-1998 20/Apr/1998 (USA friendly)
+
+20-4-1998 1998-4-20     (international)
+
+1980-4-20/12:32         (date with time)
+
+1998-3-20/8:32-8:00     (with time zone)} sub-heading "2.4 Money" p-area 490x61 {Money is written as an optional international three-letter
+currency symbol followed by a numeric amount. For example:} pre-area 440x36 "^/$12.34  USD$12.34  CAD$123.45  DEM$1234,56" sub-heading "2.5 Tuples" p-area 490x79 {Tuples are used for version numbers, RGB color values, and
+network addresses. They are written as integers that range
+from 0 to 255 and are separated by dots. For example:} pre-area 440x36 "^/2.3.0.3.1  255.255.0  199.4.80.7" p-area 490x60 {At least two dots are required (otherwise the number will
+be interpreted as a decimal value, not a tuple). Example:} pre-area 440x72 {
+2.3.0  ; tuple
+2.3.   ; tuple
+2.3    ; decimal} sub-heading "2.6 Strings" p-area 490x116 {Strings are written in a single-line format or a multiline
+format. Single-line format strings are enclosed in quotes.
+Multiline format strings are enclosed in braces. Strings that
+include quotes, tabs, or line breaks must be enclosed in braces
+using the multiline format. For example:} pre-area 440x90 {
+"Here is a single-line string"
+
+{Here is a multiline string that
+contains a "quoted" string.}} p-area 490x88 {Special characters (escapes) within strings are indicated with the caret
+character (^^). <a href="rebolcore-16.html">See the string section in the
+Values Chapter for the table of escape sequences.</a>} sub-heading "2.7 Tags" p-area 490x57 {Tags are useful for markup languages such as XML and HTML. Tags
+are enclosed in angle brackets For example:} pre-area 440x72 {
+<title>  </body> 
+
+<font size="2" color="blue">} sub-heading "2.8 Email Addresses" p-area 490x53 {Email addresses are written directly in REBOL. They must include
+an at sign (@). For example:} pre-area 440x72 {
+info@r-ebol.com
+
+pres-bill@oval.whitehouse.gov} sub-heading "2.9 URLs" p-area 490x69 {Most types of Internet URLs are accepted directly by REBOL. They
+begin with a scheme name (HTTP for example) followed by a path.
+For example:} pre-area 440x144 {
+http://www.r-ebol.com
+
+ftp://ftp.r-ebol.com/sendmail.r
+
+ftp://freda:grid@da.site.dom/dir/files/
+
+mailto:info@r-ebol.com} sub-heading "2.10 Filenames" p-area 490x52 {Filenames are preceded by a percent sign to distinguish them
+from other words. For example:} pre-area 440x108 {
+%data.txt
+
+%images/photo.jpg
+
+%../scripts/*.r} sub-heading "2.11 Pairs" p-area 490x82 {Pairs are used to indicate spatial coordinates, such as
+positions on a display. They are used to indicate both positions
+and sizes. Coordinates are separated by an "x". For example:} pre-area 440x108 {
+100x50
+
+1024x800
+
+-50x200} sub-heading "2.12 Issues" p-area 490x58 {Issues are identification numbers, such as telephone numbers,
+model numbers, credit card numbers. For example:} pre-area 440x108 {
+#707-467-8000
+
+#0000-1234-5678-9999
+
+#MFG-932-741-A} sub-heading "2.13 Binary" p-area 490x60 {Binary values are byte strings of any length. They can be
+encoded directly as hexadecimal or base-64. For example:} pre-area 440x72 {
+#{42652061205245424F4C}
+
+64#{UkVCT0wgUm9ja3Mh}} heading "3. Words" p-area 490x69 {Words are the symbols used by REBOL. A word may or may not be a
+variable, depending on how it is used. Words are also used
+directly as symbols.} pre-area 440x144 {
+show next image
+
+Install all files here
+
+Country State City Street Zipcode
+
+on off true false one none} p-area 490x96 {REBOL has no keywords; there are no restrictions on what words
+are used or how they are used. For instance, you can define your
+own function called "print" and use it instead of the
+predefined function for printing values.} p-area 490x54 {Words are not case sensitive and can include hyphens and a few
+other special characters such as:} pre-area 440x36 "^/+ - `  * ! ~ &amp; ? |" p-area 490x37 "The following examples illustrate valid words:" pre-area 440x108 {
+number?  time?  date!
+image-files  l'image
+++ -- == +-
+***** *new-line*
+left&amp;right left|right} p-area 490x52 {The end of a word is indicated by a space, a line break, or one
+of the following characters:} pre-area 440x36 {
+[ ] ( ) { } " : ; /} p-area 490x38 "The following characters are not allowed in words:" pre-area 440x36 "^/@ # $ % ^^ ," heading "4. Blocks" p-area 490x75 {REBOL is composed by grouping values and words into ""blocks"".
+Blocks are used for code, lists, arrays, tables, directories,
+associations, and other sequences.} p-area 490x54 {A block is a type of "series" which is a "collection of
+values" organized in a "specific order".} p-area 490x89 {A block is enclosed in square brackets [ ]. Within a block,
+values and words can be organized in any order and can span any
+number of lines. The following examples illustrate the valid
+forms of blocks:} pre-area 440x288 {
+[white red green blue yellow orange black]
+
+["Spielberg" "Back to the Future" 1:56:20 MCA]
+
+[
+    Ted    ted@gw2.dom   #213-555-1010
+    Bill   billg@ms.dom  #315-555-1234
+    Steve  jobs@apl.dom  #408-555-4321
+]
+
+[
+    "Elton John"  6894  0:55:68
+    "Celine Dion" 68861 0:61:35
+    "Pink Floyd"  46001 0:50:12
+]} p-area 490x49 {Blocks are used for code as well as for data, as shown in the
+following examples:} pre-area 440x270 {
+loop 10 [print "hello"]
+
+if time >  10:30 [send jim news]
+
+sites: [
+    http://www.r-ebol.com [save %reb.html data]
+    http://www.cnn.com   [print data]
+    ftp://www.amiga.com  [send cs@org.foo data]
+]
+
+foreach [site action] sites [
+    data: read site
+    do action
+]} p-area 490x75 {A script file itself also is a block.
+Although it does not include the brackets, the block is implied.
+For example, if the lines below were put in a script file:} pre-area 440x90 {
+red
+green
+blue
+yellow} p-area 490x64 {When the file is loaded, it will be a block that contains the
+words red, green, blue, and yellow. It is equivalent to writing:} pre-area 440x36 "^/[red green blue yellow]" heading "5. Variables" p-area 490x88 {Words can be used as variables that refer to values. To define a
+word as a variable, follow the word with a colon (:), then the
+value to which the variable refers as shown in the following
+examples:.} pre-area 440x90 {
+age: 22
+snack-time: 12:32
+birthday: 20-Mar-1997
+friends: ["John" "Paula" "Georgia"]} p-area 490x76 {A variable can refer to any type of value, including functions
+(see <A href="#_Toc487519697">Functions</A>) and
+objects (see <A href="#_Toc487519699">Objects</A>).} p-area 490x162 {A variable refers to a specific value only within a defined
+context, such as a block, a function, or an entire program.
+Outside that context the variable can refer to some other value
+or to no value at all. The context of a variable can span an
+entire program or it can be restricted to a particular block,
+function, or object. In other languages, the context of a
+variable is often referred to as the scope of a variable.} heading "6. Evaluation" p-area 490x105 {Blocks are evaluated to compute their results. When a block is
+evaluated the values of its variables are obtained. The
+following examples evaluate the variables "age", "snack-time",
+"birthday", and "friends" that were defined in the previous
+section:} pre-area 440x126 {
+print age
+ 22 
+if current-time >  snack-time [print snack-time]
+ 12:32 
+print third friends
+ Georgia} p-area 490x52 {A block can be evaluated multiple times by using a loop, as
+shown in the following examples:} pre-area 440x216 {
+loop 10 [prin "*"]  ;("prin" is not a typo, see manual)
+ ********** 
+loop 20 [
+    wait 8:00
+    send friend@r-ebol.com read http://www.cnn.com
+]
+
+repeat count 3 [print ["count:" count]]
+ count: 1
+count: 2
+count: 3} p-area 490x63 {The evaluation of a block returns a result. In the following examples,
+"5" and "PM" are the results of evaluating each block:} pre-area 440x90 {
+print do [2 + 3]
+ 5 
+print either now/time < 12:00 ["AM"]["PM"]
+ PM} p-area 490x84 {In REBOL there are no special operator precedence rules for
+evaluating blocks. The values and words of a block are always
+evaluated from first to last, as shown in the following example:} pre-area 440x54 "^/print 2 + 3 * 10^/ 50" p-area 490x53 {Parentheses can be used to control the order of evaluation, as
+shown in the following examples:} pre-area 440x90 {
+2 + (3 * 10)
+ 32 
+(length? "boat") + 2
+ 6} p-area 490x64 {You can also evaluate a block and return each result that was
+computed within it. This is the purpose of the "reduce"
+function:} pre-area 440x54 "^/reduce [1 + 2  3 + 4  5 + 6]^/ 3 7 11" heading "7. Functions" p-area 490x73 {A function is a block with variables that are given new values
+each time the block is evaluated. These variables are called the
+arguments of the function.} p-area 490x59 {In the following example, the word "sum" is set to refer to a
+function that accepts two arguments, "a" and "b" :} pre-area 440x36 "^/sum: func [a b] [a + b]" p-area 490x120 {In the above example, "func" is used to define a new function.
+The first block in the function describes the arguments of the
+function. The second block is the block of code that gets
+evaluated when the function is used. In this example, the second
+block adds two values and returns the result.} p-area 490x55 {The next example illustrates one use of the function "sum" that
+was defined in the previous example:} pre-area 440x54 "^/print sum 2 3^/ 5" p-area 490x75 {Some functions need local variables as well as arguments. To
+define this type of function, use "function", instead of
+"func", as shown in the following example:} pre-area 440x162 {
+average: function [series] [total] [
+    total: 0
+    foreach value series [total: total + value]
+    total / (length? series)
+]
+
+print average [37 1 42 108]
+ 47} p-area 490x69 {In the above example, the word "series" is an argument and the
+word "total" is a local variable used by the function for
+calculation purposes.} p-area 490x68 {The function argument block can contain strings to describe the
+purpose of a function and its argument, as shown in the
+following example:} pre-area 440x162 {
+average: function [
+    "Return the numerical average of numbers"
+    series "Numbers to average"
+] [total] [
+    total: 0
+    foreach value series [total: total + value]
+    total / (length? series)
+]} p-area 490x63 {These descriptive strings are kept with the function and can be
+viewed by asking for help about the function, as shown below:} pre-area 440x162 {
+help average
+ USAGE:
+    AVERAGE series
+DESCRIPTION:
+    Return the numerical average of numbers
+    AVERAGE is a function value.
+ARGUMENTS:
+    series -- Numbers to average (Type: any)} heading "8. Paths" p-area 490x135 {If you are using files and URLs, then you are already familiar
+with the concept of paths. A path provides a set of values that
+are used to navigate from one point to another. In the case of a
+file, a path specifies the route through a set of directories to
+the location of the file. In REBOL, the values in a path are
+called ""refinements"".} p-area 490x63 {A slash (/) is used to separate words and values in a path, as
+shown in the following examples of a file path and a URL path:} pre-area 440x72 {
+%source/images/globe.jpg
+
+http://www.r-ebol.com/examples/simple.r} p-area 490x84 {Paths can also be used to select values from blocks, pick
+characters from strings, access variables in objects, and refine
+the operation of a function, as shown in the following examples:} pre-area 440x90 {
+USA/CA/Ukiah/size (block selection)
+names/12          (string position)
+account/balance   (object function)
+match/any         (function option)} p-area 490x64 {The "print" function in next example shows the simplicity of
+using a path to access a mini-database created from a few
+blocks:} pre-area 440x288 {
+towns: [
+    Hopland [
+        phone #555-1234
+        web   http://www.hopland.ca.gov
+    ]
+
+        Ukiah [
+        phone #555-4321
+        web   http://www.ukiah.com
+        email info@ukiah.com
+    ]
+]
+
+print towns/ukiah/web
+ http://www.ukiah.com} heading "9. Objects" p-area 490x107 {An object is a set of variables that have specific values in a 
+context. Objects are used for managing data structures and more
+complex behavior. The following example shows how a bank account
+is set up as an object to specify its attributes and functions:} pre-area 440x144 {
+account: make object! [
+  name: "James"
+  balance: $100
+  ss-number: #1234-XX-4321
+  deposit:  func [amount] [balance: balance + amount]
+  withdraw: func [amount] [balance: balance - amount]
+]} p-area 490x125 {In the above example, the words "name", "balance",
+"ss-number", "deposit", and "withdraw" are local variables of
+the "account" object. The "deposit" and "withdraw" variables
+are functions that are defined within the object. The variables
+of the account can be accessed with a path, as shown in the next
+example:} pre-area 440x126 {
+print account/balance
+ $100.00 
+account/deposit $300
+
+print ["Balance for" account/name "is" account/balance]
+ Balance for James is $400.00} p-area 490x60 {The next example shows how to make another account with a new
+balance but with all other values remaining the same:} pre-area 440x72 {
+checking-account: make account [
+    balance: $2000
+]} p-area 490x68 {Notice that the new object is called checking-account, and it shares
+the values of the original account, but provides a new balance amount.} p-area 490x72 {Just as easily you can create a new account object that extends the
+old account object, adding new variables for the bank name and last
+activity date:} pre-area 440x216 {
+account: make account [
+    bank: "Savings Bank"
+    last-active: 20-Jun-2000
+]
+
+print account/balance
+ $400.00 
+print account/bank
+ Savings Bank 
+print account/last-active
+ 20-Jun-2000} heading "10. Scripts" p-area 490x73 {A script is a file that holds a block that can be loaded and
+evaluated. The block can contain code or data, and typically
+contains a number of sub-blocks.} p-area 490x93 {Scripts require a header to identify the presence of code. The
+header can include the script title, date, and other
+information. In the following example of a script, the first
+block contains the header information:} pre-area 440x468 {
+r-ebol [
+    Title: "Web Page Change Detector"
+    File:  %webcheck.r
+    Author: "Reburu"
+    Date:  20-May-1999
+    Purpose: {
+        Determine if a web page has changed since it was
+        last checked, and if it has, send the new page
+        via email.
+    }
+    Category: [web email file net 2]
+]
+
+page: read http://www.r-ebol.com
+
+page-sum: checksum page
+
+if any [
+    not exists? %page-sum.r
+    page-sum <>  (load %page-sum.r)
+][
+    print ["Page Changed" now]
+    save %page-sum.r page-sum
+    send luke@r-ebol.com page
+]} heading "11. Files" p-area 490x55 {In REBOL, files are easily accessed. The following table
+describes some of the ways to access files.} p-area 490x32 "You can read a text file with:" pre-area 440x36 "^/data: read %plan.txt" p-area 490x33 "You can display a text file with:" pre-area 440x36 "^/print read %plan.txt" p-area 490x29 "To write a text file:" pre-area 440x36 "^/write %plan.txt data" p-area 490x40 {For instance, you could write out the current time with:} pre-area 440x36 "^/write %plan.txt now" p-area 490x38 "You can also easily append to the end of a file:" pre-area 440x36 "^/write/append %plan data" p-area 490x36 "Binary files can be read and written with:" pre-area 440x72 {
+data: read/binary %image.jpg
+
+write/binary %new.jpg data} p-area 490x35 "To load a file as a REBOL block or value:" pre-area 440x36 "^/data: load %data.r" p-area 490x39 {Saving a block or a value to a file is just as easy:} pre-area 440x36 "^/save %data.r data" p-area 490x43 {To evaluate a file as a script (it needs a header to do this.):} pre-area 440x36 "^/do %script.r" p-area 490x33 "You can read a file directory with:" pre-area 440x36 "^/dir: read %images/" p-area 490x37 "and, you can then display the file names with:" pre-area 440x36 "^/foreach file dir [print file]" p-area 490x30 "To make a new directory:" pre-area 440x36 "^/make-dir %newdir/" p-area 490x35 "To find out the current directory path:" pre-area 440x36 "^/print what-dir" p-area 490x31 "If you need to delete a file:" pre-area 440x36 "^/delete %oldfile.txt" p-area 490x32 "You can also rename a file with:" pre-area 440x36 "^/rename %old.txt %new.txt" p-area 490x32 "To get information about a file:" pre-area 440x108 {
+print size? %file.txt
+
+print modified? %file.txt
+
+print dir? %image} heading "12. Networking" p-area 490x68 {There are a number of Internet protocols built into REBOL. These
+protocols are easy to use and require very little knowledge of
+networking.} sub-heading "12.1 HTTP" p-area 490x47 {The following example shows how to use the HTTP protocol to read
+a web page:} pre-area 440x36 "^/page: read http://www.r-ebol.com" p-area 490x48 {The next example fetches an image from a web page and writes it
+to a local file:} pre-area 440x72 {
+image: read/binary http://www.page.dom/image.jpg
+
+write/binary %image.jpg image} sub-heading "12.2 FTP" p-area 490x51 {The following reads and writes files to a server using the file
+transfer protocol (FTP):} pre-area 440x72 {
+file: read ftp://ftp.r-ebol.com/test.txt
+
+write ftp://user:pass@site.dom/test.txt file} p-area 490x39 {The next example gets a directory listing from FTP:} pre-area 440x36 "^/print read ftp://ftp.r-ebol.com/pub" sub-heading "12.3 SMTP" p-area 490x48 {The following example sends email with the simple mail transfer protocol
+(SMTP):} pre-area 440x36 {
+send luke@r-ebol.com "Use the force."} p-area 490x40 {The next example sends the text of a file as an email:} pre-area 440x36 "^/send luke@r-ebol.com read %plan.txt" sub-heading "12.4 POP" p-area 490x69 {The following example fetches email with the post office protocol (POP) and
+prints all of the current messages but leaves them on the server:} pre-area 440x72 {
+foreach message read pop://user:pass@mail.dom [
+    print message
+]} sub-heading "12.5 NNTP" p-area 490x66 {The following example fetches news with the network news transfer protocol
+(NNTP), reading all of the news in a particular news group:} pre-area 440x36 {
+messages: read nntp://news.server.dom/comp.lang.r-ebol} p-area 490x43 {The next example reads a list of all news group and prints them:} pre-area 440x72 {
+news-groups: read nntp://news.some-isp.net
+
+foreach group news-groups [print group]} sub-heading "12.6 Daytime" p-area 490x41 {The following example gets the current time from a server:} pre-area 440x36 "^/print read daytime://everest.cclabs.missouri.edu" sub-heading "12.7 Whois" p-area 490x50 {The following example finds out who is in charge of a domain using the whois
+protocol:} pre-area 440x36 "^/print read whois://r-ebol@rs.internic.net" sub-heading "12.8 Finger" p-area 490x45 {The following example gets user information with the finger protocol:} pre-area 440x36 "^/print read finger://username@host.dom" sub-heading "12.9 DNS" p-area 490x57 {The following example determines an Internet address from a domain name and a
+domain name from an address:} pre-area 440x72 {
+print read dns://www.r-ebol.com
+
+print read dns://207.69.132.8} sub-heading "12.10 TCP" p-area 490x84 {Direct connections with TCP/IP are also possible in REBOL. The following
+example is a simple, but useful, server that waits for connections on a
+port, then executes whatever has been sent:} pre-area 440x198 {
+server-port: open/lines tcp://:9999
+
+forever [
+    connection-port: first server-port
+    until [
+        wait connection-port
+        error? try [do first connection-port]
+    ]
+    close connection-port
+]}

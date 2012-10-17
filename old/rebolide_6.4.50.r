@@ -4,7 +4,7 @@ REBOL [
 	credits: { Carl sassenrath, "Shadwolf", Steeve, Maxim, Coccinelle, Cyphre, Graham, Nick Antonaccio, Semseddin Moldibi, Zoltan Eros, R. v.d.Zee}
 	purpose: { Colored IDE for rebol in rebol, for beginners that helps learning Rebol. 
 	I suggest you to put this script in a separete folder.}  
-	version: 6.4.51	
+	version: 6.4.50	
 	File: %rebolide.r 
 	Author: "Massimiliano Vessi" 
 	email: maxint@tiscali.it	
@@ -75,6 +75,76 @@ either  exists? %pref.dat [
 		
 ;NOW SKIP TO THE CODE AT LINE 248. The folowing lines are just compressed scripts for tab panel and menu bar
 ;***********************************
+; LOAD TAB-panel widget Cyphre (TM)
+do load decompress #{
+789CBD586973E2B816FDCEAF50577FE86428C7989824506F2695349DADB37496
+4E4FA09C2A63CBE0C6D8C4368DC9BCF9EFEF5E495E65B2CCAB9AA4005BBAD2DD
+8E8EAEF45714AF3CF799AA33338A6948868D47253647CADCF4A9D7238E6951B2
+74E309EBE05D6648CD1E999953CABB79CFA312384E44E31E6925ED9668A2F698
+0A517CCC441F1577666297179836890365E4FA66B82236B582D93CA4514476F4
+8F7F35E8D973D8FF76F8DC69FEB8D56767E387ABBED63D39383B884FC79713EB
+E4B8D38F2EEF9ED4A3969BCCFBBF76AE7E9E2E4757ABB079D3D28FADC99F8DDB
+6F0FA77BB3FBF1D3D199F7703C0906B3BEDEBCE99EFE6A1F8EBFF6EFC70F27EE
+FDF2E2707C39681F5EDF256A337A1ADCEB874FB7CF897DF2E5E2A9D171EFBA4D
+4775FC78767D6D1E4D6EA6D6F5D765D4D793E3D9E0AC3B4816E777E7CFA74F17
+9FA7AD9B2FC9F27C104C8F0E7FBA17DD4B6B7BFAE3B6D1FC71393BD8BB9AF447
+30CF73D3695D7C3B595EDEDE3C58BB5F4EA3CF5DB77564FF79D78CC0BC643038
+39F8BAFB5DBB3EBF98B9FDD1FDFC9BAD37BE3E07CBF3D3D5C21B3C75CD8BE6F7
+B3B63538BE9C3E9CF8FABDF7BDD554E943AB75A21FDF6996EA6DDF5F7DFEDE3A
+38D8D54E0F9AD303F8FBBDF17716F40812DD237AA293ACC90ABC20EC113FF0A9
+6833C4AF4311003CCDF058C85DA3F4F3A884D40ECD258065E15B64E8109350A3
+200E30000001B61C750ED8F1630561A38E82D0A6E17E4910B4AA0814953A0EB5
+004B08872002E0D024A6BECD6CDF7054748428446B6D12E600BE6E94A767ED91
+AA6D1A85F98D3A6525EF8B1110225553C6A169BBA00780AE9176A7BDC53F3A69
+EBFA565BDFDE6A6FEFBDC72CA31478235D67754B8C27B0038ABB6996023F4E25
+E1B1104D9159ADDDDA129F0A0E34AD92F1F5AB5546493A0998F266DC507FCC16
+7D012744F502CBF448E43965C844403AD60444CA19B383A55F690259CFE955C0
+55789685D594C55464B91E89A8071926A227620F4E602D229E06D7B769B24F1C
+F84D65945190B0C1A016463B151DAE039E0D51D6B46237F071587956E335ABD4
+BA900BD949B064B3A15CA9CFA805B1F1D2425D9300173B7F279F98AE72BCDF11
+6D474DF78499EBE3982012DFCDCA0C76E0C495A12200E868BA684A1282544A61
+0593DF902D09409C50D4558FB4DB521777013B5B521F2EB9D4D091675A531908
+68433DD5F129EAE84EB5299D9321268B0CE7D4271BC5286C82739EA7D4B4839F
+B820BB408C2DD88535A30AB35A3E0B8305C44AEBEC6D693B5DF874C876755CF9
+DD581FBF8C97EAE227C7568A1F0063A71AE6F706B166C914FDAEF39720A7831D
+8CD2351DD8927F8023E1977F5E89C98B4BAF48ED9C373323855B3D12870BDE52
+A01EA4A31EB1CDD864CF0864781D99D31E31C33058463D22A257D9C83826C0D9
+8F436C3320313B5B6D0DF6A64E879BB104BD28202C441D64E8D3A5CAB5396E18
+C5C4876D17348DA3FC2975C90F84E97C54E686637A00AA5C927FBBBECB20375F
+91D94ABCA5AA33C7E4FD2E2F2AF524470F9205EE3C850D2DA6F348CC3FCCC33F
+33936C9BCA85EB2386FF7C3B28CF62E4560A0B916786D2BE6B14048B2572FA0A
+254C757B2D0DC92320DE7213380ACA66C1A2F08398E4CC372CC0464BA5B84340
+FB0B0C6A668AD050988BA79F238B29C2868A2E16373214E15B4EDC98A6120BE4
+11C80AF9657A0B1223563C73455C3B210EB32E9ECD59260AD49136959323529B
+271BE60087F28255184367F378B52FEC2EAC3DD854C016A9192012CCA8C41DA6
+0F21057C71BBE1812D8B0F063E7237A23874FDF107D6802E0D47B05F4E3F90FF
+9260F413F8049FC4986C32EEF2279610836C485C042EE0907D3E217CF5C8984F
+2FF335C8328D4561F80A166BE4A151CD0F62552A65F3A1AF741FECE3B891444A
+0C04E1AF1158F8E8279F41EAAE752255CA025DA733CB0278B05E234ABC4D2182
+841D13EA94E5D8038AE0894B9B306A061AC10F194DA2ED25DBDB6FD109168680
+1AD3F5186F67CB0E57417D6E11DAD80B4A5E9B2EAF61320E2A170B355E426F8F
+540B2B116DDCAF7161B5B014635C8F4D0AC37C8187418F5AA0BAF41578888843
+04AB343A6CB1F4C806FE6CCA9E3E2AC5FE9A6E991BDF1F711622B613088F7051
+41DDE999515C0EE127B45D9A8E510F9258136F24E6A61B6629D4B228BD3C2791
+AA844DE08768EACEDF502CA4A501E7119C2D63CD824CAA34DFDBCA19CE02C1FA
+36D83CBF112D81A3729328DA0E948505695828305C4DC81F8443A202A4628899
+9B69D9C139282DEEE0A83B86A8BC8848D30A8328AA348A81DB499B4473445C95
+B1983EA2ED26DA2ED910956E7B937814F2149A31253B35D067DB51E54099FE3B
+FC52EB8DA74511232493093581B2F30305475A9D0AAC364B5250DC626D5B697D
+6524AF72CAEF2F42B36A9A844501323CD265B23522AF2FBDEAFB9A24416E27FF
+284BFF384788D37D5EABBE3751B5E156FEFF704B50A8B3EEDF499451A60385E8
+AD44694B65025FE26B2E205E3EDBD4DFFD08C190724EE2B70FC4618CD324A5D3
+A438D463C8F7457FF5CA2E3D6AA64F901026A816CB06E9A28FAB6682EBC89785
+5B722F33BE7A7512A45727B083BFE9EA846354A14F0BD34322C16A1B7FE45A75
+E2DA9438B51E48875B474D2959EAB20332C26B104715672EDCB91CB0AC7A6355
+719D252271E33581023FC4A583949BF42AA2974AD4F5BF78DFCA6A222CCA3476
+67E4517F1C4F8AB42BEE71B212B5519C3FBB421348CB2F8AA1469124D3E9544D
+45B4AAFC7EB2A24BED6185F6895D3C56EC6681E0D19722F1E2222A0808FD42AE
+DCDCCE9B5352AD9F242DF8D39BF1F202AF8C29121C96803E1D2343D7788D3775
+6AB266B86033AC6DD8D628F1617D8E44D4AA550C141EFF917995973065A7A088
+D1BB50C4D45CE2554CABB36AED18F94E614D8C15A87813FC7A43452753A4D130
+FEFE1F50628086731B0000
+}
 
 ; LOAD MENU WIDGET Cyphre(TM)
 do load decompress #{
@@ -2067,19 +2137,11 @@ IDE:	 layout  [
 		;below across 
 		return 
 		uso: text resize-x 900 "USAGE:"  			
-		return
-		style toggle toggle 70x24 gray sky effect [round] edge [size: 0x0]		
-		ta: toggle "Core" true [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: core show bt]
-		tb: toggle "VID" [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: vid show bt]
-		tc: toggle "DRAW" [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: draw show bt]
-		td: toggle "Your variables" 90x24 [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: Your_variables show bt]
-		return
-		bt:  box 325x432	with [offset 0x0]
-		t: area-tc  550x500	
+		return	
 		
-	]
-	
-		Core: layout/tight   [			
+		tb: tab-panel  data [
+			"Core"  [	
+				
 				core_sp: scroll-panel 325x432 [	;core_sp is a nice name for croll panale of core buttons
 					style button btn white
 					style group-box panel 255.255.255 frame black 2x2
@@ -2751,9 +2813,7 @@ IDE:	 layout  [
 
 				
 				] ]; end of core
-			bt/pane: core
-			show bt
-			VID: layout/tight   [ vid_sp: scroll-panel 325x432 [
+			"VID"   [ vid_sp: scroll-panel 325x432 [
 					
 					style button btn white
 					style group-box panel 255.255.255 frame black 2x2
@@ -3086,7 +3146,7 @@ IDE:	 layout  [
 				button   "win-offset?" [ inni "win-offset? " ]  help "Returns the offset of a face within its window"
 				]			
 					]] ;end fo VID
-			DRAW: layout/tight [ 
+			"DRAW" [ 
 				draw_sp: scroll-panel 325x432  [
 				style button btn white
 				style group-box panel 255.255.255 frame black 2x2
@@ -3176,35 +3236,54 @@ IDE:	 layout  [
 
 				]]; end of DRAW
 				
-			Your_variables: layout/tight [				
+			"Your variables" [				
 				style button btn white
 				style group-box panel 255.255.255 frame black 2x2
-				button mint "Update!" [ 			
-					either (attempt [findall t] ) [listaoggetti: findall t ] [alert {There is an error, check " and {}} ]			
-					clear  wordsyv/data
-					insert wordsyv/data  (select listaoggetti "words")
-					clear blocksyv/data
-					insert blocksyv/data (select listaoggetti "blocks")
-					clear functionsyv/data
-					insert functionsyv/data (select listaoggetti "functions")
-					clear objectsyv/data
-					insert objectsyv/data (select listaoggetti "objects")
-					show [ wordsyv  blocksyv  functionsyv objectsyv ]
-					]		
-				yv_sp: scroll-panel 325x400 [
-					label "Words"
-					wordsyv: text-list 
-					label "Blocks"
-					blocksyv: text-list 
-					label "Functions"
-					functionsyv: text-list 
-					label "Objects"
-					objectsyv: text-list
-					]		
-			]; end of "your vars"
+				button mint "Update!" [ 
+			
+			either (attempt [findall t] ) [listaoggetti: findall t ] [alert {There is an error, check " and {}} ]
+			
+			clear  wordsyv/data
+			 insert wordsyv/data  (select listaoggetti "words")
+			 clear blocksyv/data
+			 insert blocksyv/data (select listaoggetti "blocks")
+			 clear functionsyv/data
+			insert functionsyv/data (select listaoggetti "functions")
+			clear objectsyv/data
+			insert objectsyv/data (select listaoggetti "objects")
+			show [ wordsyv  blocksyv  functionsyv objectsyv ]
+			]
+		
+		yv_sp: scroll-panel 325x400 [
+			label "Words"
+			wordsyv: text-list 
+			label "Blocks"
+			blocksyv: text-list 
+			label "Functions"
+			functionsyv: text-list 
+			label "Objects"
+			objectsyv: text-list
+			]
+		
+		]; end of "your vars"
 				
-		 
-	
+		] with [ ;this give the resize window to the tab panel
+			;patched the "original" resize feel --cyphre
+			;note: the layout pane in tab-area subface must be resized as well in this usage case --cyphre
+			feel: make feel [
+				resize: func [f size+][
+					either pair? size+ [
+						f/tab-area/pane/size/y: f/size/y: f/size/y + size+/y
+					] [
+						f/tab-area/pane/size: f/size: size+
+					]
+					show f
+				]
+			]
+		]
+		t: area-tc  550x500	
+		
+	]
 	
 ;function to find all variables
 findall: func [ a_findall /local temp temp2  str-tmp dt line ] [
@@ -7247,6 +7326,17 @@ send-comments:  [
 
 
 view/new/options IDE [resize]
+;	if exists? %./viva-rebol.r [ t/open-file %./viva-rebol.r  ]
+
+;this is necessary to avoid a bug in tab-panel script	
+temp: 0	
+loop 4 [ ;loop number must be equal to number of tabs
+	++ temp
+	tb/focus-tab: temp
+	show tb
+	]
+tb/focus-tab: 1
+show tb
 
 	
 	t/new-file

@@ -1,11 +1,6 @@
 Rebol []
 
 
-a: [$1 $2 $3 ]
-
-view layout [
-drop-down data "$5" a
-]
 
 
 

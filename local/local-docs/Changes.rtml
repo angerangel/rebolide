@@ -1,0 +1,14 @@
+
+backdrop linen 
+style p-area area linen middle font-size 14 wrap with [edge/size: 0x0 para/origin: 5x3] 
+style pre-area area silver font-size 14 wrap middle with [para/origin: 40x-20] 
+style heading h2 490x23 navy 
+style sub-heading h3 490x23 water 
+origin 0x0 
+across 
+space 0 
+image logo.gif 
+document-header: box 450x24 coal green "Documentation" 
+origin 40x40 
+below 
+space 0 p-area 490x33 {"A master index of REBOL changes."} heading "REBOL Version 2" heading "REBOL Version 3 (in Development)"

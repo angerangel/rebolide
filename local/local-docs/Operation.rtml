@@ -1,0 +1,440 @@
+
+backdrop linen 
+style p-area area linen middle font-size 14 wrap with [edge/size: 0x0 para/origin: 5x3] 
+style pre-area area silver font-size 14 wrap middle with [para/origin: 40x-20] 
+style heading h2 490x23 navy 
+style sub-heading h3 490x23 water 
+origin 0x0 
+across 
+space 0 
+image logo.gif 
+document-header: box 450x24 coal green "Documentation" 
+origin 40x40 
+below 
+space 0 heading "1. Installing REBOL" p-area 490x54 {REBOL installation takes only a few seconds and is very easy, non-intrusive,
+and non-disruptive.} p-area 490x66 {For REBOL/Core the only installation procedure is to uncompress the
+distribution files and store them in any directory on your system.} p-area 490x89 {For other REBOL products, installation may require you to provide additional
+information, such as where to store related files. Refer to the release notes
+that are included with the distribution files.} sub-heading "1.1 Distribution Files" p-area 490x39 {REBOL/Core includes these primary distribution files:} p-area 490x46 {Other files may be provided, depending on the REBOL product and version.} sub-heading "1.2 Home Environment Variable" p-area 490x113 {Although it is not required, if your operating system sets the HOME
+environment variable, REBOL will use it to locate its startup files.
+On many operating systems such as UNIX or Linux, the HOME variable
+may be set by default already. (So you do not need to set it yourself).} sub-heading "1.3 Network Setup" p-area 490x128 {The first time you start REBOL, it prompts you for network information. This
+information is optional. Some protocols, such as email or FTP, require an email
+address or an email server name. In addition, if you are behind a firewall or
+use a proxy server, you need to provide specific information to access the
+Internet.} p-area 490x29 "To set up your network:" p-area 490x84 {Once the startup questions are answered, REBOL creates a
+"user"."r" file and places your network settings in it. You
+can change these settings at any time by editing the
+"user"."r" file.} sub-heading "1.4 Proxy and Firewall Settings" p-area 490x91 {Frequently, organizations use a firewall or proxy server to protect access to
+and from the Internet. Before REBOL can access the Internet through these
+systems, you need to provide some additional information.} p-area 490x34 "To provide proxy server information:" p-area 490x110 {REBOL defaults to using a SOCKS proxy protocol. You can specify some other
+type of proxy by editing the "user"."r" file and supplying the
+"set-net" function with the appropriate identification for the
+type of proxy being used. The following settings are supported:} pre-area 440x108 {
+socks   - use the latest SOCKS version (5)
+socks5  - use socks5 proxy
+socks4  - use socks4 proxy
+generic - use generic CERN proxy
+none    - use no proxy} p-area 490x112 {These settings are provided as the sixth argument to the
+"set-net" function called in the "user"."r" file. For more
+information about modifying the proxy settings in the "user".r
+file, refer to the <A
+href="rebolcore-13.html#_Toc487519750">Network Protocols
+Chapter</A>.} sub-heading "1.5 License Agreement" p-area 490x83 {The REBOL end-user license agreement that you agreed to when you downloaded
+or installed REBOL can be viewed at any time from the REBOL console by typing
+"license" at the REBOL prompt.} heading "2. Starting REBOL" p-area 490x110 {REBOL runs on a large variety of systems. You start REBOL the same way you
+start other applications on your system. Depending on the specific operating
+system, REBOL can be started from one or more of the following: an icon, the
+command shell, or other applications.} sub-heading "2.1 From an Icon" p-area 490x60 {REBOL can be started by double-clicking the REBOL program icon, an associated
+"".r file, or a REBOL shortcut icon.} p-area 490x57 {If you double-click on the program icon, REBOL boots, displays the console,
+and provides you with a prompt.} p-area 490x48 {If you want to launch REBOL with a script, you can do so in the following
+ways:} p-area 490x40 {See your operating system manual for more information.} sub-heading "2.2 From a Shell" p-area 490x71 {From a shell command line, go to the directory that contains the
+"rebol"."exe" file (or "rebol" on non-Windows systems), and type
+rebol or ./rebol.} p-area 490x96 {On some operating systems, such as UNIX, you can create alias
+shell commands that are able to run REBOL with a set of
+arguments and files. In addition, UNIX enables you to create
+shell scripts that include a path, such as:} pre-area 440x36 "^/!#/path/to/r-ebol" p-area 490x70 {in the top line of the script file. When you type the name of
+the script file at the command prompt, UNIX will launch REBOL to
+execute the script.} sub-heading "2.3 From Another Application" p-area 490x84 {For writing and debugging REBOL scripts, it is handy to set up
+your favorite text editor to run REBOL and pass it the script
+file you are editing. Each text editor does this differently.} p-area 490x97 {For instance, in the Premia Codewright editor you can use the
+language compiler options to set up REBOL. Specify the REBOL
+program rather than a compiler. Then you can press a single key
+that saves the script and evaluates it.} sub-heading "2.4 Security Issues" p-area 490x53 {By default, security is set to prevent scripts from modifying any of your
+files or directories.} p-area 490x85 {The "secure" function provides flexibility in setting and
+controlling the security features of REBOL. The current security
+settings are returned as a result of calling the "secure"
+function.} p-area 490x87 {Security settings use a REBOL dialect, that is, a language within a language.
+The normal dialect consists of a block of paired values. The
+"first" value in the pair specifies what is being secured:} p-area 490x55 {A file name or directory path allows you to specify security levels for a
+specific file or directory.} p-area 490x73 {The "second" value in the pair specifies the level of security.
+This can be either a security level word or a block of words.
+The security level words are:} p-area 490x46 {For example, to allow all network access, but to quit on any file access:} pre-area 440x90 {
+secure [
+    net allow ;allows any net access
+    file quit ;any file access will cause the program to quit
+]} p-area 490x95 {If a block is used instead of a security level word, it can contain pairs of
+security levels and access types. This lets you specify a greater level of
+detail about the security you require. The access types allowed are:} p-area 490x87 {The pairs are processed in the order they appear, with later pairs modifying
+the effect of earlier pairs. This permits setting one type of access without
+explicitly setting all others. For example:} pre-area 440x144 {
+secure [
+    net allow
+    file [
+        ask all
+        allow read
+    ]
+]} p-area 490x84 {The above sets the security level to "ask" for all operations
+except for reading which is to be allowed. This technique can
+also be used for individual files and directories. For example:} pre-area 440x108 {
+secure [
+    net allow
+    file quit
+    %source/ [ask read]
+]} p-area 490x55 {asks if an attempt is made to read the "%source" directory. Otherwise,
+it uses the default ("quit").} p-area 490x94 {There is a special case in which the "secure" function takes a
+single word argument that must be one of the security access levels. In that
+case, the security level for all network and file access is set to that level.} pre-area 440x36 "^/secure quit" p-area 490x55 {The "secure" function also accepts "none", allowing access
+with no restrictions (same as "allow" ).} pre-area 440x36 "^/secure none" p-area 490x33 "The default security level is now:" pre-area 440x144 {
+secure [
+    net allow
+    file [
+        ask all
+        allow read
+    ]
+]} p-area 490x87 {If no security access level is specified for either network or
+file access, it defaults to "ask". The current settings will
+"not" be modified if an error occurs parsing the security block
+argument.} p-area 490x30 "<A name=_Toc487519845><A>" p-area 490x112 {The "secure" function now returns the prior security settings
+before the new settings were made. This is a block with the global network and
+file settings followed by file or directory settings. The "query"
+word can be used to obtain the settings without modifying them.} pre-area 440x36 "^/current-security: secure query" p-area 490x71 {You can modify the current security level by querying the current settings,
+modifying them, then using the "secure" function to set the new
+values.} p-area 490x143 {Lowering the security level produces a "change" security
+settings request. The exception is when the REBOL session is running in
+"quiet" mode which will, instead, terminate the REBOL session. No
+query is generated when security levels are raised. Note that the security
+request now includes an option to allow all access for the remainder of the
+scripts processing.} p-area 490x45 {When running REBOL from the shell, the "-s" argument is
+equivalent to:} pre-area 440x36 "^/secure allow" p-area 490x35 {and the "+s" arguments is equivalent to:} pre-area 440x36 "^/secure quit" p-area 490x60 {You can now follow the "--secure" argument with one of the
+security access levels for both network and file access:} pre-area 440x36 "^/r-ebol --secure throw" sub-heading "2.5 Program Arguments" p-area 490x105 {There are a number of arguments that can be specified in a shell
+command line, in a batch script, or in the properties of an
+icon. To view the arguments and options available for any
+version of the REBOL language, type "usage" at the console
+prompt.} pre-area 440x630 {
+The command line usage is:
+
+    r-ebol <options>  <script>  <arguments> 
+
+All fields are optional. Supported options are:
+
+    --cgi (-c)       Check for CGI input
+    --do expr        Evaluate expression
+    --help (-?)      Display this usage information
+    --nowindow (-w)  Do not open a window
+    --noinstall (-i) Do not install (View)
+    --quiet (-q)     Don't print banners
+    --reinstall (+i) Force an install (View)
+    --script file    Explicitly specify script
+    --secure level   Set security level:
+                     (allow ask throw quit)
+    --trace (-t)     Enable trace mode
+    --uninstall (-u) Uninstall r-ebol (View)
+
+Other command line options:
+
+    +q               Force not quiet (View)
+    -s               No security
+    +s               Full security
+    -- args          Provide args without script
+
+Examples:
+
+    r-ebol script.r
+    r-ebol script.r 10:30 test@domain.dom
+    r-ebol script.r --do "verbose: true"
+    r-ebol --cgi -s
+    r-ebol --cgi --secure throw --script cgi.r "debug: true"
+    r-ebol --secure none} p-area 490x35 "Again, the format of the command line is:" pre-area 440x36 "^/r-ebol options script arguments" p-area 490x24 "Where:" p-area 490x46 {All of the above arguments are optional, and any combination is
+permitted.} p-area 490x27 {"Shortcut Icons"} p-area 490x100 {In some operating systems, like Windows or AmigaOS, you can
+create icons that supply any of the above options as part of the
+icon. Using this technique, you can create icons that directly
+execute REBOL scripts with the correct options.} sub-heading "2.6 Script File" p-area 490x66 {Typically, you run REBOL with the file name of the script that you want it to
+evaluate. Only one script file is allowed. For example:} pre-area 440x36 "^/r-ebol script.r" p-area 490x45 {If the file name contains spaces, it must be provided in double quotes.} sub-heading "2.7 Specifying Options" p-area 490x89 {Program options are identifed with a plus (+) or minus (-) before a
+character or by a double dash (--) before a word. This is a standard
+practice for specifying program options on most operating systems.} p-area 490x38 "Here are several examples of how options are used." p-area 490x60 {To run a script with an option, such as the "-s" option, which
+evaluates the script with security turned off, type:} pre-area 440x36 "^/r-ebol -s script.r" p-area 490x37 "To obtain usage information about REBOL, type:" pre-area 440x54 "^/r-ebol -?^/r-ebol --help" p-area 490x60 {To run REBOL without opening a new window (this is done when you need to
+redirect output to a file or server), type:} pre-area 440x54 "^/r-ebol -w^/r-ebol --nowindow" p-area 490x63 {To prevent the printout of startup information which is useful if you are
+redirecting the output to a file or server, type:} pre-area 440x54 "^/r-ebol -q^/r-ebol --quiet" p-area 490x41 {To evaluate a REBOL expression from the command line, type:} pre-area 440x54 {
+r-ebol --do "print 1 + 2"
+r-ebol --do "verbose: true" script.r} p-area 490x41 {This lets you evaluate a remote script with a line such as:} pre-area 440x36 {
+r-ebol --do "do http://www.r-ebol.com/speed.r"} p-area 490x36 "To change the security level of REBOL, type:" pre-area 440x54 "^/r-ebol -s script.r^/r-ebol --secure none script.r" p-area 490x98 {To use REBOL scripts for CGI (see the <A
+href="rebolcore-13.html#_Toc487519913">CGI -
+Common Gateway Interface Section</A> of the <A
+href="rebolcore-13.html#_Toc487519750">Network
+Protocols Chapter</A> for more information), type:} pre-area 440x54 "^/r-ebol -c cgi-script.r^/r-ebol --cgi" p-area 490x72 {Multiple options are also allowed. Multiple single character
+options can be included together. Multiple full word options
+must be separated with spaces.} pre-area 440x54 {
+r-ebol -cs cgi-script.r
+r-ebol --cgi --secure none cgi-script.r} p-area 490x96 {The above example runs in CGI mode, with security turned off.
+The shorthand method is required for various web servers that
+restrict the number of arguments allowed on the command line
+(such as the Apache server on Linux).} sub-heading "2.8 File Redirection" p-area 490x55 {On most systems, it is possible to redirect standard input and
+output from and to files. The example:} pre-area 440x36 "^/r-ebol -w script.r >  output-file" p-area 490x34 "redirects output to a file. Similarly," pre-area 440x36 "^/r-ebol -w script.r < input-file" p-area 490x31 "redirects input from a file." p-area 490x31 {"When Redirecting File IO..."} p-area 490x65 {Use the "-w" option to prevent the REBOL console window from
+opening, as it interferes with standard input and output
+redirection.} sub-heading "2.9 Script Arguments" p-area 490x101 {Everything on the command line that follows the script file name is passed to
+the script as its argument. This allows you to write scripts that accept
+arguments directly from the command line. For example, if you start REBOL
+with the line:} pre-area 440x36 "^/r-ebol script.r 10:30 test@domain.dom" p-area 490x63 {There are two ways to obtain the command line arguments. The first
+method returns the arguments as a block of REBOL values:} pre-area 440x54 {
+probe system/options/args
+ ["10:30" "test@domain.dom"]} p-area 490x39 {The second method returns the arguments as a string:} pre-area 440x54 {
+probe system/script/args
+ "10:30 test@domain.dom"} p-area 490x30 {"Version dependent note:"} p-area 490x90 {Earlier versions of REBOL returned the block of values for the
+script/args field (similar to options/args). It is advised that you
+verify that your script receives the correct args datatype as shown
+above.} sub-heading "2.10 Startup Files" p-area 490x96 {When REBOL starts, it attempts to load the "rebol"."r" and
+"user"."r" boot files. These files are optional, but when found,
+they can be used to set up networking, define common functions, and initialize
+data used by scripts.} p-area 490x98 {The "rebol"."r" script file holds special functions or
+extensions to REBOL that are provided as part of the standard distribution. It
+is suggested that you do not edit this file as it is overwritten with each new
+release of REBOL.} p-area 490x63 {The "user"."r" script file holds user preferences. You can
+edit this file and add whatever definitions or data you require.} p-area 490x83 {On multi-user systems, there can be a different "user"."r"
+for every user. While the "user"."r" file is not part of the
+distribution, it is automatically generated if it does not exist.} p-area 490x72 {When REBOL starts, it looks for the "rebol"."r" and
+"user"."r" files first in the home directory and, if not found
+there, then in the current directory.} p-area 490x92 {To set a HOME directory, you can set an environment variable
+in the appropriate login or startup script for your system.
+Note that some systems, such as UNIX or Linux may already do
+this, so you do not need to.} p-area 490x39 {For example, on Windows NT to set HOME you can add:} pre-area 440x36 "^/set HOME=C:\r-ebol" p-area 490x37 "to your environment by following these steps:" p-area 490x62 {On Unix systems, you can set the path to REBOL by adding a line
+like the following in your login shell script or profile:} pre-area 440x36 "^/set HOME=/usr/bin/r-ebol" p-area 490x57 {For some versions of REBOL, the path is stored in a ."rebol" file that
+is located in your home directory.} heading "3. Quitting REBOL" p-area 490x59 {To exit REBOL at any time, select "Quit" from the "Console"
+"File" menu or by typing "quit" or "q" at the prompt.} p-area 490x39 {You can also quit the program from within a script:} pre-area 440x36 "^/if now/time >  12:00 [quit]" p-area 490x44 {The REBOL console may also quit if an error occurs during startup.} p-area 490x28 {"Exit Does Not Quit"} p-area 490x66 {Do not use the word "exit" to quit REBOL. This word is used for
+exiting functions and it will return an error if typed at the
+console.} heading "4. Using the Console" p-area 490x121 {Whenever you run REBOL/Core, it opens a console to display output and accept
+input. If you provide a script argument to the program, the script is run, and
+you see the output from that script. If you do not provide a script file, the
+console prompts you for input. The input prompt looks like this:} pre-area 440x36 "^/ > >" p-area 490x66 {If you type an expression at the input prompt, it is evaluated and any
+returned values are displayed following the result indicator:} pre-area 440x36 "^/ ==" p-area 490x26 "For example:" pre-area 440x90 {
+> >  100 + 20
+ == 120 
+> >  now - 7-Dec-1944
+ == 20341} p-area 490x29 {"Changing the Prompt"} p-area 490x65 {The prompt characters can be changed. See the <A
+href="rebolcore-18.html#_Toc487519750">Console Appendix</A> for
+more information.} p-area 490x57 {The console also becomes active if a script encounters an error or if the
+script calls the "halt" function.} sub-heading "4.1 Mulitple Line Input" p-area 490x108 {If you begin a block on the command line and don't end it, the block is
+extended to the next line. This is indicated by a prompt that begins with a
+bracket and is followed by indentation. The line will be indented four spaces
+for each open block. For example:} pre-area 440x126 {
+loop 10 [
+[    print "example"
+[    if odd? random 10 [
+[        print "here"
+[        ]
+[    ]} p-area 490x42 {This is also true for multilined strings enclosed in braces.} pre-area 440x72 {
+Print {This is a long
+    string that has more
+    than one line.}} p-area 490x66 {Brackets and braces that appear within quoted strings are ignored. You can
+escape from input at any time by pressing the ESCAPE key.} sub-heading "4.2 Interrupting a Script" p-area 490x56 {A script can be interrupted by pressing the ESCAPE key, which returns
+immediately to the command prompt.} p-area 490x61 {During some types of operating system or network activity there may be a
+delay in responding to the ESCAPE interrupt.} sub-heading "4.3 History Recall" p-area 490x93 {Each line that is typed into REBOL is stored for later recall. The up and
+down arrow keys are used to scroll through the list of previous lines. For
+instance, pressing the up arrow once recalls the prior input line.} p-area 490x75 {History lines can be written to a file by saving the history
+block. See the <A href="rebolcore-18.html#_Toc487519750">Console
+Appendix</A> for more information.} sub-heading "4.4 Word Completion" p-area 490x108 {To help speed typing of long words and file names, the REBOL console has word
+and file name completion. After typing a few letters of a word, press the tab
+key. If the letters uniquely identify the word, the rest of the word is
+displayed. For example, typing:} pre-area 440x36 "^/> >  sq" p-area 490x31 "then pressing tab results in:" pre-area 440x36 "^/> >  square-root" p-area 490x62 {If the letters do not uniquely identify the word, you can press tab again to
+get a list of choices. For example, typing:} pre-area 440x36 "^/> >  so" p-area 490x33 "then pressing tab twice results in:" pre-area 440x36 "^/> >  sort source" p-area 490x22 "so" p-area 490x44 {and you can type the rest of the word or enough of it to be unique.} p-area 490x64 {Completion works for all words, including user-defined words. It also works
+for files when they are preceded by a percent sign.} pre-area 440x36 "^/> >  print read %r" p-area 490x31 "Pressing tab might produce:" pre-area 440x36 "^/> >  print read %r-ebol.r" p-area 490x34 "depending on your current directory." sub-heading "4.5 Busy Indicator" p-area 490x112 {When REBOL waits for a network operation to complete, a busy indicator
+appears to indicate that something is happening. You can change the indicator to
+your own character pattern. See the <A
+href="rebolcore-18.html#_Toc487519750">Console
+Appendix</A> for more information.} sub-heading "4.6 Network Connections" p-area 490x53 {As network connections are initiated, a message appears on the console. For
+instance, typing:} pre-area 440x54 {
+> >  read http://www.r-ebol.com
+ connecting to: www.r-ebol.com} p-area 490x75 {If necessary, you can disable this output by setting the quiet flag. See the
+<A href="rebolcore-18.html#_Toc487519750">Console
+Appendix</A> for more information.} sub-heading "4.7 Virtual Terminal" p-area 490x92 {The console provides "virtual" terminal capability that allows
+you to perform operations such as cursor movement, cursor addressing, line
+editing, screen clearing, control key input, and cursor position querying.} p-area 490x84 {The virtual terminal uses the standard ANSI character sequences. This allows
+you to write platform-independent terminal programs such as text editors, email
+clients, or telnet emulators.} p-area 490x55 {More information can be found in the <A
+href="rebolcore-18.html#_Toc487519750">Console Appendix</A>.} heading "5. Getting Help" p-area 490x150 {Several sources of information exist: online help built into REBOL, the
+"source" function,
+<a href="http://www.rebol.com/docs.html">documents on the REBOL website</a>,
+the <a href="http://www.rebol.org">REBOL script library</a>,
+the <a href="http://www.rebol.com//discussion.html">REBOL mailing list</a>,
+and sending <a href="http://www.rebol.com/feedback.html">feedback to REBOL</a>.} sub-heading "5.1 Online Help" p-area 490x66 {The online "help" function provides a quick way to obtain
+summary information about REBOL words. There are several ways to use help.} p-area 490x44 {Type "help" or "?" at the console prompt to
+view a summary of help:} pre-area 440x594 {
+The help function provides a simple way to get
+information about words and values.  To use it
+supply a word or value as its argument:
+
+    help insert
+    help find
+
+To view all words that match a pattern:
+
+    help "path"
+    help to-
+
+To view all words of a specified datatype:
+
+    help native!
+    help datatype!
+
+There is also word completion from the command
+line.  Type a few chars and press TAB to complete
+the word.  If nothing happens, there is more than
+one word that matches.  Enough chars are needed
+to uniquely identify the word.
+
+Other useful functions:
+
+    about - for general info
+    usage - for the command line arguments
+    license - for the terms of user license
+    source func - print source for given function
+    upgrade - updates your copy of r-ebol
+
+For more information, see the user guides.} p-area 490x71 {If you provide a function word as an argument, "help" prints
+all of the information that was provided about the function.
+For instance, if you type:} pre-area 440x36 "^/help insert" p-area 490x26 "you will see:" pre-area 440x324 {
+USAGE:
+    INSERT series value /part range /only /dup count
+
+DESCRIPTION:
+     Inserts a value into a series and returns the series after the insert.
+     INSERT is an action value.
+
+ARGUMENTS:
+     series -- Series at point to insert (Type: series port bitset)
+     value -- The value to insert (Type: any-type)
+
+REFINEMENTS:
+     /part -- Limits to a given length or position.
+         range -- (Type: number series port)
+     /only -- Inserts a series as a series.
+     /dup -- Duplicates the insert a specified number of times.
+         count -- (Type: number)} p-area 490x70 {The "help" function also finds words that contain a specified
+string. For instance, to find all of the words that include the string
+"path", type:} pre-area 440x36 {
+? "path"} p-area 490x29 "and the result will be:" pre-area 440x270 {
+Found these words:
+     clean-path     (function)
+     lit-path!      (datatype)
+     lit-path?      (action)
+     path           (file)
+     path!          (datatype)
+     path-thru      (function)
+     path?          (action)
+     set-path!      (datatype)
+     set-path?      (action)
+     split-path     (function)
+     to-lit-path    (function)
+     to-path        (function)
+     to-set-path    (function)} p-area 490x71 {You can also search for all globally defined words that are of a given data
+type. For example, to list all words that are function! data types, type:} pre-area 440x36 "^/? function!" p-area 490x30 "and the result would be:" pre-area 440x198 {
+Found these words:
+     ?              (function)
+     ??             (function)
+     about          (function)
+     alert          (function)
+     alter          (function)
+     append         (function)
+     array          (function)
+     ask            (function)
+...} p-area 490x37 "To obtain a list of all REBOL datatypes, type:" pre-area 440x342 {
+? datatype!
+
+Found these words:
+     action!        (datatype)
+     any-block!     (datatype)
+     any-function!  (datatype)
+     any-string!    (datatype)
+     any-type!      (datatype)
+     any-word!      (datatype)
+     binary!        (datatype)
+     bitset!        (datatype)
+     block!         (datatype)
+     char!          (datatype)
+     datatype!      (datatype)
+     date!          (datatype)
+     decimal!       (datatype)
+     email!         (datatype)
+...} p-area 490x29 {"No Help for Objects"} p-area 490x63 {<A name=_Toc487519669>The "help" function does not provide
+useful information about the objects of the system, for example:} pre-area 440x54 {
+help system/options/home
+ system/options/home is a path.} p-area 490x29 "Do not attempt to do:" pre-area 440x36 "^/help system" p-area 490x46 {as it can take several minutes and produce over a megabyte of
+text output.} sub-heading "5.2 Viewing Source Code" p-area 490x81 {Advanced users can learn more about specific REBOL functions by
+examining their source code. The "source" function displays the
+code for any REBOL defined function. If you type:} pre-area 440x36 "^/source join" p-area 490x39 {The source to the "join" function will be returned:} pre-area 440x162 {
+join: func [
+    "Concatenates values."
+    value "Base value"
+    rest "Value or block of values"
+][
+    value: either series? value [copy value] [form value]
+    repend value rest
+]} p-area 490x104 {REBOL defined functions include the ""mezzanine"" ""functions""
+(built-in functions implemented in REBOL) and user defined
+functions. ""Native"" ""functions"" are built-in functions
+implemented in machine code, and their source cannot be
+displayed.} sub-heading "5.3 Download Documents" p-area 490x63 {Check the REBOL Web site <A href="http://www.rebol.com/">http://www.rebol.com/</A> for a list
+of the current documentation.} p-area 490x108 {In addition to this manual, there is a "REBOL Dictionary"
+that covers all the predefined words available in REBOL. If the
+console help or this guide does not contain sufficient
+information about a REBOL word, look in the dictionary for a
+detailed description.} p-area 490x79 {The dictionary is updated with each release of REBOL and is
+available at <A href="http://www.rebol.com/docs/dictionary.html">http://www.REBOL.com/docs/dictionary.html</A>.} sub-heading "5.4 Script Library" p-area 490x116 {The REBOL Web site contains a library with numerous useful debugged scripts
+that cover a variety of topics. The library is divided into categories to make
+it easy to find a script specific to a given function. You can also search the
+library for scripts that contain a specific word.} p-area 490x66 {The script library can be found at <A
+href="http://www.rebol.com/library/library.html">
+http://www.REBOL.com/library/library.html</A>.} sub-heading "5.5 User Mailing List" p-area 490x95 {You can also obtain help from a community of REBOL users by
+joining the REBOL email discussion list. To sign up, send an
+email to rebol-request@rebol.com with the subject line
+containing the word "subscribe". For example:} pre-area 440x36 {
+send r-ebol-request@r-ebol.com "subscribe"} p-area 490x49 {Be sure that your correct email address has been set up in
+advance with "set-net".} sub-heading "5.6 Contacting Us" p-area 490x39 {We want to know what you think; please contact us to:} p-area 490x57 {You can reach us through the <A
+HREF="http://www.rebol.com/feedback.html">Feedback</A> page on
+our website.} heading "6. Errors" sub-heading "6.1 Error Messages" p-area 490x84 {There are several types of errors within REBOL. When an error occurs a
+message is displayed that tells you what the error was and approximately where
+it occurred. For instance if you type:} pre-area 440x72 {
+abc
+ ** Script Error: abc has no value.
+** Where: abc} p-area 490x130 {The type of error is indicated by the first few words of the message. In the
+above example, the error is a "Script" Error. Script errors are
+the most common and occur when you use a function of the language in the wrong
+way or with improper arguments. Other types of errors are described in <A href="#30433">Error
+Types</A>.} p-area 490x25 "Error Type" p-area 490x25 "Description" p-area 490x27 {"Syntax" "errors"} p-area 490x55 {Occur when the script contains an invalid value or a missing header,
+quote, bracket, or parenthesis.} p-area 490x27 {"Math" "errors"} p-area 490x48 {Occur when dividing a number by zero or there was a math overflow or
+underflow.} p-area 490x27 {"Access" "errors"} p-area 490x57 {Occur when a file, directory, or network operation cannot be accessed
+or access permissions are restricted.} p-area 490x27 {"Throw" "errors"} p-area 490x43 {Occur when a break, exit, or throw is used in an improper
+manner.} p-area 490x27 {"User" "errors"} p-area 490x31 "Defined by the user's script." p-area 490x28 {"Internal" "errors"} p-area 490x82 {Returned when a problem occurs within the REBOL system. If you
+encounter one of these types of errors, please report it to
+<A HREF="http://www.rebol.com/feedback.html">Feedback</A>.} p-area 490x77 {Most types of errors can be trapped and processed by your script. See <A
+href="rebolcore-4.html#_Toc487519749">Trying
+Blocks</A> for a description of the try function.} p-area 490x59 {The <A href="rebolcore-17.html#_Toc487519750">Errors
+Appendix</A> also includes useful information about errors.} sub-heading "6.2 Redirecting Errors" p-area 490x84 {When errors are encountered in non-interactive sessions, such as when running
+in CGI mode (-c or --cgi ) or in no window mode (-w
+or --nowindow ), the session is automatically terminated.} p-area 490x62 {If a script terminates while running in non-interactive mode, you can use
+shell redirection to output the error to a file:} pre-area 440x36 "^/r-ebol -cs my_script.r > >  my_script.log" p-area 490x42 {This appends the output to the file in most operating systems.} heading "7. Upgrading" p-area 490x58 {On initialization, a banner is displayed that identifies the program version.
+Version numbers have the format:} pre-area 440x36 "^/version.revision.update.platform.variation" p-area 490x32 "For example, the version number:" pre-area 440x36 "^/2.3.0.3.1" p-area 490x132 {indicates that you are running version 2, revision 3, update 0,
+for Windows 95/98/NT (REBOL platform number 3.1).  A complete
+list of all platform numbers is available from <A
+HREF="http://www.rebol.com">http://www.rebol.com</A>.  This HTML file also
+contains a hidden REBOL database that can be used for
+determining the platform.} p-area 490x42 {You can obtain the version number from the REBOL prompt with:} pre-area 440x36 "^/print system/version" p-area 490x104 {Only the latest release of REBOL is supported by REBOL Technologies. You can
+verify that you have the latest version and automatically update it if out of
+date. To do so, be sure that you are connected to the Internet, then from within
+REBOL type:} pre-area 440x36 "^/upgrade" p-area 490x43 {REBOL returns one of the following messages about your version:} pre-area 440x54 {
+ This copy of Windows 95/98/NT iX86 r-ebol/core 2.3.0.3.1
+is currently up to date.} p-area 490x23 "or:" pre-area 440x72 {
+ This copy of Windows 95/98/NT iX86 r-ebol/core 2.1.2.3.1
+is not up to date. Current version is: 2.3.0.3.1.
+Download current version?} p-area 490x47 {To upgrade to the latest version, type "Y" (yes). Otherwise, type
+"N" (no).}
