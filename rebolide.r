@@ -4,7 +4,7 @@ REBOL [
 	credits: { Carl sassenrath, "Shadwolf", Steeve, Maxim, Coccinelle, Cyphre, Graham, Nick Antonaccio, Semseddin Moldibi, Zoltan Eros, R. v.d.Zee}
 	purpose: { Colored IDE for rebol in rebol, for beginners that helps learning Rebol. 
 	I suggest you to put this script in a separete folder.}  
-	version: 6.4.51	
+	version: 6.4.52	
 	File: %rebolide.r 
 	Author: "Massimiliano Vessi" 
 	email: maxint@tiscali.it	
@@ -2069,10 +2069,10 @@ IDE:	 layout  [
 		uso: text resize-x 900 "USAGE:"  			
 		return
 		style toggle toggle 70x24 gray sky effect [round] edge [size: 0x0]		
-		ta: toggle "Core" true [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: core show bt]
-		tb: toggle "VID" [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: vid show bt]
-		tc: toggle "DRAW" [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: draw show bt]
-		td: toggle "Your variables" 90x24 [ ta/state: tb/state: tc/state: td/state: false face/state: true show [ta tb tc td] bt/pane: Your_variables show bt]
+		toggle "Core" true of 'toggles [  bt/pane: core show bt]
+		toggle "VID" of 'toggles [  bt/pane: vid show bt]
+		toggle "DRAW" of 'toggles [ bt/pane: draw show bt]
+		toggle "Your variables" 90x24 of 'toggles [ bt/pane: Your_variables show bt]
 		return
 		bt:  box 325x432	with [offset 0x0]
 		t: area-tc  550x500	
